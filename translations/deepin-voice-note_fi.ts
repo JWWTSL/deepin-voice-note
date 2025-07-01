@@ -30,134 +30,63 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation type="unfinished">Nimeä</translation>
+        <translation type="obsolete">Nimeä</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation type="unfinished">Poista</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Uusi huomautus</translation>
+        <translation type="obsolete">Poista</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Luoessa uuden huomautusmerkintätyökalun voit aloittaa äänen ja tekstin tallennuksen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Luo muistikirja</translation>
+        <translation type="obsolete">Luo muistikirja</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>siirrä </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> huomautuksia : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> huomautusta : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Tallenna nimellä</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation type="unfinished">Ei hakutuloksia</translation>
+        <translation type="obsolete">Ei hakutuloksia</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Poista kiinni</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation type="unfinished">Päälimmäinen</translation>
+        <translation type="obsolete">Päälimmäinen</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation type="unfinished">Muistilaput</translation>
+        <translation type="obsolete">Muistilaput</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Luo muistikirja</translation>
+        <translation type="obsolete">Luo muistikirja</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation type="unfinished">Etsi</translation>
+        <translation type="obsolete">Etsi</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Siirrä huomautusta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peru</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="obsolete">Peru</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 huomautusta valittu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation type="unfinished">Siirrä</translation>
+        <translation type="obsolete">Siirrä</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Tallenna huomautus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Tallenna ääni</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation type="unfinished">Poista</translation>
+        <translation type="obsolete">Poista</translation>
     </message>
 </context>
 <context>
@@ -210,17 +139,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Teksti ääneksi</translation>
+        <translation>Teksti ääniksi</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Pysäytä lukeminen</translation>
+        <translation>Lopeta lukeminen</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Ääni tekstimuotoon</translation>
+        <translation>Ääni tekstillä</translation>
     </message>
 </context>
 <context>
@@ -293,18 +222,18 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Asenna 'UOS AI' App Storesta ennen käyttöä</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Asenna &apos;UOS AI&apos; sovelluskaupasta ennen käyttöä</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Äänensisäänmenettävää laitetta ei havaittu. Tarkista ja yritä uudelleen</translation>
+        <translation>Äänen syöttölaitetta ei havaittu. Tarkista ja yritä uudelleen</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Äänenvahvistimen laitetta ei havaittu. Tarkista ja yritä uudelleen</translation>
+        <translation>Äänen lähtölaite ei havaittu. Tarkista ja yritä uudelleen</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation type="unfinished">Perustiedot</translation>
+        <translation type="obsolete">Perustiedot</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation type="unfinished">Äänilähde</translation>
+        <translation type="obsolete">Äänilähde</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation type="unfinished">Sisäinen</translation>
+        <translation type="obsolete">Sisäinen</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation type="unfinished">Mikrofoni</translation>
+        <translation type="obsolete">Mikrofoni</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Uusi vihje</translation>
+        <translation>Uusi muistiinpano</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Muuta vihjen nimeä</translation>
+        <translation>Nimeä muistiinpano uudelleen</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Poista vihje</translation>
+        <translation>Poista muistiinpano</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,22 +308,22 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Muuta huomautuksen nimeä</translation>
+        <translation>Nimeä muistiinpano uudelleen</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Poista huomautus</translation>
+        <translation>Poista muistiinpano</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Peli/Pysäytä</translation>
+        <translation>Toista/Pysäytä</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Tallenna ääntä</translation>
+        <translation>Tallenna ääni</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,7 +333,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Tallenna tallennuksia</translation>
+        <translation>Tallenna nauhoitukset</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Takaisin</translation>
+        <translation>Kumoa</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Uudelleen</translation>
+        <translation>Toista</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -448,12 +373,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>Apua</translation>
+        <translation>Ohje</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Näytä pikanäppäimet</translation>
+        <translation>Näytä pikakuvakkeet</translation>
     </message>
 </context>
 <context>
@@ -461,12 +386,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Kirjanpito</translation>
+        <translation>Muistiinpanot</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Huomionkäynnit</translation>
+        <translation>Muistiinpanot</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation type="unfinished">Asetukset</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Yksityisyyspolitiikka</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes on kevyt muisti kirjanpito, jolla voidaan tehdä tekstihuomioita ja äänirekisteröintiä.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Äänihuomio</translation>
+        <translation type="obsolete">Asetukset</translation>
     </message>
 </context>
 <context>
@@ -513,9 +422,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>1 minuutti sitten</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>2 minuuttia sitten</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +437,9 @@
         <translation>%1 minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>Eilen</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>Kaksi minuuttia sitten</translation>
     </message>
 </context>
 <context>
@@ -545,8 +454,8 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Oletko varma, että haluat poistaa tämän kirjanpidon?
-Kaikki huomionkäynnit siitä poistetaan</translation>
+        <translation>Oletko varma, että haluat poistaa tämän muistiinpanon?
+Kaikki siihen liittyvät muistiinpanot poistetaan</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
@@ -616,7 +525,7 @@ Kaikki huomionkäynnit siitä poistetaan</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Oletko varma, että haluat poistaa tämän kirjanpidon?</translation>
+        <translation>Oletko varma, että haluat poistaa tämän muistiinpanon?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
@@ -671,12 +580,12 @@ Kaikki huomionkäynnit siitä poistetaan</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Äänimuunnos epäonnistui heikosta verkkoyhteydestä, tarkista verkkoyhteys</translation>
+        <translation>Äänikääntäminen epäonnistui huonon verkkoyhteyden vuoksi, tarkista yhteytesi</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Kaikki huomionkäynnit siitä poistetaan</translation>
+        <translation>Kaikki siinä olevat muistiinpanot poistetaan</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
@@ -687,14 +596,12 @@ Kaikki huomionkäynnit siitä poistetaan</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation type="unfinished">Peru</translation>
+        <translation type="obsolete">Peru</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished">Vahvista</translation>
+        <translation type="obsolete">Vahvista</translation>
     </message>
 </context>
 <context>
@@ -702,30 +609,7 @@ Kaikki huomionkäynnit siitä poistetaan</translation>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>Tallenna MP3-muodossa</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Luo huomio</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Aloita tallennus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Äänitallennuslaite ei ole havaittu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Lisää kuva</translation>
+        <translation>tallenna MP3-muodossa</translation>
     </message>
 </context>
 <context>
@@ -798,7 +682,7 @@ Kaikki huomionkäynnit siitä poistetaan</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Muunnamme ääntä tekstinä</translation>
+        <translation>Äänen kääntäminen tekstillä</translation>
     </message>
 </context>
 </TS>

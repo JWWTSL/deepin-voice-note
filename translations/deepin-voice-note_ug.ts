@@ -30,134 +30,111 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>نام قويۇش</translation>
+        <translation type="vanished">نام قويۇش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation type="vanished">ئۆچۈرۈش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
         <source>New Note</source>
-        <translation>يېڭى خاتىرە قۇرۇش</translation>
+        <translation type="vanished">يېڭى خاتىرە قۇرۇش</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
         <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>يېڭى خاتىرە دەپتىرى قۇرغاندىن كېيىن، ئاۋاز ۋە تېكىستلەرنى خاتىرىلەشنى باشلىسىڭىز بولىدۇ</translation>
+        <translation type="vanished">يېڭى خاتىرە دەپتىرى قۇرغاندىن كېيىن، ئاۋاز ۋە تېكىستلەرنى خاتىرىلەشنى باشلىسىڭىز بولىدۇ</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>خاتىرە دەپتەر قۇرۇش</translation>
+        <translation type="vanished">خاتىرە دەپتەر قۇرۇش</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
         <source>move </source>
-        <translation>كۆچمە خەۋەرلىشىش </translation>
+        <translation type="vanished">كۆچمە خەۋەرلىشىش </translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
         <source> notes to :</source>
-        <translation> خاتىرە قالدۇرماق:</translation>
+        <translation type="vanished"> خاتىرە قالدۇرماق:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
         <source> note to :</source>
-        <translation> خاتىرە قالدۇرۇش:</translation>
+        <translation type="vanished"> خاتىرە قالدۇرۇش:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
         <source>Save As</source>
-        <translation>خاتىرىنى ساقلاش</translation>
+        <translation type="vanished">خاتىرىنى ساقلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>ئىزدەش نەتىجىسى يوق</translation>
+        <translation type="vanished">ئىزدەش نەتىجىسى يوق</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Unpin</source>
-        <translation>قىستۇرۇشنى يېشىش</translation>
+        <translation type="vanished">قىستۇرۇشنى يېشىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>چوققىلاش</translation>
+        <translation type="vanished">چوققىلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>چوققىلاندى</translation>
+        <translation type="vanished">چوققىلاندى</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>خاتىرە دەپتەر قۇرۇش</translation>
+        <translation type="vanished">خاتىرە دەپتەر قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>ئىزدەش</translation>
+        <translation type="vanished">ئىزدەش</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
         <source>Move Note</source>
-        <translation>كۆچمە خاتىرە</translation>
+        <translation type="vanished">كۆچمە خاتىرە</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation type="vanished">بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
         <source>Ok</source>
-        <translation>ماقۇل</translation>
+        <translation type="vanished">ماقۇل</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
         <source>%1 note selected</source>
-        <translation>%1 ئىزاھات تاللاندى</translation>
+        <translation type="vanished">%1 ئىزاھات تاللاندى</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>يۆتكەش</translation>
+        <translation type="vanished">يۆتكەش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
         <source>Save Note</source>
-        <translation>خاتىرىنى ساقلاش</translation>
+        <translation type="vanished">خاتىرىنى ساقلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
         <source>Save Voice</source>
-        <translation>ئاۋازنى ساقلاش</translation>
+        <translation type="vanished">ئاۋازنى ساقلاش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>ئۆچۈرۈش</translation>
+        <translation type="vanished">ئۆچۈرۈش</translation>
     </message>
 </context>
 <context>
@@ -293,18 +270,18 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>ئۇنى كىشىلىش ئۈچۈن ئەپ ستووردىن 'UOS AI' نى ئۇنۇمۇ بېرىش كېرەك</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>بۇ ئىشلىتىش قىممىتىدىن ئىلخىسىز &apos;UOS AI&apos; نى ئەپ سىزىمىدىن ئىستاللاڭ</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>كۆرسىتىشلىق ئاۋتو لەيەن دەۋەتى ئېھلىق بولمىغان. كېرەكلىكىنى تەكشۈرۈپ قايتا سەۋەپلىك قىلىڭ</translation>
+        <translation>سىزىق قىلىش ۋاھىدىسى ئەھۋالى تېسپىللىنىپ قالدى. تەكشۈرۈپ يېنىدىن سىزىق قىلىڭ</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>كۆرسىتىشلىق ئاۋتو نۇقۇتى دەۋەتى ئېھلىق بولمىغان. كېرەكلىكىنى تەكشۈرۈپ قايتا سەۋەپلىك قىلىڭ</translation>
+        <translation>سېلىش ۋاھىدىسى ئەھۋالى تېسپىللىنىپ قالدى. تەكشۈرۈپ يېنىدىن سېلىڭ</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +315,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>ئاساسىي تەڭشەكلەر</translation>
+        <translation type="vanished">ئاساسىي تەڭشەكلەر</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>ئاۋاز مەنبەسى</translation>
+        <translation type="vanished">ئاۋاز مەنبەسى</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>سىستېما ئاۋازى</translation>
+        <translation type="vanished">سىستېما ئاۋازى</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>مىكروفون ئاۋازى</translation>
+        <translation type="vanished">مىكروفون ئاۋازى</translation>
     </message>
 </context>
 <context>
@@ -482,24 +455,20 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>تەڭشەك</translation>
+        <translation type="vanished">تەڭشەك</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
         <source>Privacy Policy</source>
-        <translation>شەخسىيەت سىياسىيتى</translation>
+        <translation type="vanished">شەخسىيەت سىياسىيتى</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
         <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>ئاۋازلىق ئىزاھاتلار تېكىست خاتىرە ۋە ئاۋاز ئېلىش ئۈچۈن ئىشلىتىلىدىغان يېنىك خاتىرە قورالى.</translation>
+        <translation type="vanished">ئاۋازلىق ئىزاھاتلار تېكىست خاتىرە ۋە ئاۋاز ئېلىش ئۈچۈن ئىشلىتىلىدىغان يېنىك خاتىرە قورالى.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
         <source>Voice Note</source>
-        <translation>ئاۋازلىق خاتىرە</translation>
+        <translation type="vanished">ئاۋازلىق خاتىرە</translation>
     </message>
 </context>
 <context>
@@ -513,9 +482,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>1 مىنۇت بۇرۇن</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>2 مىنۇت ئىلگىرى</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +497,9 @@
         <translation>%1 مىنۇت بۇرۇن</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>تۈنۈگۈن</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>2 دىن ئۆتكەن</translation>
     </message>
 </context>
 <context>
@@ -539,14 +508,14 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>تايىن</translation>
+        <translation>تەمىن</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>سىز بۇ كىتابنى چыغۇرۇشنى چاقىرىشنى چاقىرىشنى ئۇچرىقىتىسىز؟
-ئۇنىڭدا ئۇلارنىڭ بارلىقى چىغۇرۇشقا چاقىرىلىدۇ</translation>
+        <translation>بۇ ئەمەلنى ئۆچۈرۈشنى ئەمەلگە ئاشۇرۇشنى ئەمەلگە ئاشۇرۇشنى تەمىن قىلىسىزمى؟
+ئۇنىڭدىكى بارلىق نوتىلار ئۆچۈرۈلەيدۇ</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
@@ -671,7 +640,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>ئاۋتو نۇقۇتى ئىشلەشتۈن دەۋەتى ئېھلىق بولمىغان، ئەپەتكىنى تەكشۈرۈڭ</translation>
+        <translation>پەقەت ھەۋا ئەمەلگە ئاشۇرۇشى سەۋەبىدىن بىرلىشىش ھەققىدە تەكشۈرۈڭ</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,14 +656,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>بىكار قىلىش</translation>
+        <translation type="vanished">بىكار قىلىش</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>جەزملەش</translation>
+        <translation type="vanished">جەزملەش</translation>
     </message>
 </context>
 <context>
@@ -708,24 +675,20 @@ All notes in it will be deleted</source>
 <context>
     <name>WindowTitleBar</name>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
         <source>Create Note</source>
-        <translation>خاتىرە دەپتەر قۇرۇش</translation>
+        <translation type="vanished">خاتىرە دەپتەر قۇرۇش</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
         <source>Start recording</source>
-        <translation>ئۈن ئېلىشقا باشلىدى</translation>
+        <translation type="vanished">ئۈن ئېلىشقا باشلىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
         <source>No recording device detected</source>
-        <translation>ئۈن ئېلىش ئۈسكۈنىسى بايقالمىدى</translation>
+        <translation type="vanished">ئۈن ئېلىش ئۈسكۈنىسى بايقالمىدى</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
         <source>Insert picture</source>
-        <translation>رەسىم قىستۇرماق</translation>
+        <translation type="vanished">رەسىم قىستۇرماق</translation>
     </message>
 </context>
 <context>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="ky">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>Сезгән һөйләм</translation>
+        <translation>Дыбыс Note</translation>
     </message>
 </context>
 <context>
@@ -14,150 +14,79 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Нәмәләр ҡитабы</translation>
+        <translation>Notebook</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
         <source>Voice</source>
-        <translation>Һөйләм</translation>
+        <translation>Дыбыс</translation>
     </message>
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
         <source>Text</source>
-        <translation>Текст</translation>
+        <translation>Мәтін</translation>
     </message>
 </context>
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>Атты үҙгәрте</translation>
+        <translation>Атын өзгертіңіз</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>Хәтерте</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Яңы нәме</translation>
+        <translation>Жою</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Яңы ҡитабын төҙәгәннән соң һөйләм һәм текст һыҙыуын башлай аласыз</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Ҡитабын төҙә</translation>
+        <translation>Notebook жасау</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>ҡуй</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> нәмәләр : ҡуй</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> нәме : ҡуй</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Сақлау өсөн</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>Тикшереү нәтижәләре юк</translation>
+        <translation>Іздеу нәтижелері жоқ</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Алдын-алдын ҡуйма</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Төп ҡуйма</translation>
+        <translation>Жоғарыда тұру</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Ҡуйма нәмәләре</translation>
+        <translation>Қосымша ескертпелер</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Ҡитабын төҙә</translation>
+        <translation>Notebook жасау</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>Тикшереү</translation>
+        <translation>Іздеу</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Нәме ҡуй</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>Булып ҡалдыр</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>Тамам</translation>
+        <translation>Болдырмау</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 нәме сағылды</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>Ҡуй</translation>
+        <translation>Жылжыту</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Нәме сақлау</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Һөйләм сақлау</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>Хәтерте</translation>
+        <translation>Жою</translation>
     </message>
 </context>
 <context>
@@ -165,62 +94,62 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>MP3 өсөн сақлау</translation>
+        <translation>MP3 ретінде сақтау</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>Һөйләм текстка</translation>
+        <translation>Дыбысты мәтінге айналдыру</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
         <source>Delete</source>
-        <translation>Хәтерте</translation>
+        <translation>Жою</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>Барлағын танзат</translation>
+        <translation>Барлығын таңдау</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
         <source>Copy</source>
-        <translation>Көбөтөө</translation>
+        <translation>Көшіру</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>Жылдату</translation>
+        <translation>Кесу</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
         <source>Paste</source>
-        <translation>Кошоо</translation>
+        <translation>Қою</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>Көрсөт</translation>
+        <translation>Көру</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>Сақлау үчүн</translation>
+        <translation>Сақтау ретінде</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Тексттин сөзгө айлантыруу</translation>
+        <translation>Мәтінді дыбысқа айналдыру</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Оқууды түшүрүү</translation>
+        <translation>Оқуды тоқтату</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Сөзгө текст айлантыруу</translation>
+        <translation>Дыбысты мәтінге айналдыру</translation>
     </message>
 </context>
 <context>
@@ -228,17 +157,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Аталышын өзгөрт</translation>
+        <translation>Атын өзгертіңіз</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
         <source>Delete</source>
-        <translation>Жогорго</translation>
+        <translation>Жою</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
         <source>New note</source>
-        <translation>Жаңы үзүн</translation>
+        <translation>Жаңа ескертпе</translation>
     </message>
 </context>
 <context>
@@ -246,65 +175,65 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>HTML форматында сақлау</translation>
+        <translation>HTML күчүнө сакта</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>TXT форматында сақлау</translation>
+        <translation>TXT күчүнө сакта</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>Үзүн сақлау</translation>
+        <translation>Жазбак сакта</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Аталышын өзгөрт</translation>
+        <translation>Ат өзгөртүү</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
         <source>Move</source>
-        <translation>Көшөр</translation>
+        <translation>Көчүрүү</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="55"/>
         <source>Delete</source>
-        <translation>Жогорго</translation>
+        <translation>Өчүрүү</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Сөз күйүн сақлау</translation>
+        <translation>Дыбыс жазылышын сакта</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>Жаңы үзүн</translation>
+        <translation>Жаңы жазбак</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Төмөнкө төгүн өткөр</translation>
+        <translation>Жогору жабыс</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Колдонуу үчүн 'UOS AI' үлгүсүн App Store-тан орнотоңуз</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Колдонуу үчүн &apos;UOS AI&apos; үстүнө App Storeдан орнотуу керек</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Аудио киреүлүү үлгүсү таңдалган. Көрсөтүү жана өзгөртүү</translation>
+        <translation>Дыбыс кирүү үчүн үстүнө қүрал аныкталган жок. Тескерелештирип, ыңгайылышыңыз</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Аудио чыгыш үлгүсү таңдалган. Көрсөтүү жана өзгөртүү</translation>
+        <translation>Дыбыс чыгышы үчүн үстүнө қүрал аныкталган жок. Тескерелештирип, ыңгайылышыңыз</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,17 +246,17 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>Базалык</translation>
+        <translation>Негиздемелер</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>Аудио көзү</translation>
+        <translation>Дыбыс көзөнөк</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Ичиндеги</translation>
+        <translation>Ички</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,22 +267,18 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>Базалык</translation>
+        <translation>Негиздемелер</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>Аудио источник</translation>
+        <translation>Дыбыс көзөнөк</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Ичкеләй</translation>
+        <translation>Ички</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>Микрофон</translation>
     </message>
@@ -363,97 +288,97 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Яңы дәфтәр</translation>
+        <translation>Жаңы китеп</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Дәфтәрны әйләндер</translation>
+        <translation>Китепти ат өзгөртүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Дәфтәрны өстә</translation>
+        <translation>Китепти өчүрүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>Яңы үзгәреш</translation>
+        <translation>Жаңы жазбак</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Өзгәрешне әйләндер</translation>
+        <translation>Жазбакты ат өзгөртүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Өзгәрешне өстә</translation>
+        <translation>Жазбакты өчүрүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Сәйәхәт/Тормыш</translation>
+        <translation>Ойнотуу/Токтотуу</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Сезеңне үзгәреш</translation>
+        <translation>Дыбыс жазуу</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>Өзгәрешне сакла</translation>
+        <translation>Жазбак сакта</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Сезеңне сакла</translation>
+        <translation>Жазбаларды сактау</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>Барлығын танда</translation>
+        <translation>Барлыгын тандау</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
         <source>Copy</source>
-        <translation>Күчер</translation>
+        <translation>Көчүрүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>Кырып</translation>
+        <translation>Кесүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
         <source>Paste</source>
-        <translation>Күчерергә</translation>
+        <translation>Киргизүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Артка алып</translation>
+        <translation>Бекердеу</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Яңадан әсәр</translation>
+        <translation>Кайра орундау</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
         <source>Delete</source>
-        <translation>Өстә</translation>
+        <translation>Жок кылуу</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>Ярдәм</translation>
+        <translation>Көмөк</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Шорткатларны күрсәт</translation>
+        <translation>Кыскачаларды көрсөтүү</translation>
     </message>
 </context>
 <context>
@@ -461,45 +386,29 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Дәфтәрләр</translation>
+        <translation>Китепчелер</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Өзгәрешләр</translation>
+        <translation>Китепчелер</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
         <source>Edit</source>
-        <translation>Төзү</translation>
+        <translation>Түзөтүү</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
         <source>Settings</source>
-        <translation>Төзү</translation>
+        <translation>Баптоолор</translation>
     </message>
 </context>
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>Төзү</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Мәгънәләр</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes - текст өзгәрешләре һәм аудио үзгәрешләре үзгәртү өсөн һөйләшкән ҡәтғи ҡаршылар</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Аудио өзгәреш</translation>
+        <translation>Баптоолор</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Эләнгән ноталарҙы үҙенсәләнгән версиянан ҡабул итеү, күренеше...</translation>
+        <translation>Көпчүлүк китепчелерди өткөн нускадан импорттоо, күтүңүз</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 минут ҡатырған</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 минут ҡатырған'</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>Был өн</translation>
+        <translation>1 мүнөт бурын</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 минут ҡатырған</translation>
+        <translation>2 мүнөт бурын</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 мүнөт бурын&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>Кечэ</translation>
     </message>
 </context>
 <context>
@@ -539,76 +448,75 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>Түгел</translation>
+        <translation>Жакшы</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Шул өненен үшереүҙе ҡабул итеүҙе ҡәтғи ҡылаһыз?
-Ундағы барлыҡ ноталар үшерелер</translation>
+        <translation>Бул китепче төмөн калтырып жиберүүгө үмүттөсүзбү? Бардык китепчелердин барлыгы жок кылынып койулган</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Хәлдәге ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Бүгүнкү жазба токтотуу керек пе?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>20 минуттан ҙур ноталарҙы ҡабул итеүҙе ҡәтғи ҡылаһыз?</translation>
+        <translation>Бул дауулук китепчени чыгарып бере албайт, 20 мүнөттөн көп китепчелер өзүнчө өзгөртүлбөгөн</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Хәлдәге ҡыҫҡырыҡты ҡабул итеүҙә. Хәлдәге ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Бүгүнкү дауулук китепче чыгарылып жатат. Токтотуу керек пе?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Ҡыҫҡырыҡты ҡабул итеү өсөн ҙур ҡыҫҡырыҡ үткәреүе ҡатырған, ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Түсүрүлгөн күчтүн төмөнкү болушу жаман жазбаларга ап алып келет. Жалгыз калтырып жатасызбы?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Ҡыҫҡырыҡты ҡабул итеү өсөн ҡыҫҡырыҡ үткәреүе һәм ҡабул ителгән мәтін ҡатырған, ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Кесилген жазбалар менен чыгарылган мәлуматтар киргизилбейт. Жалгыз калтырып жатасызбы?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Шул ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Бул китепче төмөн калтырып жиберүүгө үмүттөсүзбү?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Танылған %1 ҡыҫҡырыҡтарҙы ҡәтғи ҡылаһыз?</translation>
+        <translation>Тандалган %1 китепчелерди төмөн калтырып жиберүүгө үмүттөсүзбү?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Башҡа</translation>
+        <translation>Бекердеу</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Ҡәтғи</translation>
+        <translation>Раста</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Сақлау ҡатырған</translation>
+        <translation>Сактоо эсеби</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>Файларҙы унда сақлауға ҡәтғи ҡылауға һыҙыҡ</translation>
+        <translation>Сиз ошондой файлдарды сактоо үчүн резервдүү эмес</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>Ҡыҫҡырыҡ нотасы үшерелде</translation>
+        <translation>Дыбыс жазылышы өчürüлдү</translation>
     </message>
 </context>
 <context>
@@ -616,85 +524,83 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Шул өненен үшереүҙе ҡабул итеүҙе ҡәтғи ҡылаһыз?</translation>
+        <translation>Бул китепчени өчүрүүгө чында үмүттөсөзбү?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Хәлдәге ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Азыркы жазылышты тоқтотуу керек пе?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Танылған %1 ҡыҫҡырыҡтарҙы ҡәтғи ҡылаһыз?</translation>
+        <translation>Тандалган %1 жазылыштарды өчүрүүгө чында үмүттөсөзбү?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Шул ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Бул жазылышты өчүрүүгө чында үмүттөсөзбү?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>20 минуттан ҙур ноталарҙы ҡабул итеүҙе ҡәтғи ҡылаһыз?</translation>
+        <translation>Бүгүнкү күндө 20 минутдан көп жазылыштар өзгөртүлбөйт.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Хәлдәге ҡыҫҡырыҡты ҡабул итеүҙә. Хәлдәге ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Бүгүн дауысты күнеге айландырып жатып, оны тоқтатқыңыз келме?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Ҡыҫҡырыҡты ҡабул итеү өсөн ҙур ҡыҫҡырыҡ үткәреүе ҡатырған, ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Төменгі кіру күшінде жаман жазбаға әкелуі мүмкін. Жалғастырғыңыз келме?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Ҡыҫҡырыҡты ҡабул итеү өсөн ҡыҫҡырыҡ үткәреүе һәм ҡабул ителгән мәтін ҡатырған, ҡыҫҡырыҡты ҡәтғи ҡылаһыз?</translation>
+        <translation>Төмөнкү интернет байланышынан дыбыс өзгөртүүсү учас калды, текшерүүнү жасаңыз</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Сақлау ҡатырған</translation>
+        <translation>Ошондой бардык жазылыштар өчürüлөт</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Файларҙы унда сақлауға ҡәтғи ҡылауға һыҙыҡ</translation>
+        <translation>Өчүрүү</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>Ҡыҫҡырыҡ нотасы үшерелде</translation>
+        <translation>Бүтүрүү</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Сөйлөөнөө түрөөнөө үзэлбей турган үлгәмдән үткән, үзгәртәр өйрөн</translation>
+        <translation>Растау</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Ундағы барлыҡ өйрөндер үчүрөлө</translation>
+        <translation>MP3 үчүн сактоо</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
         <source>Delete</source>
-        <translation>Өчүр</translation>
+        <translation>Шрифт</translation>
     </message>
 </context>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>Барак</translation>
+        <translation>Шрифт үлүкчөгү</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>Түгелдән</translation>
+        <translation>Шрифт түсү</translation>
     </message>
 </context>
 <context>
@@ -702,30 +608,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>MP3 форматына сақлау</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Өйрөн ясалау</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Сәйләү өйрөн</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Сәйләү өйрөн тауырмайты</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Рәсм өйрөн</translation>
+        <translation>Текстти көрсөтүү түсү</translation>
     </message>
 </context>
 <context>
@@ -733,72 +616,72 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation>Шрифт</translation>
+        <translation>Болду</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>Шрифт өлгәм</translation>
+        <translation>Курсив</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation>Шрифт рақамы</translation>
+        <translation>Түшүрүлгөн</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Мәтін үзгәртәр рақамы</translation>
+        <translation>Кесилген</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>Төгәл</translation>
+        <translation>Нүктелер</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>Көңгөлөө</translation>
+        <translation>Курсив</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>Төгәлдән</translation>
+        <translation>Төменгі сызық</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Төгәлдән</translation>
+        <translation>Қиылысқан</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>Төгәлдән</translation>
+        <translation>Нүктелер</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>Төгәлдән</translation>
+        <translation>Саноо</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
         <source>More colors</source>
-        <translation>Барлыҡ рақамлар</translation>
+        <translation>Көп түстөр</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation>Сәйләүләр</translation>
+        <translation>Жакында</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Сөйлөөнөө Мәтін</translation>
+        <translation>Дыбыс бети түз</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Сөйлөөнөө мәтінгә үзгәртә</translation>
+        <translation>Дыбысты түзгө түркүмдөштүрүү</translation>
     </message>
 </context>
 </TS>

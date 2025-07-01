@@ -30,134 +30,63 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation type="unfinished">नाम बदलें</translation>
+        <translation type="obsolete">नाम बदलें</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation type="unfinished">हटाएँ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>नई नोट</translation>
+        <translation type="obsolete">हटाएँ</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>एक नए नोटपैड के बाद, आप वॉइस और पाठ के रिकॉर्डिंग शुरू कर सकते हैं</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">नोटबुक बनाएँ</translation>
+        <translation type="obsolete">नोटबुक बनाएँ</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>मूव </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> नोट्स को : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> नोट को : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>सेव करें के रूप में</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation type="unfinished">खोजने पर कोई परिणाम नहीं मिला</translation>
+        <translation type="obsolete">खोजने पर कोई परिणाम नहीं मिला</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>अनपिन करें</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation type="unfinished">शीर्ष पर तारांकित</translation>
+        <translation type="obsolete">शीर्ष पर तारांकित</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation type="unfinished">तारांकित नोट्स</translation>
+        <translation type="obsolete">तारांकित नोट्स</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">नोटबुक बनाएँ</translation>
+        <translation type="obsolete">नोटबुक बनाएँ</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation type="unfinished">खोजें</translation>
+        <translation type="obsolete">खोजें</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>नोट मूव करें</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation type="unfinished">रद्द करें</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>ओके</translation>
+        <translation type="obsolete">रद्द करें</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 नोट चयनित किया गया</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation type="unfinished">अंतरित करें</translation>
+        <translation type="obsolete">अंतरित करें</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>सेव नोट</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>सेव वॉइस</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation type="unfinished">हटाएँ</translation>
+        <translation type="obsolete">हटाएँ</translation>
     </message>
 </context>
 <context>
@@ -180,7 +109,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>सभी का चयन करें</translation>
+        <translation>सभी का चयन</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
@@ -205,12 +134,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>सेव करें के रूप में</translation>
+        <translation>अन्य नाम से सहेजें</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>पाठ से वॉइस</translation>
+        <translation>पाठ से बोलना</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
@@ -220,7 +149,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>वॉइस से पाठ</translation>
+        <translation>बोलना से पाठ</translation>
     </message>
 </context>
 <context>
@@ -293,23 +222,23 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>उपयोग करने से पहले 'UOS AI' को ऐप स्टोर से स्थापित करें</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>उपयोग करने से पहले &apos;UOS AI&apos; को एप स्टोर से स्थापित करें</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>कोई ऑडियो इनपुट डिवाइस नहीं डिटेक्ट किया गया। कृपया जांच करें और पुन: प्रयास करें</translation>
+        <translation>कोई ऑडियो इनपुट डिवाइस पहचान नहीं हुई। कृपया जांचें और फिर से प्रयास करें</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>कोई ऑडियो आउटपुट डिवाइस नहीं डिटेक्ट किया गया। कृपया जांच करें और पुन: प्रयास करें</translation>
+        <translation>कोई ऑडियो आउटपुट डिवाइस पता नहीं चली। कृपया जांचें और फिर से प्रयास करें</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
         <source>deepin-voice-note</source>
-        <translation>deepin-voice-note</translation>
+        <translation>डीपिन-वॉइस-नोट</translation>
     </message>
 </context>
 <context>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation type="unfinished">सामान्य</translation>
+        <translation type="obsolete">सामान्य</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation type="unfinished">ऑडियो स्रोत</translation>
+        <translation type="obsolete">ऑडियो स्रोत</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation type="unfinished">आंतरिक</translation>
+        <translation type="obsolete">आंतरिक</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation type="unfinished">माइक्रोफोन</translation>
+        <translation type="obsolete">माइक्रोफोन</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>नया नोटबुक</translation>
+        <translation>नई नोटबुक</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>नाम बदलें नोटबुक</translation>
+        <translation>नोटबुक का नाम बदलें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>नोटबुक मिटाएं</translation>
+        <translation>नोटबुक हटाएं</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -388,17 +313,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>नोट मिटाएं</translation>
+        <translation>नोट हटाएं</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>प्ले/पैज</translation>
+        <translation>चलाएं/रोकें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>वॉइस रिकॉर्ड करें</translation>
+        <translation>आवाज रिकॉर्ड करें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,12 +333,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>रिकॉर्डिंग सेव करें</translation>
+        <translation>रिकॉर्डिंग सहेजें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>सभी चयन करें</translation>
+        <translation>सभी का चयन</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>उत्तर लेना</translation>
+        <translation>अनुकूलित करें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>फिर करें</translation>
+        <translation>पुनर्करें</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -448,7 +373,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>सहायता</translation>
+        <translation>मदद</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
@@ -461,7 +386,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>नोटबुक</translation>
+        <translation>नोटबुक्स</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation type="unfinished">सेटिंग्स</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>गोपनीयता नीति</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>वॉइस नोट्स एक हल्का मेमो टूल है जिसका उपयोग टेक्स्ट नोट्स और वॉइस रिकॉर्डिंग के लिए किया जाता है।</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>वॉइस नोट</translation>
+        <translation type="obsolete">सेटिंग्स</translation>
     </message>
 </context>
 <context>
@@ -513,9 +422,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>1 मिनट पूर्व</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>2 मिनट पहले</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +437,9 @@
         <translation>%1 मिनट पूर्व</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>पिछला कल</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>2 मिनट पहले</translation>
     </message>
 </context>
 <context>
@@ -539,7 +448,7 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ठीक है</translation>
+        <translation>ठीक</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
@@ -671,12 +580,12 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>कमजोर नेटवर्क कनेक्शन के कारण वॉइस कनवर्जन असफल रहा, कृपया जांच करें</translation>
+        <translation>वाक्य रूपांतरण खराब नेटवर्क कनेक्शन के कारण विफल रहा, कृपया जांच करें</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>इसमें सभी नोट हटा दिए जाएंगे</translation>
+        <translation>इसमें सभी नोट डिलीट कर दिए जाएंगे</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
@@ -687,14 +596,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation type="unfinished">रद्द करें</translation>
+        <translation type="obsolete">रद्द करें</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished">पुष्टि करें</translation>
+        <translation type="obsolete">पुष्टि करें</translation>
     </message>
 </context>
 <context>
@@ -702,30 +609,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>एमपी3 के रूप में सहेजें</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>नोट बनाएं</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>रिकॉर्डिंग शुरू करें</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>कोई रिकॉर्डिंग डिवाइस नहीं डिटेक्ट किया गया</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>चित्र डालें</translation>
+        <translation>MP3 के रूप में सहेजें</translation>
     </message>
 </context>
 <context>
@@ -798,7 +682,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>वॉइस को टेक्स्ट में कनवर्ट कर रहे हैं</translation>
+        <translation>वॉइस को टेक्स्ट में बदला जा रहा है</translation>
     </message>
 </context>
 </TS>

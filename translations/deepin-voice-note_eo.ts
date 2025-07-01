@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="eo">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>Vokalaj notoj</translation>
+        <translation>Vokalajnotoj</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Noturo</translation>
+        <translation>Karneto</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
         <source>Voice</source>
-        <translation>Vokalo</translation>
+        <translation>Voko</translation>
     </message>
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
@@ -30,132 +30,61 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>Renomi</translation>
+        <translation>Renomigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
         <translation>Forigi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Nova noto</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Post kreiĝo de nova noturo, vi povas komenci registri vokalo kaj tekston</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Krei noturon</translation>
+        <translation>Krei Karneton</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>mova </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> notoj al :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> noto al :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Konservi kiel</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>Neniu serĉo rezultoj</translation>
+        <translation>Neniu serchrezulto</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Malpinigi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Stika sur supro</translation>
+        <translation>Koligita sur la Supro</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Stikaj notoj</translation>
+        <translation>Koligaj Notoj</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Krei noturon</translation>
+        <translation>Krei Karneton</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>Serĉi</translation>
+        <translation>Serchi</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Mova noto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>Annulli</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>Bonvolu</translation>
+        <translation>Nuligi</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 noto elektita</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>Mova</translation>
+        <translation>Movi</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Konservi noton</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Konservi vokalon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
         <translation>Forigi</translation>
     </message>
@@ -170,7 +99,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>Vokalo al teksto</translation>
+        <translation>Voko al Teksto</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
@@ -180,7 +109,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>Selekti ĉion</translation>
+        <translation>Elekti ĉion</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
@@ -190,12 +119,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>Tagli</translation>
+        <translation>Kuti</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
         <source>Paste</source>
-        <translation>Almeti</translation>
+        <translation>Kolekti</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
@@ -210,17 +139,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Teksto al parolo</translation>
+        <translation>Teksto al Parolo</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Ŝalti legadon</translation>
+        <translation>Malŝalti legadon</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Parolo al teksto</translation>
+        <translation>Parolo al Teksto</translation>
     </message>
 </context>
 <context>
@@ -228,7 +157,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Renomi</translation>
+        <translation>Renomigi</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
@@ -261,7 +190,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Renomi</translation>
+        <translation>Renomadi</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
@@ -286,30 +215,30 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Fiksigi sur la supra</translation>
+        <translation>Kolxiĝi sur la Tako</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Bonvolu instaligi 'UOS AI' el la Aplikado Storio antaŭ ol uzante</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Bonvolu instali &apos;UOS AI&apos; el la Aplika Butiko antaŭ uzo</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Neniu audio eniga aparato detektita. Bonvolu kontrolli kaj provu denove</translation>
+        <translation>Neniu aŭda enigaĵa ekipaĵo detektita. Bonvolu kontroli kaj provi denove</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Neniu audio eliga aparato detektita. Bonvolu kontrolli kaj provu denove</translation>
+        <translation>Neniu aŭda eligaĵa ekipaĵo detektita. Bonvolu kontroli kaj provi denove</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
         <source>deepin-voice-note</source>
-        <translation>deepin-voice-note</translation>
+        <translation>deepin-voĉnoto</translation>
     </message>
 </context>
 <context>
@@ -322,12 +251,12 @@
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>Audio Fonto</translation>
+        <translation>Aŭda Fonto</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Interne</translation>
+        <translation>Internaj</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,22 +267,18 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
         <translation>Bazaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>Fonto de Audio</translation>
+        <translation>Aŭda Fonto</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Interna</translation>
+        <translation>Internaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>Mikrofono</translation>
     </message>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Nova notebooko</translation>
+        <translation>Nova kajero</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Renomi notebookon</translation>
+        <translation>Renomadi kajeron</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Forigi notebookon</translation>
+        <translation>Forigi kajeron</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,7 +308,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Renomi noton</translation>
+        <translation>Renomadi noton</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
@@ -393,12 +318,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Ludi/Paŭzi</translation>
+        <translation>Rekoni/Paŭzi</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Registri vocon</translation>
+        <translation>Registri voĉon</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,7 +333,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Konservi registriĝojn</translation>
+        <translation>Konservi la registraĵojn</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
@@ -423,12 +348,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>Klavi</translation>
+        <translation>Kuti</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
         <source>Paste</source>
-        <translation>Malklavi</translation>
+        <translation>Kolekti</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Montri mallongigojn</translation>
+        <translation>Montri rapidekspresojn</translation>
     </message>
 </context>
 <context>
@@ -461,12 +386,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Notebookoj</translation>
+        <translation>Kunmemoj</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Notoj</translation>
+        <translation>Kunmemoj</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
         <translation>Agordoj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Privata Politiko</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes estas ligereca memoilo por krei tekstajn notojn kaj voĉregistriĝojn.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Voĉnoto</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Importado notojn de la antaŭa versio, bonvolu atendi...</translation>
+        <translation>Importado de kunmemoj el la malnova versio, bonvolu atendi...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>1 minuto antaŭe</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 minutoj antaŭe</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>Hier matene</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
         <translation>2 minutoj antaŭe</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 minutoj antaŭe&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>Hieraŭ</translation>
     </message>
 </context>
 <context>
@@ -539,55 +448,58 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>OK</translation>
+        <translation>Ordinara</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Ĉu vi certe volas forigi tiun notebookon?
-Ĉiu noto en ĝi estos forigita</translation>
+        <translation>Ĉu vi certe volas forigi tiun kunmemojn?
+Ĉiuj kunmemoj en ĝi estos forigitaj</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Ĉu vi volas stopi la aktivan enkaptadon?</translation>
+        <translation>Ĉu vi volas ĉesi la aktulan registron?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Ne eblas konverti tiun voĉnoton, ĉar notoj pli longaj ol 20 minutoj ne estas subtenataj aktualaj.</translation>
+        <translation>Ne eblas konverti tiun voĉan kunmemojn, ĉar kunmemoj pli longaj ol 20 minutoj ne estas subtenataj
+kutime.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Konvertiĝas voĉnota nun. Ĉu vi volas stopi ĝin?</translation>
+        <translation>Konvertado de voĉa kunmemo. Ĉu vi volas ĝin ĉesi?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>La malalta entreprenita volumo povas kaŭzi malbonajn enkaptadojn. Ĉu vi volas daŭrigi?</translation>
+        <translation>La malalta eniga volumeno povas kaŭzi malbonajn registraĵojn. Ĉu vi volas
+kontinui?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>La forĵetitaj enkaptadoj kaj konvertita teksto ne estos gluiĝaj. Ĉu vi volas daŭrigi?</translation>
+        <translation>La kaptitaj registraĵoj kaj konvertita teksto ne estos kolektitaj. Ĉu vi volas
+kontinui?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Ĉu vi certe volas forigi tiun noton?</translation>
+        <translation>Ĉu vi certe volas forigi tiun kunmemo?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Ĉu vi certe volas forigi la elektitajn %1 notojn?</translation>
+        <translation>Ĉu vi certe volas forigi la elektitajn %1 kunmemojn?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Anuligi</translation>
+        <translation>Nuligi</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
@@ -598,17 +510,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Konservi malsukcesis</translation>
+        <translation>Konservi ne sukcesis</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>Vi ne havas permeson konservi dosojn tie</translation>
+        <translation>Vi ne havas permeson por konservi dosierojn tie</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>La voĉnota estis forigita</translation>
+        <translation>La voĉa noto estis forigita</translation>
     </message>
 </context>
 <context>
@@ -616,62 +528,62 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Ĉu vi certe volas forigi tiun notebookon?</translation>
+        <translation>Sufiĉe certa vi volas forigi tiun kajeron?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Ĉu vi volas stopi la aktivan enkaptadon?</translation>
+        <translation>Vi volas interrompi la aktulan registron?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Ĉu vi certe volas forigi la elektitajn %1 notojn?</translation>
+        <translation>Sufiĉe certa vi volas forigi la elektitajn %1 notojn?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Ĉu vi certe volas forigi tiun noton?</translation>
+        <translation>Sufiĉe certa vi volas forigi tiun noton?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Ne eblas konverti tiun voĉnoton, ĉar notoj pli longaj ol 20 minutoj ne estas subtenataj aktualaj.</translation>
+        <translation>Ne eblas konverti tiun voĉan noton, ĉar notoj pli longaj ol 20 minutoj ne estas subtenataj nuntempe.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Konvertiĝas voĉnota nun. Ĉu vi volas stopi ĝin?</translation>
+        <translation>Konvertado de voĉa noto nuntempe. Vi volas interrompi ĝin?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>La malalta entreprenita volumo povas kaŭzi malbonajn enkaptadojn. Ĉu vi volas daŭrigi?</translation>
+        <translation>Malalta eniga volumo povas kaŭzi malbonajn registraĵojn. Vi volas daŭrigi?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>La forĵetitaj enkaptadoj kaj konvertita teksto ne estos gluiĝaj. Ĉu vi volas daŭrigi?</translation>
+        <translation>La kaptitaj registraĵoj kaj konvertita teksto ne estos algluataj. Vi volas daŭrigi?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Konservi malsukcesis</translation>
+        <translation>Konservi ne sukcesis</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Vi ne havas permeson konservi dosojn tie</translation>
+        <translation>Vi ne havas permeson por konservi dosierojn tie</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>La voĉnota estis forigita</translation>
+        <translation>La voĉa noto estis forigita</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>La konvertado de voĉo al texto mal sukcesis pro malbona retpaĝa konekto, bonvolu kontrolli</translation>
+        <translation>La voĉa konvertado fiaskis pro malbona retejo, bonvolu kontroli.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,14 +599,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>Anuligi</translation>
+        <translation>Nuligi</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>Kontroligi</translation>
+        <translation>Konfirmi</translation>
     </message>
 </context>
 <context>
@@ -703,29 +613,6 @@ All notes in it will be deleted</source>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
         <translation>konservi kiel MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Kreu noton</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Komencu registri</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Neniu registra aparato detektita</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Enmeti bildon</translation>
     </message>
 </context>
 <context>
@@ -738,17 +625,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>Fonta grandeco</translation>
+        <translation>Tipar grandeco</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation>Fonta koloro</translation>
+        <translation>Tipar koloro</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Teksta subkoloro</translation>
+        <translation>Teksto elstarigita koloro</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
@@ -768,12 +655,12 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Travertigo</translation>
+        <translation>Trastreki</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>Punktoj</translation>
+        <translation>Bulaj punktoj</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
@@ -783,7 +670,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
         <source>More colors</source>
-        <translation>Pliaj koloroj</translation>
+        <translation>Plu koloroj</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
@@ -798,7 +685,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Konvertado de voĉo al texto</translation>
+        <translation>Konvertado de voĉo al teksto</translation>
     </message>
 </context>
 </TS>

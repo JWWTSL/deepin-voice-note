@@ -30,134 +30,63 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation type="unfinished">Преименуј</translation>
+        <translation type="obsolete">Преименуј</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation type="unfinished">Обриши</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Нова бележка</translation>
+        <translation type="obsolete">Обриши</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Након креирања новог бележника, можете да почињете записивање говора и текста</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Направи бележницу</translation>
+        <translation type="obsolete">Направи бележницу</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>премести </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> бележке у :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> бележку у :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Сачувај као</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation type="unfinished">Нема разултата претраге</translation>
+        <translation type="obsolete">Нема разултата претраге</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Одкачи</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation type="unfinished">Лепљиво на врху</translation>
+        <translation type="obsolete">Лепљиво на врху</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation type="unfinished">Лепљива бележница</translation>
+        <translation type="obsolete">Лепљива бележница</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Направи бележницу</translation>
+        <translation type="obsolete">Направи бележницу</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation type="unfinished">Претражи</translation>
+        <translation type="obsolete">Претражи</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Премести бележку</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation type="unfinished">Откажи</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>Уредно</translation>
+        <translation type="obsolete">Откажи</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 бележка одабрана</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation type="unfinished">Премести</translation>
+        <translation type="obsolete">Премести</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Сачувај бележку</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Сачувај говор</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation type="unfinished">Обриши</translation>
+        <translation type="obsolete">Обриши</translation>
     </message>
 </context>
 <context>
@@ -180,7 +109,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>Изабери све</translation>
+        <translation>Одабери све</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
@@ -200,7 +129,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>Поглед</translation>
+        <translation>Прикажи</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
@@ -215,7 +144,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Стопирај читање</translation>
+        <translation>Заустави читање</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
@@ -293,18 +222,18 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Молимо вас инсталирајте 'UOS AI' из Ап-сторе пре него што почнете да користите</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Молимо инсталирајте &apos;UOS AI&apos; из Апликационе продавнице пре коришћења</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Није детектован аудио улазни уређај. Молимо вас проверите и покушајте поново</translation>
+        <translation>Није пронађен улазни аудио уређај. Молимо проверите и покушајте поново</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Није детектован аудио излазни уређај. Молимо вас проверите и покушајте поново</translation>
+        <translation>Није пронађен излазни аудио уређај. Молимо проверите и покушајте поново</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation type="unfinished">Основно</translation>
+        <translation type="obsolete">Основно</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation type="unfinished">Аудио извор</translation>
+        <translation type="obsolete">Аудио извор</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation type="unfinished">Унутрашњи</translation>
+        <translation type="obsolete">Унутрашњи</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation type="unfinished">Микрофон</translation>
+        <translation type="obsolete">Микрофон</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Нови бележник</translation>
+        <translation>Нова белешка</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Преименуј бележник</translation>
+        <translation>Промени име белешке</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Обриши бележник</translation>
+        <translation>Обриши белешку</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,22 +308,22 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Преименуј бележку</translation>
+        <translation>Промени име белешке</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Обриши бележку</translation>
+        <translation>Обриши белешку</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Паузирај/Покрени</translation>
+        <translation>Пусти/Паузирано</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Запиши говор</translation>
+        <translation>Сними глас</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,12 +333,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Сачувај звучне записи</translation>
+        <translation>Сачувај снимке</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>Изабери све</translation>
+        <translation>Одабери све</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Прикажи кратке зализа</translation>
+        <translation>Прикажи пречице</translation>
     </message>
 </context>
 <context>
@@ -461,12 +386,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Бичеви</translation>
+        <translation>Белешке</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Ноте</translation>
+        <translation>Белешке</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation type="unfinished">Подешавања</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Политика приватности</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Воиц Ноте је лаки алат за прављење текстуалних нота и звучних записа.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Воиц Ноте</translation>
+        <translation type="obsolete">Подешавања</translation>
     </message>
 </context>
 <context>
@@ -513,9 +422,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>Пре 1 мин.</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>2 минута пре</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +437,9 @@
         <translation>Пре %1  мин.</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>Јуче</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>2 минута назад</translation>
     </message>
 </context>
 <context>
@@ -539,14 +448,14 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>УК</translation>
+        <translation>У реду</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Да ли сте сигурни да желите да обришете овај бич?
-Све ноте у њему ће бити обрисане</translation>
+        <translation>Да ли сте сигурни да желите да обришете ову белешку?
+Све белешке у њој ће бити обрисане</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
@@ -598,7 +507,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Сачувати неуспешно</translation>
+        <translation>Сачинавање није успело</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
@@ -616,7 +525,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Да ли сте сигурни да желите да обришете овај бич?</translation>
+        <translation>Да ли сте сигурни да желите да обришете ову белешку?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
@@ -656,7 +565,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Сачувати неуспешно</translation>
+        <translation>Сачинавање није успело</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
@@ -671,12 +580,12 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Превод звука је неуспешан због слабе везе, молим проверите</translation>
+        <translation>Превод гласа није успео због лошег интернет споја, молим проверите</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Све ноте у њему ће бити обрисане</translation>
+        <translation>Пре свега ће бити избрисане све белешке</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
@@ -687,14 +596,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation type="unfinished">Откажи</translation>
+        <translation type="obsolete">Откажи</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished">Потврди</translation>
+        <translation type="obsolete">Потврди</translation>
     </message>
 </context>
 <context>
@@ -706,34 +613,11 @@ All notes in it will be deleted</source>
     </message>
 </context>
 <context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Креирај ноту</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Почни запис</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Није детектован уређај за запис</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Уметни слику</translation>
-    </message>
-</context>
-<context>
     <name>web</name>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation>Шрифт</translation>
+        <translation>Фонт</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
@@ -753,22 +637,22 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>Пећ</translation>
+        <translation>Подебљано</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>Италијански</translation>
+        <translation>Курзив</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>Подвука</translation>
+        <translation>Подвучено</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Покрет</translation>
+        <translation>Прецртано</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
@@ -778,7 +662,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>Бројеви</translation>
+        <translation>Бројање</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
@@ -798,7 +682,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Преузимање гласа у текст</translation>
+        <translation>Превод гласа у текст</translation>
     </message>
 </context>
 </TS>

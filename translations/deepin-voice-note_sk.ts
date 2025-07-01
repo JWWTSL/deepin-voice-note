@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="sk">
 <context>
     <name>AppMain</name>
     <message>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Poznámkový blok</translation>
+        <translation>Záznamník</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
@@ -30,86 +30,43 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
         <translation>Premenovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>Odstrániť</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Nová poznámka</translation>
+        <translation>Vymazať</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Po vytvorení nového poznámkového bloku môžete začať zaznamenávať hlas a text</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Vytvoriť poznámkový blok</translation>
+        <translation>Vytvoriť záznamník</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>presúvať </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> poznámky na :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> poznámkov na :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Uložiť ako</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>Žiadne výsledky hľadania</translation>
+        <translation>Žiadne výsledky vyhľadávania</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Odpojiť</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Pripnúť na vrch</translation>
+        <translation>Prilepiť na vrch</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Pripnuté poznámky</translation>
+        <translation>Prilepené poznámky</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Vytvoriť poznámkový blok</translation>
+        <translation>Vytvoriť záznamník</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
         <translation>Hľadať</translation>
     </message>
@@ -117,47 +74,19 @@
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Presunúť poznámkov</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 poznámkov vybraných</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
         <translation>Presunúť</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Uložiť poznámkov</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Uložiť hlas</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>Odstrániť</translation>
+        <translation>Vymazať</translation>
     </message>
 </context>
 <context>
@@ -175,7 +104,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
         <source>Delete</source>
-        <translation>Odstrániť</translation>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
@@ -190,7 +119,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>Vystrihnúť</translation>
+        <translation>Vyrezať</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
@@ -228,7 +157,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Premeniť názov</translation>
+        <translation>Premenovať</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
@@ -261,7 +190,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Premeniť názov</translation>
+        <translation>Premenovať</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
@@ -276,7 +205,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Uložiť hlasové záznamy</translation>
+        <translation>Uložiť hlasový záznam</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
@@ -286,25 +215,25 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Pripnúť na vrch</translation>
+        <translation>Prilepiť na vrch</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Prosím, nainštalujte 'UOS AI' z obchodu s aplikáciami pred použitím</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Prosím nainštalujte &apos;UOS AI&apos; z App Store pred použitím</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Nepozorovaný zariadenie na vstup hlasu. Prosím, skontrolujte a skúste znovu</translation>
+        <translation>Nie je zistené žiadne zariadenie vstupu zvuku. Skontrolujte a skúste znova</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Nepozorovaný zariadenie na výstup hlasu. Prosím, skontrolujte a skúste znovu</translation>
+        <translation>Nie je zistené žiadne zariadenie výstupu zvuku. Skontrolujte a skúste znova</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -327,7 +256,7 @@
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Interné</translation>
+        <translation>Interný</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
         <translation>Základné</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
         <translation>Zdroj zvuku</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Vnútorný</translation>
+        <translation>Interný</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>Mikrofon</translation>
+        <translation>Mikrofón</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Nový zoznam</translation>
+        <translation>Nový poznámkový blok</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Premenovať zoznam</translation>
+        <translation>Premenovať poznámkový blok</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Odstrániť zoznam</translation>
+        <translation>Vymazať poznámkový blok</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,17 +308,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Premenovať poznámk</translation>
+        <translation>Premenovať poznámku</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Odstrániť poznámk</translation>
+        <translation>Vymazať poznámku</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Prehrať/Pozastaviť</translation>
+        <translation>Prehrať/Pauza</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
@@ -403,7 +328,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>Uložiť poznámk</translation>
+        <translation>Uložiť poznámku</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
@@ -423,7 +348,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>Vystrihnúť</translation>
+        <translation>Vyrieť</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
@@ -433,7 +358,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Spätné kroky</translation>
+        <translation>Vrátiť</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
@@ -443,7 +368,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
         <source>Delete</source>
-        <translation>Odstrániť</translation>
+        <translation>Vymazať</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
@@ -461,7 +386,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Zošity</translation>
+        <translation>Poznámkové bloky</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
         <translation>Nastavenia</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Súkromné zásady</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes je lehký nástroj na vytváranie textových poznámok a záznamov hlasu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Hlasová poznámka</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Načítavanie poznámok z staršej verzie, prosím, čakajte...</translation>
+        <translation>Importujú sa poznámky z staršej verzie, čakajte...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 minúta predtým</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 minút predtým</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>Včera</translation>
+        <translation>Pred 1 minútou</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 minúty predtým</translation>
+        <translation>Pred 2 minútami</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 minútami predtým&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>Včera</translation>
     </message>
 </context>
 <context>
@@ -545,7 +454,7 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Ste si istí, že chcete vymazať toto notebook?
+        <translation>Ste si istí, že chcete vymazať tento poznámkový blok?
 Všetky poznámky v ňom budú vymazané</translation>
     </message>
     <message>
@@ -556,22 +465,22 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Nemôžeme premeniť tento hlasový záznam, pretože neumožňujeme premeniť poznámky dlhšie ako 20 minút.</translation>
+        <translation>Tento hlasový záznam sa nedá konvertovať, pretože poznámky dlhšie ako 20 minút nie sú v súčasnosti podporované.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Prebieha premena hlasového záznamu. Chcete ho zastaviť?</translation>
+        <translation>Teraz sa konvertuje hlasový záznam. Chcete ho zastaviť?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Nízky vstupný objem môže spôsobiť hrozné záznamy. Chcete pokračovať?</translation>
+        <translation>Nízka vstupná hlasitosť môže viesť k zlým záznamom. Chcete pokračovať?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Zrezané záznamy a premenený text sa nevlozia. Chcete pokračovať?</translation>
+        <translation>Zrezané záznamy a prevedený text sa nevložia. Chceli by ste pokračovať?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
@@ -616,42 +525,42 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Ste si istí, že chcete vymazať toto notebook?</translation>
+        <translation>Ste si istý, že chcete vymazať tento blok?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Chcete zastaviť aktuálny záznam?</translation>
+        <translation>Chcete zastaviť aktuálne nahrávanie?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Ste si istí, že chcete vymazať vybrané %1 poznámky?</translation>
+        <translation>Ste si istý, že chcete vymazať vybraté %1 poznámky?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Ste si istí, že chcete vymazať túto poznámku?</translation>
+        <translation>Ste si istý, že chcete vymazať túto poznámku?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Nemôžeme premeniť tento hlasový záznam, pretože neumožňujeme premeniť poznámky dlhšie ako 20 minút.</translation>
+        <translation>Túto hlasovú poznámku nie je možné premeniť, pretože poznámky dlhšie ako 20 minút sa v súčasnosti nepodporujú.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Prebieha premena hlasového záznamu. Chcete ho zastaviť?</translation>
+        <translation>Prebieha konverzia hlasovej poznámky. Chcete ju zastaviť?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Nízky vstupný objem môže spôsobiť hrozné záznamy. Chcete pokračovať?</translation>
+        <translation>Nízka vstupná hlasitosť môže spôsobiť zlé nahrávky. Chcete pokračovať?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Zrezané záznamy a premenený text sa nevlozia. Chcete pokračovať?</translation>
+        <translation>Zreznuté nahrávky a prevedený text sa nevložia. Chcete pokračovať?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
@@ -671,7 +580,7 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Premečenie hlasu sa nezdarilo kvôli slabému pripojeniu k sieti, prosím overte</translation>
+        <translation>Konverzia hlasu zlyhala kvôli zlém sieťovému spojeniu, prosím skontrolujte</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,12 +596,10 @@ Všetky poznámky v ňom budú vymazané</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
         <translation>Potvrdiť</translation>
     </message>
@@ -703,29 +610,6 @@ Všetky poznámky v ňom budú vymazané</translation>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
         <translation>uložiť ako MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Vytvoriť poznámku</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Začať nahrávať</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Záznamový zariadenie nie je detekované</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Vložiť obrázok</translation>
     </message>
 </context>
 <context>
@@ -768,7 +652,7 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Preškrtnutie</translation>
+        <translation>Prečiarknutie</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
@@ -778,7 +662,7 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>Číslenie</translation>
+        <translation>Číslovanie</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
@@ -798,7 +682,7 @@ Všetky poznámky v ňom budú vymazané</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Prekladanie hlasu na text</translation>
+        <translation>Konverzia hlasu na text</translation>
     </message>
 </context>
 </TS>

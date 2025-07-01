@@ -24,140 +24,69 @@
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
         <source>Text</source>
-        <translation>النص</translation>
+        <translation>Texte</translation>
     </message>
 </context>
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation type="unfinished">Renommer</translation>
+        <translation type="obsolete">Renommer</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>ملاحظة جديدة</translation>
+        <translation type="obsolete">Supprimer</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>بعد إنشاء ملاحظة جديدة، يمكنك البدء في تسجيل الصوت والنص</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Créer un carnet de notes</translation>
+        <translation type="obsolete">Créer un carnet de notes</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>نقل </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> ملاحظات إلى :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> ملاحظة إلى :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>الحفظ باسم</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation type="unfinished">Aucun résultat trouvé</translation>
+        <translation type="obsolete">Aucun résultat trouvé</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>إزالة الربط</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation type="unfinished">Collant sur le dessus</translation>
+        <translation type="obsolete">Collant sur le dessus</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation type="unfinished">Notes autocollantes</translation>
+        <translation type="obsolete">Notes autocollantes</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Créer un carnet de notes</translation>
+        <translation type="obsolete">Créer un carnet de notes</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation type="unfinished">Rechercher</translation>
+        <translation type="obsolete">Rechercher</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>نقل الملاحظة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>موافق</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 ملاحظة محددة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation type="unfinished">Déplacer</translation>
+        <translation type="obsolete">Déplacer</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>حفظ الملاحظة</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>حفظ الصوت</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation type="unfinished">Supprimer</translation>
+        <translation type="obsolete">Supprimer</translation>
     </message>
 </context>
 <context>
@@ -180,7 +109,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>اختر كل شيء</translation>
+        <translation>Sélectionner tout</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
@@ -205,22 +134,22 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>حفظ باسم</translation>
+        <translation>Enregistrer sous</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>النص إلى الصوت</translation>
+        <translation>Texte en parole</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>إيقاف القراءة</translation>
+        <translation>Arrêter la lecture</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>الصوت إلى النص</translation>
+        <translation>Parole en texte</translation>
     </message>
 </context>
 <context>
@@ -276,7 +205,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Sauvegarder l'enregistrement vocal</translation>
+        <translation>Sauvegarder l&apos;enregistrement vocal</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
@@ -293,18 +222,18 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>يرجى تثبيت 'UOS AI' من المتجر قبل الاستخدام</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Veuillez installer &apos;UOS AI&apos; depuis l&apos;App Store avant de l&apos;utiliser</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>لم يتم اكتشاف جهاز إدخال صوتي. يرجى التحقق والمحاولة مرة أخرى</translation>
+        <translation>Aucun périphérique d&apos;entrée audio détecté. Veuillez vérifier et réessayer</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>لم يتم اكتشاف جهاز إخراج صوتي. يرجى التحقق والمحاولة مرة أخرى</translation>
+        <translation>Aucun périphérique de sortie audio détecté. Veuillez vérifier et réessayer</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation type="unfinished">De base</translation>
+        <translation type="obsolete">De base</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation type="unfinished">Source audio</translation>
+        <translation type="obsolete">Source audio</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation type="unfinished">Interne</translation>
+        <translation type="obsolete">Interne</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation type="unfinished">Microphone</translation>
+        <translation type="obsolete">Microphone</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>ملاحظة جديدة</translation>
+        <translation>Nouveau cahier</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>إعادة تسمية الملاحظة</translation>
+        <translation>Renommer le cahier</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>حذف الملاحظة</translation>
+        <translation>Supprimer le cahier</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,22 +308,22 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>إعادة تسمية الملاحظة</translation>
+        <translation>Renommer la note</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>حذف الملاحظة</translation>
+        <translation>Supprimer la note</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>تشغيل/إيقاف</translation>
+        <translation>Lire/Pause</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>تسجيل الصوت</translation>
+        <translation>Enregistrer la voix</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,12 +333,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>حفظ التسجيلات</translation>
+        <translation>Enregistrer les enregistrements</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>Sélectionner tout</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Annuler</translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Refaire</translation>
+        <translation>Aide</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -448,12 +373,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation>Afficher les raccourcis</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Afficher les raccourcis</translation>
+        <translation>Cahiers</translation>
     </message>
 </context>
 <context>
@@ -461,17 +386,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Notebooks</translation>
+        <translation>Notes</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Notes</translation>
+        <translation>Édition</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
         <source>Edit</source>
-        <translation>Modifier</translation>
+        <translation>Il y a 2 minutes</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Politique de confidentialité</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes est un outil léger pour prendre des notes textuelles et des enregistrements vocaux.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Note vocale</translation>
+        <translation type="obsolete">Paramètres</translation>
     </message>
 </context>
 <context>
@@ -507,15 +416,20 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Importation des notes de l'ancienne version, veuillez patienter...</translation>
+        <translation>Importation des notes de l&apos;ancienne version, veuillez patienter...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>Il y a 1 minute</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +437,9 @@
         <translation>Il y a %1 minute</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>Hier</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>Il y a 2 minutes</translation>
     </message>
 </context>
 <context>
@@ -545,13 +454,13 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Êtes-vous sûr de vouloir supprimer ce notebook ?
-Toutes les notes seront supprimées</translation>
+        <translation>Êtes-vous sûr de vouloir supprimer ce carnet de notes ?
+Toutes les notes qu&apos;il contient seront supprimées</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation type="unfinished">Voulez-vous arrêter l'enregistrement en cours ?</translation>
+        <translation type="unfinished">Voulez-vous arrêter l&apos;enregistrement en cours ?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
@@ -561,12 +470,12 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation type="unfinished">Conversion d'une note vocale. Voulez-vous l'arrêter ?</translation>
+        <translation type="unfinished">Conversion d&apos;une note vocale. Voulez-vous l&apos;arrêter ?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation type="unfinished">Le faible volume d'entrée peut entraîner de mauvais enregistrements. Voulez-vous continuer ?</translation>
+        <translation type="unfinished">Le faible volume d&apos;entrée peut entraîner de mauvais enregistrements. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
@@ -603,7 +512,7 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation type="unfinished">Vous n'êtes pas autorisé à y enregistrer des fichiers</translation>
+        <translation type="unfinished">Vous n&apos;êtes pas autorisé à y enregistrer des fichiers</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
@@ -616,12 +525,12 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Êtes-vous sûr de vouloir supprimer ce notebook ?</translation>
+        <translation>Êtes-vous sûr de vouloir supprimer ce carnet de notes ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation type="unfinished">Voulez-vous arrêter l'enregistrement en cours ?</translation>
+        <translation type="unfinished">Voulez-vous arrêter l&apos;enregistrement en cours ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
@@ -641,12 +550,12 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation type="unfinished">Conversion d'une note vocale. Voulez-vous l'arrêter ?</translation>
+        <translation type="unfinished">Conversion d&apos;une note vocale. Voulez-vous l&apos;arrêter ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation type="unfinished">Le faible volume d'entrée peut entraîner de mauvais enregistrements. Voulez-vous continuer ?</translation>
+        <translation type="unfinished">Le faible volume d&apos;entrée peut entraîner de mauvais enregistrements. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
@@ -661,7 +570,7 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation type="unfinished">Vous n'êtes pas autorisé à y enregistrer des fichiers</translation>
+        <translation type="unfinished">Vous n&apos;êtes pas autorisé à y enregistrer des fichiers</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
@@ -671,12 +580,12 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>La conversion vocale a échoué en raison d'une connexion réseau défaillante, veuillez vérifier</translation>
+        <translation>La conversion de la voix a échoué en raison d&apos;une mauvaise connexion réseau, veuillez vérifier</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Toutes les notes seront supprimées</translation>
+        <translation>Toutes les notes qu&apos;il contient seront supprimées</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
@@ -687,14 +596,12 @@ Toutes les notes seront supprimées</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmer</translation>
+        <translation type="obsolete">Confirmer</translation>
     </message>
 </context>
 <context>
@@ -702,30 +609,7 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>Enregistrer en tant que MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Créer une note</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Commencer l'enregistrement</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Aucun périphérique d'enregistrement détecté</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Insérer une image</translation>
+        <translation>enregistrer sous MP3</translation>
     </message>
 </context>
 <context>
@@ -793,7 +677,7 @@ Toutes les notes seront supprimées</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Voix vers Texte</translation>
+        <translation>Voix en texte</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>

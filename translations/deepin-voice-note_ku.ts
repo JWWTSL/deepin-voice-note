@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="ku">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>ئەوەت نوتە</translation>
+        <translation>نوتە چوونییەکان</translation>
     </message>
 </context>
 <context>
@@ -14,150 +14,79 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>ناوتەبەک</translation>
+        <translation>نوتەکە</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
         <source>Voice</source>
-        <translation>ئەوەت</translation>
+        <translation>چوون</translation>
     </message>
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
         <source>Text</source>
-        <translation>تېكست</translation>
+        <translation>ناردن</translation>
     </message>
 </context>
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>ئەتەنە کردن</translation>
+        <translation>نوسراو تۆرسە</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>تۆمار کردن</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>ناوتە نوو</translation>
+        <translation>سڕینەوە</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>بەرەو ئەوەت نوتە نوو بەکچوو، دەتوانیتە ئەوەت و تېكست دەرکردنەوە بەشێوەیەوە</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>ناوتەبەک کردن</translation>
+        <translation>نوتەکە دروست بکە</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>بەرەو </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> نوتە بەرەو : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> نوتە بەرەو : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>بچوو بەرەو</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>ناچوو نتییەتەکان</translation>
+        <translation>هیچ نتیجەی بەهەڵگری نیە</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>بەرەو ئەتەنە</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>ئەتەنە بەرەو ئەوەت</translation>
+        <translation>بەسەرەوە دەبێت</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>ئەتەنە نوتە</translation>
+        <translation>...نوتەکان</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>ناوتەبەک کردن</translation>
+        <translation>نوتەکە دروست بکە</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>تەمەم کردن</translation>
+        <translation>بەهەڵگری</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>ناوتە بەرەو</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>بەرەو کەردن</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>تاییدە</translation>
+        <translation>پاشگەز</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 نوتە ئەنتیکردن</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>بەرەو کردن</translation>
+        <translation>چوون</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>ناوتە بچوو</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>ئەوەت بچوو</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>تۆمار کردن</translation>
+        <translation>سڕینەوە</translation>
     </message>
 </context>
 <context>
@@ -165,62 +94,62 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>بچوو بەرەو MP3</translation>
+        <translation>بە MP3 نوسین</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>ئەوەت بەرەو تېكست</translation>
+        <translation>چوون بۆ ناردن</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
         <source>Delete</source>
-        <translation>تۆمار کردن</translation>
+        <translation>سڕینەوە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>هەموو داخڵ بکەرەوە</translation>
+        <translation>هەمووی بگەڕێ</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
         <source>Copy</source>
-        <translation>کۆپی کردن</translation>
+        <translation>کۆپی</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>کات کردن</translation>
+        <translation>کات</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
         <source>Paste</source>
-        <translation>پاست کردن</translation>
+        <translation>پاست</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>بیندن</translation>
+        <translation>دەرکردن</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>بە دەقەکە بچڕەوە</translation>
+        <translation>نوسین بە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>تەکستەکە بۆ گۆشە</translation>
+        <translation>ناردن بۆ چوون</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>کۆتای کردن</translation>
+        <translation>دەست بە دەنگ کردن</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>گۆشە بۆ تەکست</translation>
+        <translation>چوون بۆ ناردن</translation>
     </message>
 </context>
 <context>
@@ -228,17 +157,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>نومرەکە کۆرکردن</translation>
+        <translation>نوسراو تۆرسە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
         <source>Delete</source>
-        <translation>تەمەم کردن</translation>
+        <translation>سڕینەوە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
         <source>New note</source>
-        <translation>نوت نوو</translation>
+        <translation>نوتە جدید</translation>
     </message>
 </context>
 <context>
@@ -246,65 +175,65 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>بە HTML بچڕەوە</translation>
+        <translation>بەکارھێنە بۆ HTML</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>بە TXT بچڕەوە</translation>
+        <translation>بەکارھێنە بۆ TXT</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>نوت بچڕەوە</translation>
+        <translation>بەکارھێنە نوت</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>نومرەکە کۆرکردن</translation>
+        <translation>نەوە بگۆڕە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
         <source>Move</source>
-        <translation>دەرکردن</translation>
+        <translation>چالاک کردن</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="55"/>
         <source>Delete</source>
-        <translation>تەمەم کردن</translation>
+        <translation>سڕینەوە</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>دەرکردنی گۆشە کۆکردن</translation>
+        <translation>بەکارھێنە گوێ بۆ چالاکی</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>نوت نوو</translation>
+        <translation>نوتی جدید</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>بە دەرەکەی نووسەرەوە</translation>
+        <translation>بەرگری بە گۆشەی تۆپ</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>بە ئەوەی کار بکەرەوە، 'UOS AI' نووسەرەوە بە ئەپ ستوور</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>دەستەواژە &apos;UOS AI&apos; لە ئەپ سۆر دابنی بکە بۆ ئەوەی بەکارببێت</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>ئەوەی گۆشە داخڵ کردنەکان نەدۆزرەوە. بچەوە و دووبارە سەرکەوتوو کردن</translation>
+        <translation>هیچ دەستگاهی چاک کردنی گوێ دەستنیشان نەکراوە. دووبارە چک کەوە و چالاک کەوە</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>ئەوەی گۆشە داخڵ کردنەکان نەدۆزرەوە. بچەوە و دووبارە سەرکەوتوو کردن</translation>
+        <translation>هیچ دەستگاهی چاک کردنی گوێ دەستنیشان نەکراوە. دووبارە چک کەوە و چالاک کەوە</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,45 +246,41 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>بەسیک</translation>
+        <translation>بەسیس</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>گۆشە داخڵ</translation>
+        <translation>چەنەرەی گوێ</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>دەرەکەی</translation>
+        <translation>دەرەوی</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
         <source>Microphone</source>
-        <translation>میکروفون</translation>
+        <translation>میکروفۆن</translation>
     </message>
 </context>
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>بەسیک</translation>
+        <translation>بەسیس</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>گەڕەتە دەرەوەت</translation>
+        <translation>چەنەرەی گوێ</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>ئەوەی</translation>
+        <translation>دەرەوی</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>میکروفون</translation>
+        <translation>میکروفۆن</translation>
     </message>
 </context>
 <context>
@@ -363,97 +288,97 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>نوتە بەرەوەت نوو</translation>
+        <translation>نۆتبوکی جدید</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>نوتە بەرەوەت نووسە</translation>
+        <translation>نەوە بگۆڕە نۆتبوک</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>نوتە بەرەوەت دەرکە</translation>
+        <translation>سڕینەوە نۆتبوک</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>نوتە نوو</translation>
+        <translation>نوتی جدید</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>نوتە نووسە</translation>
+        <translation>نەوە بگۆڕە نوت</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>نوتە دەرکە</translation>
+        <translation>سڕینەوە نوت</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>پلەی/بەزەن</translation>
+        <translation>پلەی/پاوس</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>ئەوەی دەرکە</translation>
+        <translation>چالاک کردن گوێ</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>نوتە دەرەوەت بکە</translation>
+        <translation>بەکارھێنە نوت</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>ئەوەیەکان دەرەوەت بکە</translation>
+        <translation>بەرچەمەکان نوسین</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>هەموو دەرەوەت بەکە</translation>
+        <translation>هەموویان هەڵبژارین</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
         <source>Copy</source>
-        <translation>کۆپی کردن</translation>
+        <translation>کاپی کردنەکە بکە</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>کەش کردن</translation>
+        <translation>کات کردنەکە بکە</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
         <source>Paste</source>
-        <translation>بەکە</translation>
+        <translation>چاپکردن</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>بەکەوە</translation>
+        <translation>پاڵگەری</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>بەکەوە</translation>
+        <translation>دەستکاری کردن دووبارە</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
         <source>Delete</source>
-        <translation>دەرکە</translation>
+        <translation>سڕینەوە</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>کارکردن</translation>
+        <translation>پشتگیری</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>کوتاکەکان نمایش کردن</translation>
+        <translation>کۆدەکان نیشان بده</translation>
     </message>
 </context>
 <context>
@@ -461,45 +386,29 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>نوتە بەرەوەت</translation>
+        <translation>نوتەکان</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>نوتە</translation>
+        <translation>نوتەکان</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
         <source>Edit</source>
-        <translation>ئەوەی کردن</translation>
+        <translation>دەستکاری</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
         <source>Settings</source>
-        <translation>ئەوەیەکان</translation>
+        <translation>تەنها کردن</translation>
     </message>
 </context>
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>ئەوەیەکان</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>پولیسیە کۆرەنە</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes یەک چەندە کۆرەنە نووسەرە بۆ نوتەکان و ئەوەیەکان کردن</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Voice Note</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>تۆمارەکانی نەوەیەکی نووسەر بەکارهێنرەوە، دڵنیا کە چاک کردنەوە بەکارهێنرەوە...</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 دانەیەک لە چەکەوە</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 دانەیەک لە چەکەوە</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>دەرووست</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 دانەیەک لە چەکەوە</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -539,76 +448,75 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>بەڵام</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>تۆمارەکە دەرووست بەکارهێنرەوە؟
- هەموو تۆمارەکانی تۆمارەکە بەکارهێنرەوە</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>بەکارهێنرەوە بەکارهێنرەوە چەکەوە درێژ کەردن؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>چەکەوە دەرووست نەرێتەوە، بەکارهێنرەوە چەکەوە دەرووست 20 دانەیەک لە چەکەوە نەرێتەوە</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>چەکەوە دەرووست بەکارهێنرەوە، بەکارهێنرەوە چەکەوە درێژ کەردن؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>دەرەوە دەرەوە دەرەوە کەم کردنەوە بەکارهێنرەوە چەکەوە درێژ کەردنەوە نەرێتەوە، بەکارهێنرەوە چەکەوە درێژ کەرden؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>چەکەوە دەرووست و نوشتنەوە دەرەوە دەرەوە نەرێتەوە بەکارهێنرەوە، بەکارهێنرەوە چەکەوە درێژ کەرden؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>تۆمارەکە دەرووست بەکارهێنرەوە؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>تۆمارەکانی چەکەوە دەرووست بەکارهێنرەوە؟</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>بەخێرە</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>تاییدە</translation>
+        <translation>تایب کردن</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>بەکارهێنرەوە نەرێتەوە</translation>
+        <translation>ئەم کۆپچە کردن ناکام بوو</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>بەکارهێنرەوە نەرێتەوە بەکارهێنرەوە فایلەکان بەکارهێنرەوە</translation>
+        <translation>ئەو کۆپچە کردن لەم جایەدا دووبارە کردن بۆتە هاوارە</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>چەکەوە دەرووست بەکارهێنرەوە</translation>
+        <translation>نوتەی گوتووییەکە سڕیلەوە</translation>
     </message>
 </context>
 <context>
@@ -616,62 +524,62 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>تۆمارەکە دەرووست بەکارهێنرەوە؟</translation>
+        <translation>دەتەوێت نوتەکەیەک بسڕیتەوە؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>بەکارهێنرەوە چەکەوە درێژ کەردن؟</translation>
+        <translation>دەتەوێت گوتوویەکی ئەمڕۆكی بەرەگەی بکەتەوە؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>تۆمارەکانی چەکەوە دەرووست بەکارهێنرەوە؟</translation>
+        <translation>دەتەوێت نوتە %1 گەشەکراوەکان بسڕیتەوە؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>تۆمارەکە دەرووست بەکارهێنرەوە؟</translation>
+        <translation>دەتەوێت نوتەکە بسڕیتەوە؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>چەکەوە دەرووست نەرێتەوە، بەکارهێنرەوە چەکەوە دەرووست 20 دانەیەک لە چەکەوە نەرێتەوە</translation>
+        <translation>نوتە گوتووییەکە ناتوانرێت بۆ بەشێک کردن، چونکە نوتەکان 20 چرکەیەک چوونە چەند چرکەیەک نیە</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>چەکەوە دەرووست بەکارهێنرەوە، بەکارهێنرەوە چەکەوە درێژ کەرden؟</translation>
+        <translation>نوتە گوتووییەکە بەشێک دەکرێت. دەتەوێت بەرەگەی بکەتەوە؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>دەرەوە دەرەوە دەرەوە کەم کردنەوە بەکارهێنرەوە چەکەوە درێژ کەردنەوە نەرێتەوە، بەکارهێنرەوە چەکەوە درێژ کەرden؟</translation>
+        <translation>چەند گوتووییەکە دوورەتە بەرەو گوتووییەکە. دەتەوێت دەمەوێت؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>چەکەوە دەرووست و نوشتنەوە دەرەوە دەرەوە نەرێتەوە بەکارهێنرەوە، بەکارهێنرەوە چەکەوە درێژ کەرden؟</translation>
+        <translation>نەوەکانی گوتووییەکان و تەکستی بەشکراو ناتوانرێت دەمەوێت. دەتەوێت دەمەوێت؟</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>بەکارهێنرەوە نەرێتەوە</translation>
+        <translation>دەمەوێت دووبارە کردن بۆتە هاوارە</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>بەکارهێنرەوە نەرێتەوە بەکارهێنرەوە فایلەکان بەکارهێنرەوە</translation>
+        <translation>بەشکردنی نوتە گوتووییەکە ناکام بوو چونکە گەیشتنی ڤەرگلە ناچەکرایەوە، دووبارە چک بکە</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>چەکەوە دەرووست بەکارهێنرەوە</translation>
+        <translation>هەموو نوتەکان لەوە سڕیلەوە</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation type="unfinished"></translation>
+        <translation>سڕینەوە</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,14 +595,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>بەڵێ</translation>
     </message>
 </context>
 <context>
@@ -702,30 +608,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;#1575;&amp;#1585; بە شێوازی MP3</translation>
     </message>
 </context>
 <context>
@@ -733,72 +616,72 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>ئەمەر</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>چەقدا چەندە</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation type="unfinished"></translation>
+        <translation>رەنگی ئەمەر</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation type="unfinished"></translation>
+        <translation>رەنگی چاپکردنی گەنج</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation type="unfinished"></translation>
+        <translation>بۆلدا</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation type="unfinished"></translation>
+        <translation>ئیتالیک</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation type="unfinished"></translation>
+        <translation>چەنگە</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation type="unfinished"></translation>
+        <translation>چەنگە لە ناوەوە</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation type="unfinished"></translation>
+        <translation>چەمەکان</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation type="unfinished"></translation>
+        <translation>شمارە</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
         <source>More colors</source>
-        <translation type="unfinished"></translation>
+        <translation>زیاتر رەنگ</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation type="unfinished"></translation>
+        <translation>دەقی گەشە</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation type="unfinished"></translation>
+        <translation>صوت بۆ نووسین</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation type="unfinished"></translation>
+        <translation>چەند لە صوت بۆ نووسین</translation>
     </message>
 </context>
 </TS>

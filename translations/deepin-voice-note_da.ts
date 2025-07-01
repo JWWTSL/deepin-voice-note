@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="da">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>Stemningsnoter</translation>
+        <translation>Stemnoter</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Notebook</translation>
+        <translation>Notatbog</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
         <source>Voice</source>
-        <translation>Stemning</translation>
+        <translation>Stemme</translation>
     </message>
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
@@ -30,86 +30,43 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>Omdøp</translation>
+        <translation>Omdøb</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
         <translation>Slet</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Ny note</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Efter at have oprettet et nyt notatbog, kan du starte med at oprette stemningsnoter og tekst</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Opret notebook</translation>
+        <translation>Opret notatbog</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>flyt </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> noter til :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> note til :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Gem som</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
         <translation>Ingen søgeresultater</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Fjern fra toppen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Bliv fast på toppen</translation>
+        <translation>Læg øverst</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Fasthængende noter</translation>
+        <translation>Læs på top</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Opret notebook</translation>
+        <translation>Opret notatbog</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
         <translation>Søg</translation>
     </message>
@@ -117,45 +74,17 @@
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Flyt note</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>Afbryd</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>OK</translation>
+        <translation>Annuller</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 note valgt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
         <translation>Flyt</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Gem note</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Gem stemning</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
         <translation>Slet</translation>
     </message>
@@ -170,7 +99,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>Stemning til tekst</translation>
+        <translation>Stemme til tekst</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
@@ -215,7 +144,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Stop med at læse</translation>
+        <translation>Stop læsning</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
@@ -228,7 +157,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Omvend navn</translation>
+        <translation>Omdøb</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
@@ -256,12 +185,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>Gem note</translation>
+        <translation>Gem notat</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Omvend navn</translation>
+        <translation>Omdøb</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
@@ -276,35 +205,35 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Gem stemmeoptagning</translation>
+        <translation>Gem stemmeoptagelse</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>Ny note</translation>
+        <translation>Nyt notat</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Stikker oppe</translation>
+        <translation>Læg fast på toppen</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Installer venligst 'UOS AI' fra App Store inden brug</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Installation af &apos;UOS AI&apos; fra App Store er nødvendig, inden du bruger det</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Ingen lydindgangsudstyr opdaget. Tjek og prøv igen</translation>
+        <translation>Ingen lyddataindgangsenhed fundet. Tjek og prøv igen</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Ingen lydoutputudstyr opdaget. Tjek og prøv igen</translation>
+        <translation>Ingen lyddataudgangsenhed fundet. Tjek og prøv igen</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -327,7 +256,7 @@
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Intern</translation>
+        <translation>Indre</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,22 +267,18 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
         <translation>Grundlæggende</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
         <translation>Lydkilde</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Indenfor</translation>
+        <translation>Indre</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>Mikrofon</translation>
     </message>
@@ -363,52 +288,52 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Ny bog</translation>
+        <translation>Nyt notebog</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Omdøp bog</translation>
+        <translation>Omdøb notebog</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Slet bog</translation>
+        <translation>Slet notebog</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>Ny note</translation>
+        <translation>Nyt notat</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Omdøp note</translation>
+        <translation>Omdøb notat</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Slet note</translation>
+        <translation>Slet notat</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Afspil/næring</translation>
+        <translation>Afspil/Pause</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Opnå lyd</translation>
+        <translation>Optag stemme</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>Gem note</translation>
+        <translation>Gem notat</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Gem opnåelser</translation>
+        <translation>Gem optagelser</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
@@ -423,7 +348,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>Slett</translation>
+        <translation>Klip</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Angreb</translation>
+        <translation>Fortryd</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Gentag</translation>
+        <translation>Gendan</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -461,7 +386,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Bøger</translation>
+        <translation>Notebøger</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
@@ -471,7 +396,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
         <source>Edit</source>
-        <translation>Redigér</translation>
+        <translation>Rediger</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
         <translation>Indstillinger</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Privatlivspolitik</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes er et lett memo-værktøj til at oprette tekstnoter og lydopnåelser.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Lydnote</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Importering af noter fra den gamle version, venligst vent...</translation>
+        <translation>Importerer noter fra den gamle version, vent venligst...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 minut siden</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 minutter siden</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>I går</translation>
+        <translation>1 min. siden</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 minutter siden</translation>
+        <translation>2 min. siden</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 min. siden&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>I går</translation>
     </message>
 </context>
 <context>
@@ -545,33 +454,33 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Er du sikker på, at du vil slette denne bog?
+        <translation>Er du sikker på, at du vil slette denne notebog?
 Alle noter i den vil blive slettet</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Vil du stoppe det nuværende op­tage?</translation>
+        <translation>Vil du stoppe den nuværende optagelse?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Det er ikke muligt at konvertere denne lydnote, da noter over 20 minutter ikke understøttes i øjeblikket.</translation>
+        <translation>Kan ikke konvertere denne talenote, da noter over 20 minutter for tiden ikke understøttes.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Konverterer en lydnote nu. Vil du stoppe det?</translation>
+        <translation>Der konverteres en talenote lige nu. Vil du stoppe det?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Den lavе indgangsvolumen kan resultere i dårlige op­tagelser. Vil du fortsætte?</translation>
+        <translation>Lav indgangsvolumen kan føre til dårlige optagelser. Vil du fortsætte?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>De klippede op­tagelser og konverterede tekster vil ikke blive indsat. Vil du fortsætte?</translation>
+        <translation>De beskårne optagelser og konverterede tekst vil ikke blive indsættet. Vil du fortsætte?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
@@ -593,12 +502,12 @@ Alle noter i den vil blive slettet</translation>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation> Bekræft</translation>
+        <translation>Bekræft</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Gemning mislykkedes</translation>
+        <translation>Gem fejlede</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
@@ -608,7 +517,7 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>Lydnoten er blevet slettet</translation>
+        <translation>Stemme noten er blevet slettet</translation>
     </message>
 </context>
 <context>
@@ -616,12 +525,12 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Er du sikker på, at du vil slette denne bog?</translation>
+        <translation>Er du sikker på, at du vil slette denne notebog?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Vil du stoppe det nuværende op­tage?</translation>
+        <translation>Vil du stoppe den nuværende optagelse?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
@@ -636,42 +545,42 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Det er ikke muligt at konvertere denne lydnote, da noter over 20 minutter ikke understøttes i øjeblikket.</translation>
+        <translation>Kan ikke konvertere denne stemme note, da noter over 20 minutter ikke understøttes i øjeblikket.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Konverterer en lydnote nu. Vil du stoppe det?</translation>
+        <translation>Der konverteres en stemme note lige nu. Vil du stoppe det?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Den lavе indgangsvolumen kan resultere i dårlige op­tagelser. Vil du fortsætte?</translation>
+        <translation>Lav indgangsvolumen kan føre til dårlige optagelser. Vil du fortsætte?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>De klippede op­tagelser og konverterede tekster vil ikke blive indsat. Vil du fortsætte?</translation>
+        <translation>De beskårne optagelser og konverterede tekst vil ikke blive indsæt. Vil du fortsætte?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Gemning mislykkedes</translation>
+        <translation>Stemme konvertering fejlede på grund af dårlig netværksforbindelse, tjek venligst</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Du har ikke tilladelse til at gemme filer der</translation>
+        <translation>Alle noter i den vil blive slettet</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>Lydnoten er blevet slettet</translation>
+        <translation>Slet</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Den taleoversættelse mislykkedes på grund af dårlig netforbindelse, venligst tjek</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,12 +596,10 @@ Alle noter i den vil blive slettet</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>Afbryd</translation>
+        <translation>Annuller</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
         <translation>Bekræft</translation>
     </message>
@@ -703,29 +610,6 @@ Alle noter i den vil blive slettet</translation>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
         <translation>Gem som MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Opret note</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Start optagelse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Ingen opstillingsenhed har detekteret</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Indsæt billede</translation>
     </message>
 </context>
 <context>
@@ -748,7 +632,7 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Tekstmarkering</translation>
+        <translation>Tekstmarkørfarve</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
@@ -763,12 +647,12 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>Understreg</translation>
+        <translation>Understrek</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Gennemsigtig</translation>
+        <translation>Mellemstreget</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
@@ -793,12 +677,12 @@ Alle noter i den vil blive slettet</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Tale til tekst</translation>
+        <translation>Stem til tekst</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Oversætter tale til tekst</translation>
+        <translation>Konvertering af stemme til tekst</translation>
     </message>
 </context>
 </TS>

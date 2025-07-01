@@ -30,134 +30,111 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>མིང་བསྐྱར་དུ་བཏགས་པ།</translation>
+        <translation type="vanished">མིང་བསྐྱར་དུ་བཏགས་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>སུབ་པ།</translation>
+        <translation type="vanished">སུབ་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
         <source>New Note</source>
-        <translation>འབྲི་དེབ་གསར་བཟོ།</translation>
+        <translation type="vanished">འབྲི་དེབ་གསར་བཟོ།</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
         <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>ཟིན་བྲིས་གསར་པ་བཏོད་རྗེས་ཁྱེད་ཀྱིས་སྐད་བརྡ་དང་ཡིག་སྙོར་ཕབ་ལེན་བྱེད་འགོ་བརྩམས་ཆོག</translation>
+        <translation type="vanished">ཟིན་བྲིས་གསར་པ་བཏོད་རྗེས་ཁྱེད་ཀྱིས་སྐད་བརྡ་དང་ཡིག་སྙོར་ཕབ་ལེན་བྱེད་འགོ་བརྩམས་ཆོག</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
+        <translation type="vanished">གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
         <source>move </source>
-        <translation>གནས་སྤོ་བ། </translation>
+        <translation type="vanished">གནས་སྤོ་བ། </translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
         <source> notes to :</source>
-        <translation> ཟིན་བྲིས་རེ་རེ་བཞིན་དུ་འགོད་དགོས།:</translation>
+        <translation type="vanished"> ཟིན་བྲིས་རེ་རེ་བཞིན་དུ་འགོད་དགོས།:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
         <source> note to :</source>
-        <translation> ཟིན་བྲིས་སུ་བཀོད་པ།:</translation>
+        <translation type="vanished"> ཟིན་བྲིས་སུ་བཀོད་པ།:</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
         <source>Save As</source>
-        <translation>ཟིན་བྲིས་ཉར་ཚགས།</translation>
+        <translation type="vanished">ཟིན་བྲིས་ཉར་ཚགས།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>འཚོལ་ཞིབ་བྱས་འབྲས་མེད།</translation>
+        <translation type="vanished">འཚོལ་ཞིབ་བྱས་འབྲས་མེད།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Unpin</source>
-        <translation>གཏན་འཇགས་མེད་པར་བཟོ་དགོས།</translation>
+        <translation type="vanished">གཏན་འཇགས་མེད་པར་བཟོ་དགོས།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>སྟེང་དུ་འཇོག</translation>
+        <translation type="vanished">སྟེང་དུ་འཇོག</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>སྟེང་དུ་བཞག་ཟིན།</translation>
+        <translation type="vanished">སྟེང་དུ་བཞག་ཟིན།</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
+        <translation type="vanished">གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>འཚོལ་ཞིབ།</translation>
+        <translation type="vanished">འཚོལ་ཞིབ།</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
         <source>Move Note</source>
-        <translation>སྤོ་འགུལ་ཟིན་ཐོ།</translation>
+        <translation type="vanished">སྤོ་འགུལ་ཟིན་ཐོ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>འདོར་བ།</translation>
+        <translation type="vanished">འདོར་བ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
         <source>Ok</source>
-        <translation>གཏན་འཁེལ་བྱ།</translation>
+        <translation type="vanished">གཏན་འཁེལ་བྱ།</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
         <source>%1 note selected</source>
-        <translation>%1.སྒྲ་རྟགས་1བདམས་ཟིན་པ་རེད།</translation>
+        <translation type="vanished">%1.སྒྲ་རྟགས་1བདམས་ཟིན་པ་རེད།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>སྤོ་རུང་།</translation>
+        <translation type="vanished">སྤོ་རུང་།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
         <source>Save Note</source>
-        <translation>ཟིན་བྲིས་ཉར་ཚགས་བྱེད་པ།</translation>
+        <translation type="vanished">ཟིན་བྲིས་ཉར་ཚགས་བྱེད་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
         <source>Save Voice</source>
-        <translation>སྐད་གདངས་ཉར་ཚགས་བྱེད་པ།</translation>
+        <translation type="vanished">སྐད་གདངས་ཉར་ཚགས་བྱེད་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>སུབ་པ།</translation>
+        <translation type="vanished">སུབ་པ།</translation>
     </message>
 </context>
 <context>
@@ -293,23 +270,23 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation type="unfinished"></translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>གཞོན་གྱི་རྒྱ་གར་ནང་ནས་&apos;UOS AI&apos; ཡང་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོས་རྒྱུས་བྱེ་དགོས།</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation type="unfinished"></translation>
+        <translation>གཞོན་གྱི་གོ་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་གོ་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད།</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>སྤྱི་ཡིག་སྨྲ་བྱེད་གཞི་མེད། འོག་གི་གཞི་འདི་གཞི་སྤྱི་ཡིག་སྨྲ་བྱེད་པར་གྱི་གཞི་འདི་གཞི་སྤྱི་ཡིག་སྨྲ་བྱེད་པར་གྱི་གཞི་འདི་གཞི་སྤྱི་ཡིག་སྨྲ་བྱེད་པར་གྱི་གཞི་འདི་གཞི་སྤྱི་ཡིག་སྨྲ་བྱེད་པར་གྱི་གཞི་འདི་གཞི་སྤྱི་ཡིག...............</translation>
+        <translation>སྐྱིད་འཕྲོད་ཆ་འཕྲོད་སྒྲིག་ཆ་མེད། ཀྱི་སྒྲིག་ཆ་བཟོ་སྒྲིག་རྒྱུ་མཚན་གྱི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི་གཞི།</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
         <source>deepin-voice-note</source>
-        <translation>deepin-voice-note</translation>
+        <translation>གཞོན་གྱི་གོ་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱི་སྤྱོད་རྒྱུས་བྱེད་པར་གྱིན</translation>
     </message>
 </context>
 <context>
@@ -338,24 +315,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>རྨང་གཞིའི་སྒྲིག་འགོད།</translation>
+        <translation type="vanished">རྨང་གཞིའི་སྒྲིག་འགོད།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>སྒྲའི་ཡོང་ཁུངས།</translation>
+        <translation type="vanished">སྒྲའི་ཡོང་ཁུངས།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>མ་ལག་གི་སྒྲ།</translation>
+        <translation type="vanished">མ་ལག་གི་སྒྲ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>སྒྲ་དུང་གི་སྒྲ</translation>
+        <translation type="vanished">སྒྲ་དུང་གི་སྒྲ</translation>
     </message>
 </context>
 <context>
@@ -482,24 +455,20 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>སྒྲིག་འགོད།</translation>
+        <translation type="vanished">སྒྲིག་འགོད།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
         <source>Privacy Policy</source>
-        <translation>གསང་དོན་སྲིད་ཇུས།</translation>
+        <translation type="vanished">གསང་དོན་སྲིད་ཇུས།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
         <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>སྐད་ཆའི་ཟིན་ཐོ་ནི་ཚད་ཡང་བའི་བརྗེད་ཐོའི་ཡོ་བྱད་ཅིག་ཡིན་པ་དང་། རྩོམ་ཡིག་གི་ཟིན་བྲིས་དང་སྒྲ་ཕབ་བཟོ་བར་སྤྱོད་དགོས།.</translation>
+        <translation type="vanished">སྐད་ཆའི་ཟིན་ཐོ་ནི་ཚད་ཡང་བའི་བརྗེད་ཐོའི་ཡོ་བྱད་ཅིག་ཡིན་པ་དང་། རྩོམ་ཡིག་གི་ཟིན་བྲིས་དང་སྒྲ་ཕབ་བཟོ་བར་སྤྱོད་དགོས།.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
         <source>Voice Note</source>
-        <translation>སྒྲའི་ཟིན་དེབ།</translation>
+        <translation type="vanished">སྒྲའི་ཟིན་དེབ།</translation>
     </message>
 </context>
 <context>
@@ -513,9 +482,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>སྐར་མ་1གོང་ལ།</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>གཟའ་ཉི་ཤོག་གི་གོང་སྐོར་གཅིག་གི་མེར་སྐོར</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +497,9 @@
         <translation>སྐར་མ་%1གོང་ལ།</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>སང་ཉིན།</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>2 འོག་རྒྱུ་ཆ་ནས་</translation>
     </message>
 </context>
 <context>
@@ -539,13 +508,14 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>ཆོག</translation>
+        <translation>ཤེས་པ</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>ཁོང་ཚོགས་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱས་པར་གྱི་གསོ་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱས་པར་གྱི་གསོ་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱས་པར་གྱི་གསོ་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱས་པར་གྱི་གསོ་གཞི་འདི་བཞིན་སྤྱི་ཡིག...............</translation>
+        <translation>ཨོ་རིན་ནི་འདི་ལྟར་གོ་སྐོར་གཅིག་གི་གོང་སྐོར་གཅིག་གི་མེར་སྐོར་གཏོང་རྒུག་མཁོ་གི་རྒྱུན་འཁྱོར་ཡོད་མེད་མི་ཤེས་པ་རེད་པ་རེད།
+ཨོ་རིན་ནི་འདི་ལྟར་གོ་སྐོར་གཅིག་གི་གོང་སྐོར་གཅིག་གི་མེར་སྐོར་གཏོང་རྒུག་མཁོ་གི་རྒྱུན་འཁྱོར་ཡོད་མེད་མི་ཤེས་པ་རེད་པ་རེད།</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
@@ -670,7 +640,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>སྤྱི་ཡིག་སྨྲ་བྱེད་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱེད་གཞི་འདི་བཞིན་ཉེ་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱེད་གཞི་འདི་བཞིན་སྤྱི་ཡིག་སྨྲ་བྱེད་གཞི་འདི་བཞིན་ཉེ་བཞིན་སྤྱི་ཡིག...............</translation>
+        <translation>གཞི་རིམ་དུ་བརྒལ་བ་མེད་པར་སྤྱོད་རོགས་པའི་སྐོར་གཅིག་གི་གོང་སྐོར་གཅིག་གི་མེར་སྐོར་གཏོང་རྒུག་མཁོ་གི་རྒྱུན་འཁྱོར་ཡོད་མེད་མི་ཤེས་པ་རེད་པ་རེད།</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -686,14 +656,12 @@ All notes in it will be deleted</source>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>འདོར་བ།</translation>
+        <translation type="vanished">འདོར་བ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>གཏན་འཁེལ།</translation>
+        <translation type="vanished">གཏན་འཁེལ།</translation>
     </message>
 </context>
 <context>
@@ -707,24 +675,20 @@ All notes in it will be deleted</source>
 <context>
     <name>WindowTitleBar</name>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
         <source>Create Note</source>
-        <translation>གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
+        <translation type="vanished">གསར་གཏོད་བྱ་དགོས།ཟིན་དེབ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
         <source>Start recording</source>
-        <translation>སྒྲ་ཕབ་བྱེད་འགོ་ཚུགས་པ།</translation>
+        <translation type="vanished">སྒྲ་ཕབ་བྱེད་འགོ་ཚུགས་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
         <source>No recording device detected</source>
-        <translation>སྒྲ་ཕབ་སྒྲིག་ཆས་ལ་ཞིབ་དཔྱད་ཚད་ལེན་མ་བྱས་པ།</translation>
+        <translation type="vanished">སྒྲ་ཕབ་སྒྲིག་ཆས་ལ་ཞིབ་དཔྱད་ཚད་ལེན་མ་བྱས་པ།</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
         <source>Insert picture</source>
-        <translation>པར་རིས་ནང་འཇུག་པ།</translation>
+        <translation type="vanished">པར་རིས་ནང་འཇུག་པ།</translation>
     </message>
 </context>
 <context>

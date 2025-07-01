@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="eu">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>Oharraren oharra</translation>
+        <translation>Notas de voz</translation>
     </message>
 </context>
 <context>
@@ -14,102 +14,59 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Oharraren liburua</translation>
+        <translation>Libreta</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
         <source>Voice</source>
-        <translation>Oharra</translation>
+        <translation>Voz</translation>
     </message>
     <message>
         <location filename="../src/db/vnoteitemoper.cpp" line="226"/>
         <source>Text</source>
-        <translation>Testua</translation>
+        <translation>Texto</translation>
     </message>
 </context>
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>Berrizendatu</translation>
+        <translation>Rename</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
         <translation>Ezabatu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Ohar berria</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Oharra berria sortzean, oharraren oharrak eta testuak grabatzeko hasi dezakezu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Oharraren liburua sortu</translation>
+        <translation>Bideoa testu gisa</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>mugitu </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> oharra : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> oharra : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Gorde Gogoratuta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>Bilaketa emaitzeta ez da</translation>
+        <translation>Ez da emaitzarik</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Desfinkatu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Finkatu azpian</translation>
+        <translation>Zorroztu goian</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Oharra finkatuta</translation>
+        <translation>Oharri zorroztuak</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Oharraren liburua sortu</translation>
+        <translation>Sortu liburuxka</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
         <translation>Bilatu</translation>
     </message>
@@ -117,45 +74,17 @@
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Mugitu oharra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>Utzi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>Onartu</translation>
+        <translation>Ezeztatu</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 ohar aukeratua</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
         <translation>Mugitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Gorde oharra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Gorde oharraren oharra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
         <translation>Ezabatu</translation>
     </message>
@@ -165,12 +94,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>Gorde MP3 gogoratuta</translation>
+        <translation>Gorde MP3 gisa</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>Oharra testurantz</translation>
+        <translation>Hegaztik testua</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
@@ -180,7 +109,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>Marka guztia</translation>
+        <translation>Hautatu dena</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
@@ -190,7 +119,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>Kortatu</translation>
+        <translation>Moztu</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
@@ -205,22 +134,22 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>Gorde hobe</translation>
+        <translation>Gorde gisa</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Testua hitzara</translation>
+        <translation>Testuaren hegaztira</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Berretzea etorri</translation>
+        <translation>Gelditu irakurtea</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Hitzatik testua</translation>
+        <translation>Hegaztik testua</translation>
     </message>
 </context>
 <context>
@@ -228,7 +157,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Berrizendatu</translation>
+        <translation>Aldatu izena</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
@@ -238,7 +167,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
         <source>New note</source>
-        <translation>Zehaztu nota</translation>
+        <translation>Ohar berria</translation>
     </message>
 </context>
 <context>
@@ -246,22 +175,22 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>Gorde HTML gabe</translation>
+        <translation>Gorde HTML gisa</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>Gorde TXT gabe</translation>
+        <translation>Gorde TXT gisa</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>Gorde nota</translation>
+        <translation>Gorde oharra</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Berrizendatu</translation>
+        <translation>Aldatu izena</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
@@ -276,35 +205,35 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Gorde hitz-erregistroa</translation>
+        <translation>Gorde hitz irakurketa</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>Zehaztu nota</translation>
+        <translation>Oharra berria</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Zatik toporaino</translation>
+        <translation>Mugikorra goian</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Mesedez instalar 'UOS AI' App Store-tik erabiltzeko aurretik</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Instalatu &apos;UOS AI&apos; App Store-etik erabiltzeko baino lehen</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Ez da audio sorgailu gertu aurkitu. Mesedez egiaztatu eta saiatu berriro</translation>
+        <translation>Ez da bideo sarrera gailuik detekta. Mesedez egiaztatu eta saiatu berriz</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Ez da audio irteera gertu aurkitu. Mesedez egiaztatu eta saiatu berriro</translation>
+        <translation>Ez da bideo irteera gailuik detekta. Mesedez egiaztatu eta saiatu berriz</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,43 +246,39 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>Orokorra</translation>
+        <translation>Oinarrizkoa</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>Audio sorgailua</translation>
+        <translation>Bideo iturria</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Interne</translation>
+        <translation>Barne</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
         <source>Microphone</source>
-        <translation>Mikrofonia</translation>
+        <translation>Mikrofonoa</translation>
     </message>
 </context>
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>Orokorra</translation>
+        <translation>Oinarrizkoa</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>Muzika izena</translation>
+        <translation>Bideo iturria</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Interne</translation>
+        <translation>Barne</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>Mikrofonoa</translation>
     </message>
@@ -363,57 +288,57 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Gutun-liburua berria</translation>
+        <translation>Liburuxa berria</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Gutun-liburuaren izena aldatu</translation>
+        <translation>Aldatu liburuxa</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Gutun-liburuaren ezabatu</translation>
+        <translation>Ezabatu liburuxa</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>Gutun berria</translation>
+        <translation>Oharra berria</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Gutunaren izena aldatu</translation>
+        <translation>Aldatu oharra</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Gutunaren ezabatu</translation>
+        <translation>Ezabatu oharra</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Jaurtzi/Pausatu</translation>
+        <translation>Play/Pausa</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Kontsua grabatu</translation>
+        <translation>Grabatu hitza</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>Gutuna gorde</translation>
+        <translation>Gorde oharra</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Grabazioak gorde</translation>
+        <translation>Gorde grabaketa</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>Denetan aukeratu</translation>
+        <translation>Hautatu guztia</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -423,7 +348,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>Kendu</translation>
+        <translation>Moztu</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Itzulik egin</translation>
+        <translation>Deshaztu</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Berriz egin</translation>
+        <translation>Berriro egin</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Sakatzeak erakutsi</translation>
+        <translation>Erakutsi lasterklabak</translation>
     </message>
 </context>
 <context>
@@ -461,12 +386,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Gutun-liburuak</translation>
+        <translation>Koadernoak</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Gutunak</translation>
+        <translation>Oharrak</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
@@ -476,30 +401,14 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
         <source>Settings</source>
-        <translation>Aukerak</translation>
+        <translation>Ezarpenak</translation>
     </message>
 </context>
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>Aukerak</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Pribatutasunaren politika</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes ezagutza-oharra ezagutza-oharrak eta kontsua grabatzeko tresna luzeko da.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Voice Gutun</translation>
+        <translation>Ezarpenak</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Iportatzen dira erregistroak gainera kopia, etorri gara...</translation>
+        <translation>Oharrak zaharraren bertsioetik inportatzen, mesedez itxaron...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 minutu beren</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>'%1 minutu beren</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>Aurka</translation>
+        <translation>1 minutu lehenago</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 minutu beren</translation>
+        <translation>2 minutu lehenago</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 minutu lehenago&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>Atzo</translation>
     </message>
 </context>
 <context>
@@ -545,42 +454,45 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Zuhaitzaren azkarra ez dago? Azkarra guztiak ezarrizko dira</translation>
+        <translation>Ziur zaude koaderno hau ezabatu nahi duzula?
+Oharrak guztiak ezabatuko dira</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Zu zure azkarra jarri ez dago?</translation>
+        <translation>Bai al zaude grabaketa egungoa gelditu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Ezinezkoa da hau azkarra konvertitzea, 20 minutu baino gehiagoko azkarra ez dago onartzen</translation>
+        <translation>Ezin da hau izenburu bat konbertitu, 20 minutu baino luzeagoak diren oharrak ez dira unean babesten.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Azkarra konvertitzen ari da. Ez dago azkarra jarri?</translation>
+        <translation>Orain izenburu bat konbertzen ari da. Bai al zaude gelditu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Baxu input volumea azkarra ondoak izatea eragitea. Jarri?</translation>
+        <translation>Sarrera baxuaren balioa grabaketa txarrak eragin ditzake. Bai al zaude
+jarraitu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Zure azkarra iragatzen diren eta konvertitutako testua ez da itsasoko. Jarri?</translation>
+        <translation>Moztutako grabaketak eta konbertutako testua ez dira itsatsiko. Bai al zaude
+jarraitu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Zuhaitzaren azkarra ez dago?</translation>
+        <translation>Ziur zaude oharra ezabatu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Zuhaitzaren azkarra ez dago? %1 azkarra hautatuta</translation>
+        <translation>Ziur zaude hautatutako %1 oharrak ezabatu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
@@ -592,22 +504,22 @@ All notes in it will be deleted</source>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>Onartu</translation>
+        <translation>Baieztatu</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Gorde ez da</translation>
+        <translation>Ez da gordeta</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>Zu ez dago beste azkarra gorde</translation>
+        <translation>Ez duzu baimenik fitxategiak horretan gordeko dituzun</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>Azkarra ezarrizko da</translation>
+        <translation>Hitza idatzia ezabatua izan da</translation>
     </message>
 </context>
 <context>
@@ -615,85 +527,83 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Zuhaitzaren azkarra ez dago?</translation>
+        <translation>Ziur zaude karpeta hau ezabatu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Zu zure azkarra jarri ez dago?</translation>
+        <translation>Erosi duzu oraingo grabazioa gelditu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Zuhaitzaren azkarra ez dago? %1 azkarra hautatuta</translation>
+        <translation>Ziur zaude hautatutako %1 oharrak ezabatu nahi dituzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Zuhaitzaren azkarra ez dago?</translation>
+        <translation>Ziur zaude oharra ezabatu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>Ezinezkoa da hau azkarra konvertitzea, 20 minutu baino gehiagoko azkarra ez dago onartzen</translation>
+        <translation>Ez da hau hitz idazkera bihurtzen, oharrak 20 minutu baino luzeagoak ez direlako oraindik onartzen</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Azkarra konvertitzen ari da. Ez dago azkarra jarri?</translation>
+        <translation>Hitza idazkera bihurtzen ari da orain. Erosi duzu gelditu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Baxu input volumea azkarra ondoak izatea eragitea. Jarri?</translation>
+        <translation>Sarrera baxua izan daiteke grabazio txarrak eragin. Erosi duzu jarraitu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Zure azkarra iragatzen diren eta konvertitutako testua ez da itsasoko. Jarri?</translation>
+        <translation>Kopiatutako grabazioak eta bihurtutako testua ez dira itsatsiko. Erosi duzu jarraitu nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Gorde ez da</translation>
+        <translation>Hitza bihurtzea huts egin du, sare txaragatik, mesedez egiaztatu</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Zu ez dago beste azkarra gorde</translation>
+        <translation>Karpeta honetako oharrak guztiak ezabatuko dira</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>Azkarra ezarrizko da</translation>
+        <translation>&amp;Ezabatu</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Konbertsioa ez da egokitzatzen eraginkorra konexioa, mesedez egiaztatu</translation>
+        <translation>Gorde MP3 gisa</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Den notak ezarriko dira ezabatuko dira</translation>
+        <translation>Letra-tipoa</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
         <source>Delete</source>
-        <translation>Ezabatu</translation>
+        <translation>Letra-tipoaren tamaina</translation>
     </message>
 </context>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>Utzi</translation>
+        <translation>Letra-tipoaren kolorea</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>Baimatu</translation>
+        <translation>Testuaren nabarmentze kolorea</translation>
     </message>
 </context>
 <context>
@@ -701,30 +611,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>bertsioa MP3 gisa gorde</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Sortu nota</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Hasieratu erregistroa</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Ez da erregistro gailua aurkitu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Sartu irudi</translation>
+        <translation>Zuzen</translation>
     </message>
 </context>
 <context>
@@ -732,47 +619,47 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation>Letra</translation>
+        <translation>Azpimarratuta</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>Letra tamaina</translation>
+        <translation>Erdian pasatuta</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation>Letra kolorea</translation>
+        <translation>Puntuetan</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Testu markatze kolorea</translation>
+        <translation>Testuaren azalpen kolorea</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>Bertsikoa</translation>
+        <translation>Zuhaitza</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>Italiko</translation>
+        <translation>Italikoa</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>Zigzagueko</translation>
+        <translation>Azpimarratua</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Barratzea</translation>
+        <translation>Gutxizkia</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>Bulletek</translation>
+        <translation>Puntuetan</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
@@ -787,17 +674,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation>Osoa</translation>
+        <translation>Azkena</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Bertsioa Testu</translation>
+        <translation>Boicea Testura</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Konbertsioa bertsioa testu</translation>
+        <translation>Boicea testura bihurtzen</translation>
     </message>
 </context>
 </TS>

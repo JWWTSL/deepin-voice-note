@@ -28,136 +28,50 @@
     </message>
 </context>
 <context>
-    <name>FolderListView</name>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
-        <source>Rename</source>
-        <translation>Redenumează</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
-        <source>Delete</source>
-        <translation>Șterge</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Notă nouă</translation>
-    </message>
-</context>
-<context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>După ce creezi un jurnal de notițe nou, poți începe înregistrarea vocei și a textului</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Creare agendă</translation>
+        <translation type="obsolete">Creare agendă</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>mută </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> notițe la :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> notă la :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Salvează ca</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation type="unfinished">Căutare nu a dat nici-un rezultat</translation>
+        <translation type="obsolete">Căutare nu a dat nici-un rezultat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Depeste</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation type="unfinished">Lipire sus</translation>
+        <translation type="obsolete">Lipire sus</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation type="unfinished">Notițe lipicioase</translation>
+        <translation type="obsolete">Notițe lipicioase</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation type="unfinished">Creare agendă</translation>
+        <translation type="obsolete">Creare agendă</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation type="unfinished">Căutare</translation>
+        <translation type="obsolete">Căutare</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Mută notă</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>OK</translation>
+        <translation type="obsolete">Anulare</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 notă selectată</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation type="unfinished">Treci la</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Salvează notă</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Salvează voce</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
-        <source>Delete</source>
-        <translation>Șterge</translation>
+        <translation type="obsolete">Treci la</translation>
     </message>
 </context>
 <context>
@@ -200,7 +114,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>Vizualizează</translation>
+        <translation>Vizualizare</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
@@ -210,17 +124,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Text în voce</translation>
+        <translation>Text la vorbire</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Opri citirea</translation>
+        <translation>Oprire citire</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Voce în text</translation>
+        <translation>Vorbire la text</translation>
     </message>
 </context>
 <context>
@@ -293,18 +207,18 @@
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Vă rugăm să instalați 'UOS AI' din Magazinul de Aplicații înainte de a folosi</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Vă rugăm să instalați &apos;UOS AI&apos; din App Store înainte de a-l folosi</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Niciun dispozitiv de intrare audio detectat. Vă rugăm să verificați și să încercați din nou</translation>
+        <translation>Nu a fost detectat un dispozitiv de intrare audio. Vă rugăm să verificați și să încercați din nou</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Niciun dispozitiv de ieșire audio detectat. Vă rugăm să verificați și să încercați din nou</translation>
+        <translation>Nu a fost detectat un dispozitiv de ieșire audio. Vă rugăm să verificați și să încercați din nou</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +252,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation type="unfinished">De bază</translation>
+        <translation type="obsolete">De bază</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation type="unfinished">Sursă audio</translation>
+        <translation type="obsolete">Sursă audio</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation type="unfinished">Intern</translation>
+        <translation type="obsolete">Intern</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation type="unfinished">Microfon</translation>
+        <translation type="obsolete">Microfon</translation>
     </message>
 </context>
 <context>
@@ -363,12 +273,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Jurnal nou</translation>
+        <translation>Caiet nou</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Redenumește jurnalul</translation>
+        <translation>Redenumește caietul</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
@@ -383,12 +293,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Redenumește notă</translation>
+        <translation>Redenumește nota</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>Șterge notă</translation>
+        <translation>Șterge nota</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
@@ -398,12 +308,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Înregistrează voce</translation>
+        <translation>Înregistrează vocea</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>Salvează notă</translation>
+        <translation>Salvează nota</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
@@ -438,7 +348,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Redo</translation>
+        <translation>Reia</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -453,7 +363,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Afisează scurtături</translation>
+        <translation>Afișează comenzile rapide</translation>
     </message>
 </context>
 <context>
@@ -482,24 +392,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation type="unfinished">Setări</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Politica de confidențialitate</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes este un instrument de notare ușor pentru a crea note textuale și înregistrări vocale.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Notă vocală</translation>
+        <translation type="obsolete">Setări</translation>
     </message>
 </context>
 <context>
@@ -513,9 +407,14 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
         <translation>Acum 1 minut </translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+        <source>2 mins ago</source>
+        <translation>2 minute în urmă</translation>
     </message>
     <message>
         <location filename="../src/common/utils.cpp" line="48"/>
@@ -523,14 +422,9 @@
         <translation>Acum %1 minute</translation>
     </message>
     <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
         <source>Yesterday</source>
         <translation>Ieri</translation>
-    </message>
-    <message>
-        <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-        <source>2 mins ago</source>
-        <translation>2 minute în urmă</translation>
     </message>
 </context>
 <context>
@@ -545,7 +439,7 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Sigur dorești să ștergi acest caiet?
+        <translation>Ești sigur că vrei să ștergi acest caiet de notițe?
 Toate notele din el vor fi șterse</translation>
     </message>
     <message>
@@ -598,12 +492,12 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>Salvare eșuată</translation>
+        <translation>Salvarea a eșuat</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>Nu ai permisiunea de a salva fișiere aici</translation>
+        <translation>Nu ai permisiunea să salvezi fișiere acolo</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
@@ -616,7 +510,7 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Sigur dorești să ștergi acest caiet?</translation>
+        <translation>Ești sigur că vrei să ștergi acest caiet de notițe?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
@@ -656,12 +550,12 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>Salvare eșuată</translation>
+        <translation>Salvarea a eșuat</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Nu ai permisiunea de a salva fișiere aici</translation>
+        <translation>Nu ai permisiunea să salvezi fișiere acolo</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
@@ -671,7 +565,8 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Conversia vocei a eșuat din cauza conexiunii slabe la rețea, te rugăm să verifici</translation>
+        <translation>Convertirea vocalei a eșuat din cauza conexiunii de rețea slabe, vă rugăm să
+faceți o verificare</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
@@ -687,14 +582,12 @@ Toate notele din el vor fi șterse</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anulare</translation>
+        <translation type="obsolete">Anulare</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmare</translation>
+        <translation type="obsolete">Confirmare</translation>
     </message>
 </context>
 <context>
@@ -702,30 +595,7 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>Salvează ca MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Creează Notă</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Începe înregistrarea</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Niciun dispozitiv de înregistrare detectat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Inserează imagine</translation>
+        <translation>salvează ca MP3</translation>
     </message>
 </context>
 <context>
@@ -738,27 +608,27 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>Mărime font</translation>
+        <translation>Mărimea fontului</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation>Culoare font</translation>
+        <translation>Culoarea fontului</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Culoare accent text</translation>
+        <translation>Culoarea evidențierii textului</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>Bold</translation>
+        <translation>Gras</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>Italic</translation>
+        <translation>Cursiv</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
@@ -768,12 +638,12 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Tăiere</translation>
+        <translation>Tăiat</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>Puncte</translation>
+        <translation>Liste cu puncte</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
@@ -793,12 +663,12 @@ Toate notele din el vor fi șterse</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Vorbire la Text</translation>
+        <translation>Vocă la Text</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Conversia vorbirii în text</translation>
+        <translation>Convertirea vocii în text</translation>
     </message>
 </context>
 </TS>

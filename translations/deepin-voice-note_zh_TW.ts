@@ -30,136 +30,111 @@
     <context>
         <name>FolderListView</name>
         <message>
-            <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
             <source>Rename</source>
-            <translation>重新命名</translation>
+            <translation type="vanished">重新命名</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
             <source>Delete</source>
-            <translation>刪除</translation>
+            <translation type="vanished">刪除</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
             <source>New Note</source>
-            <translation>建立筆記</translation>
+            <translation type="vanished">建立筆記</translation>
         </message>
     </context>
     <context>
         <name>InitialInterface</name>
         <message>
-            <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
             <source>After creating a new notepad, you can start recording voice and text</source>
-            <translation>創建新的記事本後，您可以開始錄製語音和文本</translation>
+            <translation type="vanished">創建新的記事本後，您可以開始錄製語音和文本</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
             <source>Create Notebook</source>
-            <translation>建立記事本</translation>
+            <translation type="vanished">建立記事本</translation>
         </message>
     </context>
     <context>
         <name>ItemListView</name>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
             <source>move</source>
-            <translation>移動</translation>
+            <translation type="vanished">移動</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
             <source>notes to :</source>
-            <translation>個筆記至:</translation>
+            <translation type="vanished">個筆記至:</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
             <source>note to :</source>
-            <translation>筆記至:</translation>
+            <translation type="vanished">筆記至:</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="222"/>
             <source>Save As</source>
-            <translation>保存筆記</translation>
+            <translation type="vanished">保存筆記</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
             <source>No search results</source>
-            <translation>無搜尋結果</translation>
+            <translation type="vanished">無搜尋結果</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
             <source>Unpin</source>
-            <translation>取消置頂</translation>
+            <translation type="vanished">取消置頂</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
             <source>Sticky on Top</source>
-            <translation>置頂</translation>
+            <translation type="vanished">置頂</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
             <source>Sticky Notes</source>
-            <translation>已置頂</translation>
+            <translation type="vanished">已置頂</translation>
         </message>
     </context>
     <context>
         <name>MainWindow</name>
         <message>
-            <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
             <source>Create Notebook</source>
-            <translation>建立記事本</translation>
+            <translation type="vanished">建立記事本</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
             <source>Search</source>
-            <translation>搜尋</translation>
+            <translation type="vanished">搜尋</translation>
         </message>
     </context>
     <context>
         <name>MoveDialog</name>
         <message>
-            <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
             <source>Move Note</source>
-            <translation>儲存筆記</translation>
+            <translation type="vanished">儲存筆記</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
             <source>Cancel</source>
-            <translation>取 消</translation>
+            <translation type="vanished">取 消</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
             <source>Ok</source>
-            <translation>確 定</translation>
+            <translation type="vanished">確 定</translation>
         </message>
     </context>
     <context>
         <name>MultipleChoices</name>
         <message>
-            <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
             <source>%1 note selected</source>
-            <translation>已選擇%1個筆記</translation>
+            <translation type="vanished">已選擇%1個筆記</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
             <source>Move</source>
-            <translation>移動</translation>
+            <translation type="vanished">移動</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
             <source>Save Note</source>
-            <translation>儲存筆記</translation>
+            <translation type="vanished">儲存筆記</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
             <source>Save Voice</source>
-            <translation>儲存語音</translation>
+            <translation type="vanished">儲存語音</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
             <source>Delete</source>
-            <translation>刪除</translation>
+            <translation type="vanished">刪除</translation>
         </message>
     </context>
     <context>
@@ -350,24 +325,20 @@
     <context>
         <name>SettingDialog</name>
         <message>
-            <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
             <source>Basic</source>
-            <translation>基礎設置</translation>
+            <translation type="vanished">基礎設置</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
             <source>Audio Source</source>
-            <translation>聲音來源</translation>
+            <translation type="vanished">聲音來源</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
             <source>Internal</source>
-            <translation>系統聲音</translation>
+            <translation type="vanished">系統聲音</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
             <source>Microphone</source>
-            <translation>麥克風聲音</translation>
+            <translation type="vanished">麥克風聲音</translation>
         </message>
     </context>
     <context>
@@ -494,24 +465,20 @@
     <context>
         <name>TitleBarMenu</name>
         <message>
-            <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
             <source>Settings</source>
-            <translation>設定</translation>
+            <translation type="vanished">設定</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
             <source>Privacy Policy</source>
-            <translation>隱私政策</translation>
+            <translation type="vanished">隱私政策</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
             <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-            <translation>語音記事本是一款提供文本記事、語音錄音記錄的輕量級記事工具。</translation>
+            <translation type="vanished">語音記事本是一款提供文本記事、語音錄音記錄的輕量級記事工具。</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
             <source>Voice Note</source>
-            <translation>語音記事本</translation>
+            <translation type="vanished">語音記事本</translation>
         </message>
     </context>
     <context>
@@ -525,10 +492,15 @@
     <context>
         <name>Utils</name>
         <message>
-            <location filename="../src/common/utils.cpp" line="46"/>
             <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
+            <location filename="../src/common/utils.cpp" line="46"/>
             <source>1 min ago</source>
             <translation>1分鐘前</translation>
+        </message>
+        <message>
+            <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
+            <source>2 mins ago</source>
+            <translation type="unfinished"/>
         </message>
         <message>
             <location filename="../src/common/utils.cpp" line="48"/>
@@ -536,15 +508,10 @@
             <translation>%1分鐘前</translation>
         </message>
         <message>
-            <location filename="../src/common/utils.cpp" line="56"/>
             <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+            <location filename="../src/common/utils.cpp" line="56"/>
             <source>Yesterday</source>
             <translation>昨天</translation>
-        </message>
-        <message>
-            <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
-            <source>2 mins ago</source>
-            <translation>2分鐘前</translation>
         </message>
     </context>
     <context>
@@ -552,15 +519,14 @@
         <message>
             <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
             <source>OK</source>
-            <translation>確定</translation>
+            <translation type="unfinished"/>
             <comment>button</comment>
         </message>
         <message>
             <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
             <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-            <translation>您確定要刪除這個筆記本嗎？
-其中的所有筆記都將被刪除</translation>
+            <translation type="unfinished"/>
         </message>
         <message>
             <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
@@ -701,14 +667,12 @@ All notes in it will be deleted</source>
     <context>
         <name>VNoteMessageDialogLoader</name>
         <message>
-            <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
             <source>Cancel</source>
-            <translation>取 消</translation>
+            <translation type="vanished">取 消</translation>
         </message>
         <message>
-            <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
             <source>Confirm</source>
-            <translation>確 定</translation>
+            <translation type="vanished">確 定</translation>
         </message>
     </context>
     <context>
@@ -722,24 +686,20 @@ All notes in it will be deleted</source>
     <context>
         <name>WindowTitleBar</name>
         <message>
-            <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
             <source>Create Note</source>
-            <translation>建立筆記</translation>
+            <translation type="vanished">建立筆記</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
             <source>Start recording</source>
-            <translation>開始錄音</translation>
+            <translation type="vanished">開始錄音</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
             <source>No recording device detected</source>
-            <translation>未檢測到錄製設備</translation>
+            <translation type="vanished">未檢測到錄製設備</translation>
         </message>
         <message>
-            <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
             <source>Insert picture</source>
-            <translation>插入圖片</translation>
+            <translation type="vanished">插入圖片</translation>
         </message>
     </context>
     <context>

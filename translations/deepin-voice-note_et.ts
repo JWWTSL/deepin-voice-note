@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="et">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>Kõnevajadused</translation>
+        <translation>Kõne märkmed</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>Teebik</translation>
+        <translation>Märkmete raamat</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
@@ -30,86 +30,43 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>Taanimine</translation>
+        <translation>Nimeta ümber</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
         <translation>Kustuta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>Uus märkus</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>Kui sa loodud uue märkusekirja, saad algust kõne- ja tekstikirjutamisele</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>Loo märkusekiri</translation>
+        <translation>Loo märkmete raamat</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>liiguta </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> märkused : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> märkus : </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>Salvesta kui</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>Otsingutulemusi pole</translation>
+        <translation>Ei otsitavat tulemust</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>Liku</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>Kinni ülemisse</translation>
+        <translation>Kinni ülemisele</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>Kinni märkused</translation>
+        <translation>Kinnitused märkmed</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>Loo märkusekiri</translation>
+        <translation>Loo märkmete raamat</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
         <translation>Otsi</translation>
     </message>
@@ -117,45 +74,17 @@
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>Liiguta märkust</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 märkust valisid</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
         <translation>Liiguta</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>Salvesta märkus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>Salvesta kõne</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
         <translation>Kustuta</translation>
     </message>
@@ -165,12 +94,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>Salvesta MP3 kui</translation>
+        <translation>Salvesta kui MP3</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>Kõne tekstiks</translation>
+        <translation>Kõne teisendamine tekstiks</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
@@ -210,17 +139,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>Teksti helistamiseks</translation>
+        <translation>Teksti teisendamine kõneks</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>Lõpeta lugemine</translation>
+        <translation>Peata lugemine</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>Helistusest teksti</translation>
+        <translation>Kõne teisendamine tekstiks</translation>
     </message>
 </context>
 <context>
@@ -228,7 +157,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>Märgata uueks</translation>
+        <translation>Nimeta ümber</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
@@ -246,22 +175,22 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>Salvesta HTML-iks</translation>
+        <translation>Salvesta HTML kujul</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>Salvesta TXT-iks</translation>
+        <translation>Salvesta TXT kujul</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>Salvesta märkuse</translation>
+        <translation>Salvesta märkus</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>Märgata uueks</translation>
+        <translation>Nimeta ümber</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
@@ -276,7 +205,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>Salvesta helilahendus</translation>
+        <translation>Salvesta helirekord</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
@@ -286,25 +215,25 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>Pinnas üle</translation>
+        <translation>Kinnitada ülesse</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>Palun installi 'UOS AI' App Store-st enne kasutamist</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>Paigaldage &apos;UOS AI&apos; rakenduspoest enne kasutamist</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>Audio sisendseadet ei tuvastatud. Palun kontrolli ja proovi uuesti</translation>
+        <translation>Heli sisendseadet ei tuvastatud. Palun kontrollige ja proovige uuesti</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>Audio väljundseadet ei tuvastatud. Palun kontrolli ja proovi uuesti</translation>
+        <translation>Heli väljundseadet ei tuvastatud. Palun kontrollige ja proovige uuesti</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,17 +246,17 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>Põhifunktsioonid</translation>
+        <translation>Põhikasutus</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>Audio allikas</translation>
+        <translation>Heliallikas</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>Internaalne</translation>
+        <translation>Sisemine</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,22 +267,18 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>Põhifunktsioonid</translation>
+        <translation>Põhikasutus</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>Audioallik</translation>
+        <translation>Heliallikas</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>Intern</translation>
+        <translation>Sisemine</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>Mikrofon</translation>
     </message>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>Uus tõmm</translation>
+        <translation>Uus märkmeleht</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>Lähtekirjutus tõmm</translation>
+        <translation>Nimeta märkmeleht ümber</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>Kustuta tõmm</translation>
+        <translation>Kustuta märkmeleht</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,7 +308,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>Lähtekirjutus märkus</translation>
+        <translation>Nimeta märkus ümber</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
@@ -393,12 +318,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>Mängi/pause</translation>
+        <translation>Taista/Paus</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>Kirjuta heli</translation>
+        <translation>Salvesta heli</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
@@ -408,7 +333,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>Salvesta kirjutused</translation>
+        <translation>Salvesta salvestused</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
@@ -433,12 +358,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>Tagasi</translation>
+        <translation>Tühista</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>Uuesti</translation>
+        <translation>Taasta</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>Kuvatse kiireklahvid</translation>
+        <translation>Näита kiirklahvid</translation>
     </message>
 </context>
 <context>
@@ -461,17 +386,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>Tõmm</translation>
+        <translation>Märkmete raamatud</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
         <source>Notes</source>
-        <translation>Märkused</translation>
+        <translation>Märkmed</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="864"/>
         <source>Edit</source>
-        <translation>Redigeeri</translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>Seaded</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>Privatsuspoliitika</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes on lihtne märkuse tööriist, mis võimaldab teha teksti märkuseid ja heli kirjutusi.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>Heli märkus</translation>
+        <translation>Imporditakse märkmeid vana versioonist, palun ootage...</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>Importim märkmeid vanast versioonist, palun oota...</translation>
+        <translation>1 minuti tagasi</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 minut tagasi</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>%1 minutit tagasi</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>Eile</translation>
+        <translation>&apos;%1 minuti tagasi&apos;</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 minutit tagasi</translation>
+        <translation>Eile</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>Eile</translation>
     </message>
 </context>
 <context>
@@ -545,49 +454,48 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>Kas soovite kindlasti kustutada selle märkmeaksa?
-Kõik märkmed kustutatakse</translation>
+        <translation>&gt;-\n      Ei saa teha selle helimärkme konverteerimist, kuna praegu ei toeta märkmeid, mis on pikemat kui 20 minutit.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Kas soovite lõpetada praeguse enneolekut?</translation>
+        <translation>	Praegu teostatakse hälmärkme konverteerimist. Kas soovid seda peatADA?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>See helimärkus ei saa kuvata, kuna kinnitamiseks on vaja 20 minutit kestevaid märkmeid.</translation>
+        <translation>&gt;-\n      Madal sisendvõimsus võib põhjustada halva salvestuse. Kas soovid jätkata?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Helimärkuse kuvamine. Kas soovite lõpetada?</translation>
+        <translation>&gt;-\n      Lõigatud salvestused ja konverteeritud tekst ei ole kleebitav. Kas soovid jätkata?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Alates sisendvoolu võib põhjustada halva enneoleku. Kas soovite jätkata?</translation>
+        <translation>Kas oled kindel, et soovid kustutADA selle märkme?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Kasutatud enneolekud ja kuvatud teksti ei kopeerita. Kas soovite jätkata?</translation>
+        <translation>Kas oled kindkel, et soovid kustutada valitud %1 märkmeid?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Kas soovite kindlasti kustutada selle märkme?</translation>
+        <translation> Tühista</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Kas soovite kindlasti kustutada valitud %1 märkmeid?</translation>
+        <translation>Kas soovid kindlasti kustutada valitud %1 märkmeid?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>Tühista</translation>
+        <translation>Loobu</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
@@ -603,12 +511,12 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>Teil pole luba salvestada faili seal</translation>
+        <translation>Sul pole õigust salvestada faile sinna</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>Helimärkus on kustutatud</translation>
+        <translation>Kõne märkus on kustutatud</translation>
     </message>
 </context>
 <context>
@@ -616,42 +524,42 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>Kas soovite kindlasti kustutada selle märkmeaksa?</translation>
+        <translation>Kas sa oled kindel, et soovid seda märkmevõtit kustutada?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>Kas soovite lõpetada praeguse enneolekut?</translation>
+        <translation>Kas soovid lõpetada praeguse salvestuse?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>Kas soovite kindlasti kustutada valitud %1 märkmeid?</translation>
+        <translation>Kas sa oled kindel, et soovid kustutada valitud %1 märkusi?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>Kas soovite kindlasti kustutada selle märkme?</translation>
+        <translation>Kas sa oled kindel, et soovid kustutada selle märkuse?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>See helimärkus ei saa kuvata, kuna kinnitamiseks on vaja 20 minutit kestevaid märkmeid.</translation>
+        <translation>Kõne märkust ei saa teisendada, kuna praegu ei toetata märkusi, mis on üle 20 minuti pikkused.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>Helimärkuse kuvamine. Kas soovite lõpetada?</translation>
+        <translation>Kõne märkust teisendatakse. Kas soovid selle peatada?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>Alates sisendvoolu võib põhjustada halva enneoleku. Kas soovite jätkata?</translation>
+        <translation>Madal sisendvõim end võib põhjustada halva salvestuse. Kas soovid jätkata?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>Kasutatud enneolekud ja kuvatud teksti ei kopeerita. Kas soovite jätkata?</translation>
+        <translation>Lõigatud salvestused ja teisendatud tekst ei saa kleepida. Kas soovid jätkata?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
@@ -661,22 +569,22 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>Teil pole luba salvestada faili seal</translation>
+        <translation>Sul pole õigust salvestada faile sinna</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>Helimärkus on kustutatud</translation>
+        <translation>Kõne märkus on kustutatud</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>Helendus ümberandmine ebaõnnestus, kuna ühendus on hea, palun kontrollige</translation>
+        <translation>Kõne teisendamine ebaõnnestus halva võrguühenduse tõttu, palun kontrolli</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>Kõik sellest kirje kustutatakse</translation>
+        <translation>Kõik selle märkused kustutatakse</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
@@ -687,12 +595,10 @@ Kõik märkmed kustutatakse</translation>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
         <translation>Tühista</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
         <translation>Kinnita</translation>
     </message>
@@ -702,30 +608,7 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>salvesta MP3-ks</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>Loo märkus</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>Alusta kuvitsemine</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>Kuvitseme tarkvara ei tuvastatud</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>Lisa pilt</translation>
+        <translation>salvesta kui MP3</translation>
     </message>
 </context>
 <context>
@@ -748,32 +631,32 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>Teksti tõstetav värv</translation>
+        <translation>Teksti märgendusvärv</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>Rasvane</translation>
+        <translation>Paks</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>Kaldune</translation>
+        <translation>Kursiiv</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>Allakriips</translation>
+        <translation>Allajoonitud</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>Kriips</translation>
+        <translation>Läbi kõrvutatud</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>Punktid</translation>
+        <translation>Punktloend</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
@@ -783,22 +666,22 @@ Kõik märkmed kustutatakse</translation>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
         <source>More colors</source>
-        <translation>Rohkem värvu</translation>
+        <translation>Rohkem värve</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation>Viimased</translation>
+        <translation>Utime</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>Helendus tekstiks</translation>
+        <translation>Kõne tekstiks</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>Helendust tekstiks ümberandamisel</translation>
+        <translation>Kõne teisendamine tekstiks</translation>
     </message>
 </context>
 </TS>

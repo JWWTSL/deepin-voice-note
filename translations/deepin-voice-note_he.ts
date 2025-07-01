@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="he">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>הערות קול</translation>
+        <translation>הערות קוליות</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>מחברת</translation>
+        <translation>ספרייה</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
@@ -30,134 +30,63 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>שנה שם</translation>
+        <translation>שינוי שם</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>מחק</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>הערה חדשה</translation>
+        <translation>מחיקה</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>לאחר יצרת מחברת חדשה, ניתן להתחיל录制 קול וטקסט</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>צור מחברת</translation>
+        <translation>יצירת ספרייה</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>העתק </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation>הערות ל :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation>הערה ל :</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>שמור כ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
         <translation>אין תוצאות חיפוש</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>הסר תגית</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>הערה מונחת למעלה</translation>
+        <translation>עטיפה בפס</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>הערות מונחות</translation>
+        <translation>הערות עטיפות</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>צור מחברת</translation>
+        <translation>יצירת ספרייה</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>חפש</translation>
+        <translation>חיפוש</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>העתק הערה</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>בטל</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>בסדר</translation>
+        <translation>ביטול</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 הערה נבחרה</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>העתק</translation>
+        <translation>הזזה</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>שמור הערה</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>שמור קול</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>מחק</translation>
+        <translation>מחיקה</translation>
     </message>
 </context>
 <context>
@@ -165,62 +94,62 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>שמור כ MP3</translation>
+        <translation>שמור כ-MP3</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>קול ל טקסט</translation>
+        <translation>קול לטקסט</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
         <source>Delete</source>
-        <translation>מחק</translation>
+        <translation>מחיקה</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>اختر الكل</translation>
+        <translation>בחר הכל</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
         <source>Copy</source>
-        <translation>نسخ</translation>
+        <translation>ה sal</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>قص</translation>
+        <translation>גזר</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
         <source>Paste</source>
-        <translation>لصق</translation>
+        <translation>הדבק</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>عرض</translation>
+        <translation>צג</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>احفظ كـ</translation>
+        <translation>שמור כ</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>טקסט למשמע</translation>
+        <translation>טקסט לקול</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>הפסק קריאה</translation>
+        <translation>עצור קריאה</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>משמע לטקסט</translation>
+        <translation>קול לטקסט</translation>
     </message>
 </context>
 <context>
@@ -228,12 +157,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="47"/>
         <source>Rename</source>
-        <translation>שנה שם</translation>
+        <translation>שינוי שם</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
         <source>Delete</source>
-        <translation>הסר</translation>
+        <translation>מחיקה</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
@@ -246,17 +175,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>احفظ كـ HTML</translation>
+        <translation>שמור כ-HTML</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>احفظ كـ TXT</translation>
+        <translation>שמור כ-TXT</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>احفظ הערה</translation>
+        <translation>שמור הערה</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
@@ -266,17 +195,17 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
         <source>Move</source>
-        <translation>העתק</translation>
+        <translation>הזז</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="55"/>
         <source>Delete</source>
-        <translation>הסר</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>שמור녹ה קול</translation>
+        <translation>שמור הקלטה קולית</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
@@ -286,25 +215,25 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>העתק על הקצה העליון</translation>
+        <translation>עטיפה בפס</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>אנא התקן את 'UOS AI' מהאפליקציה לפני שימוש</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>אנא התקין &apos;UOS AI&apos; מהחנות של האפליקציות לפני שימוש</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>לא נמצאה התקנת מקלט קול. אנא בדוק והửרנסה שוב</translation>
+        <translation>לא נמצאה התקן קלט אודיו. אנא בדוק ונסה שוב</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>לא נמצאה התקנת מפלט קול. אנא בדוק והửרנסה שוב</translation>
+        <translation>לא נמצאה התקן פלט אודיו. אנא בדוק ונסה שוב</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,17 +246,17 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>기본</translation>
+        <translation>בסיסי</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>מקור הקול</translation>
+        <translation>מקור אודיו</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
         <source>Internal</source>
-        <translation>دااخ</translation>
+        <translation>פנימי</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="27"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>기본</translation>
+        <translation>יומן חדש</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>מקור קול</translation>
+        <translation>שינוי שם יומן</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>פנימי</translation>
+        <translation>מחק יומן</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>מיקרופון</translation>
+        <translation>הערה חדשה</translation>
     </message>
 </context>
 <context>
@@ -363,57 +288,57 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>מחברת חדשה</translation>
+        <translation>שינוי שם הערה</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>ל.rename מחברת</translation>
+        <translation>מחק הערה</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>למחוק מחברת</translation>
+        <translation>השמע/הפסק</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>הערה חדשה</translation>
+        <translation>רשום קול</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>ל.rename הערה</translation>
+        <translation>שמור הערה</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>למחוק הערה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>تشغيل/עצירה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>לרשום קול</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>להציל הערה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>להציל רישומים</translation>
+        <translation>שמור הקלטות</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>העתק הכל</translation>
+        <translation>בחר הכל</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -423,27 +348,27 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>לחתוך</translation>
+        <translation>גזור</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
         <source>Paste</source>
-        <translation>לדביק</translation>
+        <translation>העתק</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>לבטל</translation>
+        <translation>בטל</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>לעשות שוב</translation>
+        <translation>בצע מחדש</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
         <source>Delete</source>
-        <translation>למחוק</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>להציג קürשים</translation>
+        <translation>הצגת קיצורי דרך</translation>
     </message>
 </context>
 <context>
@@ -461,7 +386,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>מחברות</translation>
+        <translation>ספריות</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
         <translation>הגדרות</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>מדיניות הפרטיות</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>הערות קול הן כלי זריז ליצירת הערות טקסט ורישומים קול</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>הערה קול</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>การนำเข้าบันทึกจากเวอร์ชันเก่า กรุณารอสักครู่...</translation>
+        <translation>יבוא הערות מהגרסה הישנה, אנא חכה...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 דקה קודם לכן</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>%1 דקות קודם לכן</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>วันเมื่อวาน</translation>
+        <translation>דקה אחת לפני</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 דקות קודם לכן</translation>
+        <translation>שני דקות לפני</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 דקות לפני&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>אתמול</translation>
     </message>
 </context>
 <context>
@@ -539,75 +448,78 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="28"/>
         <source>OK</source>
         <comment>button</comment>
-        <translation>כן</translation>
+        <translation>בסדר</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>האם אתה בטוח שברצונך למחוק את הโนטบוק? כל הביטאות בו תמחקו</translation>
+        <translation>אתה בטוח שברצונך למחוק את הספרייה?
+כל ההערות בה תימחקו</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>ברצונךหยุดการบันทึกปัจจุบัน?</translation>
+        <translation>אתה רוצה להפסיק את ההקלטה הנוכחית?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>לא ניתן להמיר את הโน้ตเสียงนี้ เนื่องจากไม่รองรับบันทึกที่ยาวเกิน 20 นาทีในขณะนี้</translation>
+        <translation>לא ניתן להמיר את ההערה הקולית הזו, כיוון שההערות עם אורך של יותר מ-20 דקות אינן נתמכות כרגע.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>กำลังแปลงบันทึกเสียง คุณต้องการหยุดหรือไม่?</translation>
+        <translation>ההערה הקולית מתורגמת כרגע. אתה רוצה להפסיק את זה?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>เสียงนำเข้าต่ำอาจทำให้เกิดการบันทึกที่ไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>העוצמה הנמוכה של הקלט יכולה לגרום להקלטות רעות.
+אתה רוצה להמשיך?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>การบันทึกที่ถูกตัดและข้อความที่แปลงจะไม่สามารถวางได้ คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>ההקלטות הפגוטות והטקסט המומר לא יועתקו.
+אתה רוצה להמשיך?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกนี้หรือไม่?</translation>
+        <translation>אתה בטוח שברצונך למחוק את ההערה הזו?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกที่เลือก %1 บันทึกหรือไม่?</translation>
+        <translation>אתה בטוח שברצונך למחוק את ההערות המותאמות %1?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
         <source>Cancel</source>
         <comment>button</comment>
-        <translation>ยกเลิก</translation>
+        <translation>בטל</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="98"/>
         <source>Confirm</source>
         <comment>button</comment>
-        <translation>ยืนยัน</translation>
+        <translation>אשר</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>การบันทึกล้มเหลว</translation>
+        <translation>השמור נכשל</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>คุณไม่มีสิทธิ์ในการบันทึกไฟล์ที่นั่น</translation>
+        <translation>אין לך הרשאה לשמור קבצים שם</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>บันทึกเสียงถูกลบแล้ว</translation>
+        <translation>ההערה הקולית נמחקה</translation>
     </message>
 </context>
 <context>
@@ -615,85 +527,83 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>האם אתה בטוח שברצונך למחוק את הโนטבוק?</translation>
+        <translation>אתה בטוח שברצונך למחוק את המחברת הזו?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>ברצונךหยุดการบันทึกปัจจุบัน?</translation>
+        <translation>אתה רוצה להפסיק את ההקלטה הנוכחית?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>האם אתה בטוח שברצונך למחוק את %1 הביטאותที่เลือก?</translation>
+        <translation>אתה בטוח שברצונך למחוק את ההערות המבוקרות %1?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>האם אתה בטוח שברצונך למחוק את הביטאהนี้?</translation>
+        <translation>אתה בטוח שברצונך למחוק את ההערה הזו?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>לא ניתן להמיר את הโน้טเสียงนี้ เนื่องจากไม่รองรับบันทึกที่ยาวเกิน 20 นาทีในขณะนี้</translation>
+        <translation>לא ניתן להמיר את ההערה הקולית הזו, מכיוון שההערות ארוכות מ-20 דקות אינן תומכות כרגע.</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>กำลังแปลงบันทึกเสียง คุณต้องการหยุดหรือไม่?</translation>
+        <translation>ההערה הקולית מומרת כרגע. האם אתה רוצה להפסיק?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>เสียงนำเข้าต่ำอาจทำให้เกิดการบันทึกที่ไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>העוצמה הנמוכה של הקלט עלולה להוביל להקלטות רעות. האם אתה רוצה להמשיך?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>การบันทึกที่ถูกตัดและข้อความที่แปลงจะไม่สามารถวางได้ คุณต้องการดำเนินการต่อหรือนำส่งหรือไม่?</translation>
+        <translation>ההקלטות הקצוצות והטקסט המומר לא יישארו בקצף. האם אתה רוצה להמשיך?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>การบันทึกล้มเหลว</translation>
+        <translation>השמור נכשל</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>คุณไม่มีสิทธิ์ในการบันทึกไฟล์ที่นั่น</translation>
+        <translation>אין לך הרשאה לשמור קבצים שם</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>บันทึกเสียงถูกลบแล้ว</translation>
+        <translation>ההערה הקולית נמחקה</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>ההמרה של קול לنصوص נכשלה בשל חיבור רשת לקוי, יש לבצע בדיקה</translation>
+        <translation>ההמרה הקולית נכשלה עקב חיבור רשת רע, בבקשה בדוק</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>כל המلاحظות בתוכן תמחאו</translation>
+        <translation>כל ההערות בה תינמחו</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
         <source>Delete</source>
-        <translation>למחוק</translation>
+        <translation>מחק</translation>
     </message>
 </context>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>לצמצם</translation>
+        <translation>בטל</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>לยืนтверд</translation>
+        <translation>אשר</translation>
     </message>
 </context>
 <context>
@@ -701,30 +611,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>לשמור כ_MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>ליצור מודעה</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>להתחיל ל_RECORD</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>לא נמצאה מכשיר הקלטה</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>לแทรก תמונה</translation>
+        <translation>שמור כ- MP3</translation>
     </message>
 </context>
 <context>
@@ -732,52 +619,52 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation>שכבה</translation>
+        <translation>גופן</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>גודל השכבה</translation>
+        <translation>גודל גופן</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation> цвет השכבה</translation>
+        <translation>צבע גופן</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>צבע הדגשה של טקסט</translation>
+        <translation>צבע הדגשה של הטקסט</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>מודגש</translation>
+        <translation>ש_bold</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>ניצוץ</translation>
+        <translation>ש_מיטליק</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>קו תחתון</translation>
+        <translation>ש_קו תחתון</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>קו עקומה</translation>
+        <translation>ש_קו חוצה</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>סימני רשימה</translation>
+        <translation>נקודות</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>סчетчик</translation>
+        <translation>מספרים</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
@@ -787,17 +674,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation>האחרון</translation>
+        <translation>אחרון</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>קול לنصوص</translation>
+        <translation>קול לنص</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>המרת קול לنصوص</translation>
+        <translation>המרה של קול לنص</translation>
     </message>
 </context>
 </TS>

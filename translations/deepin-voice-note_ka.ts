@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="ka">
 <context>
     <name>AppMain</name>
     <message>
         <location filename="../src/common/vlcplayer.cpp" line="87"/>
         <source>Voice Notes</source>
-        <translation>ხმა ნოტები</translation>
+        <translation>ხმის ჩანაწერები</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/db/vnotefolderoper.cpp" line="249"/>
         <source>Notebook</source>
-        <translation>ნოტების წიგნი</translation>
+        <translation>ჩანაწერი</translation>
     </message>
     <message>
         <location filename="../src/importolddata/olddbvisistors.cpp" line="139"/>
@@ -30,134 +30,63 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
-        <translation>გამოცხადება</translation>
+        <translation>ისარგებლების სახელის შეცვა</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>ახალი ნოტა</translation>
+        <translation>წაშალე</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>ახალი ნოტების წიგნის შექმნის შემდეგ შეგიძლიათ დაიწყოთ ხმის და ტექსტის ჩაწერა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
-        <translation>ნოტების წიგნის შექმნა</translation>
+        <translation>ჩანაწერის შექმნა</translation>
     </message>
 </context>
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>გადატანა </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> ნოტების წარდგენას მითითებული ადგილის დასახელების შემდეგ:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> ნოტას მითითებული ადგილის დასახელების შემდეგ:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>შენახვა როგორც</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>საძებნი შედეგები არ არსებობს</translation>
+        <translation>არ არის შედეგები</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>გაუქმება</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>მარცხენა ნახევარზე</translation>
+        <translation>ზედა სტიკერი</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>მარცხენა ნოტები</translation>
+        <translation>სტიკერები</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
-        <translation>ნოტების წიგნის შექმნა</translation>
+        <translation>ძებნა</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
-        <translation>ძებნა</translation>
+        <translation>გაუქმება</translation>
     </message>
 </context>
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>გადატანა ნოტა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
-        <translation>გაუქმება</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>დამტკიცება</translation>
+        <translation>გადატანა</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 ნოტა არჩეულია</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
-        <translation>გადატანა</translation>
+        <translation>შეინახე MP3-ში</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>შენახვა ნოტა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>შენახვა ხმა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
+        <translation>ხმის ტექსტში გადაყვანა</translation>
     </message>
 </context>
 <context>
@@ -165,57 +94,57 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="69"/>
         <source>Save as MP3</source>
-        <translation>შენახვა როგორც MP3</translation>
+        <translation>ყველას მინიჭება</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>ხმა როგორც ტექსტი</translation>
+        <translation>კოპირება</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
+        <translation>კოპირება</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="72"/>
         <source>Select all</source>
-        <translation>ყველას აირჩიე</translation>
+        <translation>ჩასმა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="73"/>
         <source>Copy</source>
-        <translation>კოპირება</translation>
+        <translation>ნახვა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="74"/>
         <source>Cut</source>
-        <translation>გადაკოპირება</translation>
+        <translation>შეინახე როგორც</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="75"/>
         <source>Paste</source>
-        <translation>ჩასმა</translation>
+        <translation>ტექსტის ხმად გადაყვანა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="78"/>
         <source>View</source>
-        <translation>ნახვა</translation>
+        <translation>გაჩინე წაკითხვა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="84"/>
         <source>Save as</source>
-        <translation>შენახვა როგორც</translation>
+        <translation>ხმის ტექსტში გადაყვანა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>ტექსტის სიტყვებიდან ხმა</translation>
+        <translation>ახალი ჩანაწერი</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
         <source>Stop reading</source>
-        <translation>ჩაკეტე წასმა</translation>
+        <translation>შეწყვიტე წაკითხვა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
@@ -233,12 +162,12 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="48"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
+        <translation>წაშალე</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
         <source>New note</source>
-        <translation>ახალი ამბავი</translation>
+        <translation>ახალი ჩანაწერი</translation>
     </message>
 </context>
 <context>
@@ -246,32 +175,32 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="63"/>
         <source>Save as HTML</source>
-        <translation>შენახვა როგორც HTML</translation>
+        <translation>შეინახეთ HTML-ში</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="64"/>
         <source>Save as TXT</source>
-        <translation>შენახვა როგორც TXT</translation>
+        <translation>შეინახეთ TXT-ში</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>შენახვა ამბავი</translation>
+        <translation>შეინახეთ შენიშვნა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
         <source>Rename</source>
-        <translation>გადარქმევა</translation>
+        <translation>სახელის შეცვლა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="54"/>
         <source>Move</source>
-        <translation>გადატანა</translation>
+        <translation>გადაადგილება</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="55"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
+        <translation>წაშალება</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
@@ -281,30 +210,30 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>ახალი ამბავი</translation>
+        <translation>ახალი შენიშვნა</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>სტიკი ზედა ნაწილში</translation>
+        <translation>დამაგრებული ზედა</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>გთხოვთ დაინსტალიროთ 'UOS AI' აპლიკაციის საიტიდან გამოყენება ადრე ასახლება</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>გთხოვთ დააყენოთ &apos;UOS AI&apos; აპარატის მაღაზიიდან გამოყენებამდე</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>ხმის შესატანი მოწყობილობა არ არის განახლებული. გთხოვთ შეამოწმოთ და სცადოთ თავიდან</translation>
+        <translation>არ არის აუდიო შეყვანის მოწყობილობა გამოვლენილი. გთხოვთ შეამოწმოთ და სცადოთ თავიდან</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>ხმის გამოტანის მოწყობილობა არ არის განახლებული. გთხოვთ შეამოწმოთ და სცადოთ თავიდან</translation>
+        <translation>არ არის აუდიო გამოყვანის მოწყობილობა გამოვლენილი. გთხოვთ შეამოწმოთ და სცადოთ თავიდან</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -317,12 +246,12 @@
     <message>
         <location filename="../src/common/setting.cpp" line="24"/>
         <source>Basic</source>
-        <translation>საბაზისო</translation>
+        <translation>ძირითადი</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="25"/>
         <source>Audio Source</source>
-        <translation>ხმის წყარო</translation>
+        <translation>აუდიო წყარო</translation>
     </message>
     <message>
         <location filename="../src/common/setting.cpp" line="26"/>
@@ -338,22 +267,18 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>საბაზისო</translation>
+        <translation>ძირითადი</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>ავტომატური წყარო</translation>
+        <translation>აუდიო წყარო</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
         <translation>შიდა</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
         <translation>მიკროფონი</translation>
     </message>
@@ -363,57 +288,57 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>ახალი გაფასული</translation>
+        <translation>ახალი ნოტაბუქი</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>გაფასულის რენამინგი</translation>
+        <translation>ნოტაბუქის სახელის შეცვლა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>გაფასულის წაშლა</translation>
+        <translation>ნოტაბუქის წაშლა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
         <source>New note</source>
-        <translation>ახალი ნოტა</translation>
+        <translation>ახალი შენიშვნა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>ნოტას რენამინგი</translation>
+        <translation>შენიშვნის სახელის შეცვლა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
         <source>Delete note</source>
-        <translation>ნოტას წაშლა</translation>
+        <translation>შენიშვნის წაშლა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>ჩატვირთვა/გაჩერება</translation>
+        <translation>სადამატებლო/დამატება</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
         <source>Record voice</source>
-        <translation>ხმის ჩასაწერად</translation>
+        <translation>ხმის ჩანაწერი</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="833"/>
         <source>Save note</source>
-        <translation>ნოტას შენახვა</translation>
+        <translation>შენიშვნის შენახვა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>ჩასაწერი ფაილების შენახვა</translation>
+        <translation>შეინახეთ ჩანაწერები</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
         <source>Select all</source>
-        <translation>ყველას არჩევა</translation>
+        <translation>ყველა აირჩიეთ</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="855"/>
@@ -423,27 +348,27 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="856"/>
         <source>Cut</source>
-        <translation>გადაკეტვა</translation>
+        <translation>გადაჭრა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="857"/>
         <source>Paste</source>
-        <translation>ჩასვება</translation>
+        <translation>ჩასვა</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>დაბრუნება</translation>
+        <translation>გაუქმება</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
         <source>Redo</source>
-        <translation>გამოსაყოფი</translation>
+        <translation>ხელახლა გააკეთე</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="860"/>
         <source>Delete</source>
-        <translation>წაშლა</translation>
+        <translation>წაშალე</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
@@ -453,7 +378,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>სიმბოლოების ჩვენება</translation>
+        <translation>ჩვენეთ საწყობი გარემო</translation>
     </message>
 </context>
 <context>
@@ -461,7 +386,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="810"/>
         <source>Notebooks</source>
-        <translation>გაფასულები</translation>
+        <translation>ნოტატები</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="838"/>
@@ -482,24 +407,8 @@
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
         <translation>პარამეტრები</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>პირადი მონაცემების პოლიტიკა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes არის მარტივი მემო ინსტრუმენტს, რომელიც ტექსტური ნოტების და ხმის ჩასაწერად გამოყენებულია.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>ხმის ნოტა</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>ჩამოტვირთვა ძველი ვერსიიდან, გთხოვთ მოიერიდეთ...</translation>
+        <translation>ჩანაწერების იმპორტი ძველი ვერსიიდან, გთხოვთ დაიხმაროთ...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 წუთი წინააღმდეგობით</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>%1 წუთი წინააღმდეგობით</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>გასვლის წინააღმდეგობით</translation>
+        <translation>1 წუთი წინ</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 წუთი წინააღმდეგობით</translation>
+        <translation>2 წუთი წინ</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 წუთი წინ&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>გუშინ</translation>
     </message>
 </context>
 <context>
@@ -545,42 +454,44 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>დასაშვებად გაქვთ ამ გამოკითხვის წაშლა? ყველა გამოკითხვა იქ გაიარება</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ ამ ნოტატის წაშლა?
+მასში ყველა ნოტი წაიშლება</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>გადახდით მიმდინარე ჩაწერა?</translation>
+        <translation>გსურთ მიმდინარე ჩანაწერის შეჩერება?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>ამ ხმის გამოკითხვას არ არის შესაძლებელი გადაკეთება, რადგან 20 წუთზე მეტი გამოკითხვები ამჟამად არ არის მხარდაჭერილი.</translation>
+        <translation>არ შეიძლება ამ ხმის ჩანაწერის გადაყვანა, რადგან 20 წუთზე მეტი ჩანაწერები არ არის მხარდაჭერილი
+ამჟამად.</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>ამ ხმის გამოკითხვას ახლა გადაკეთება. გადახდით მიმდინარე გადაკეთება?</translation>
+        <translation>ხმის ჩანაწერის გადაყვანა ხდება. გსურთ მისი შეჩერება?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>დაბალი შესატანი ხმის მაქსიმალური მაჩვენებელი შეიძლება არ იწვიოს მართალების ჩაწერა. გაგრძელებას შეგიძლიათ შემოწმოთ?</translation>
+        <translation>დაბალი შესავალი მასალის მომიტყველების შესაძლო შედეგი შეიძლება იყოს ცუდი ჩანაწერები. გსურთ განამართვა?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>ჩაკიდებული ჩაწერილებები და გადაკეთებული ტექსტი არ იქნება ჩამოსვლა. გაგრძელებას შეგიძლიათ შემოწმოთ?</translation>
+        <translation>გაჭრილი ჩანაწერები და გადაყვანილი ტექსტი არ ინახება. გსურთ განამართვა?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>დასაშვებად გაქვთ ამ ჩამონათლის წაშლა?</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ ამ ნოტის წაშლა?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>დასაშვებად გაქვთ არჩეული %1 ჩამონათლების წაშლა?</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ არჩეული %1 ნოტის წაშლა?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
@@ -597,17 +508,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="106"/>
         <source>Save failed</source>
-        <translation>შენახვა წარუმატებული არ არის</translation>
+        <translation>შენახვა ვერ მოხდა</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="111"/>
         <source>You do not have permission to save files there</source>
-        <translation>თქვენ არ გაქვთ შენახვის უფლება ამ ადგილზე</translation>
+        <translation>თქვენ არ გაქვთ უფლება ფაილების შენახვაში აქ</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>ხმის ჩამონათლა წაიშალა</translation>
+        <translation>ხმის ჩანაწერი წაშლილია</translation>
     </message>
 </context>
 <context>
@@ -615,85 +526,83 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>დასაშვებად გაქვთ ამ გამოკითხვის წაშლა?</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ ამ ნოტაბლის წაშლა?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>გადახდით მიმდინარე ჩაწერა?</translation>
+        <translation>გსურთ ამ დროის ჩანაწერის გაჩერება?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>დასაშვებად გაქვთ არჩეული %1 ჩამონათლების წაშლა?</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ არჩეული %1 ჩანაწერების წაშლა?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>დასაშვებად გაქვთ ამ ჩამონათლის წაშლა?</translation>
+        <translation>დარწმუნებული ხართ, რომ გსურთ ამ ჩანაწერის წაშლა?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>ამ ხმის ჩამონათლას არ არის შესაძლებელი გადაკეთება, რადგან 20 წუთზე მეტი ჩამონათლები ამჟამად არ არის მხარდაჭერილი.</translation>
+        <translation>ამ ხმის ჩანაწერის არ შეგიძლიათ გადაარიდოთ, რადგან 20 წუთზე მეტი ჩანაწერები ამ დროისთვის არ არის მხარდაჭერილი</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>ამ ხმის ჩამონათლას ახლა გადაკეთება. გადახდით მიმდინარე გადაკეთება?</translation>
+        <translation>ხმის ჩანაწერის გადაარიდება ხდება. გსურთ გაჩერდეს?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>დაბალი შესატანი ხმის მაქსიმალური მაჩვენებელი შეიძლება არ იწვიოს მართალების ჩაწერა. გაგრძელებას შეგიძლიათ შემოწმოთ?</translation>
+        <translation>დაბალი შესატანი მასალა შეიძლება გამოიწვიოს ცუდი ჩანაწერები. გსურთ განაგრძოთ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>ჩაკიდებული ჩაწერილებები და გადაკეთებული ტექსტი არ იქნება ჩამოსვლა. გაგრძელებას შეგიძლიათ შემოწმოთ?</translation>
+        <translation>კონკრეტული ჩანაწერები და გადაყვანილი ტექსტი არ ინეტენება. გსურთ განაგრძოთ?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>შენახვა წარუმატებული არ არის</translation>
+        <translation>შენახვა ვერ მოხდა</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>თქვენ არ გაქვთ შენახვის უფლება ამ ადგილზე</translation>
+        <translation>თქვენ არ გაქვთ უფლება ფაილების შენახვაში აქ</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>ხმის ჩამონათლა წაიშალა</translation>
+        <translation>ხმის ჩანაწერი წაშლილია</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>ვოცის კონვერსია ვერ მოხდა უკანა ქსელის შემოკლების გამო, გთხოვთ შეამოწმოთ</translation>
+        <translation>ხმის გადაყვანა ვერ მოხდა ცუდი ქსელის კავშირის გამო, გთხოვთ შეამოწმოთ</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>ყველა შენახული ნოტა წაშალდება</translation>
+        <translation>ყველა ჩანაწერი მასში წაიშლება</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
         <source>Delete</source>
-        <translation>წაშალე</translation>
+        <translation>გაუქმება</translation>
     </message>
 </context>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>გაუქმება</translation>
+        <translation>დადასტურება</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
-        <translation>დადასტურება</translation>
+        <translation>შეინახე როგორც MP3</translation>
     </message>
 </context>
 <context>
@@ -701,30 +610,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
-        <translation>შენახვა MP3-დან</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>ნოტის შექმნა</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>ჩაწერის დაწყება</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>ჩაწერის მოწყობილობა არ არის გამოკლებული</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>ფოტოს ჩასასმელად</translation>
+        <translation>შრიფტის ტიპი</translation>
     </message>
 </context>
 <context>
@@ -732,52 +618,52 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="146"/>
         <source>Font</source>
-        <translation>ფონტი</translation>
+        <translation>შრიფტის ზომა</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="147"/>
         <source>Font size</source>
-        <translation>ფონტის ზომა</translation>
+        <translation>შრიფტის ფერი</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="148"/>
         <source>Font color</source>
-        <translation>ფონტის ფერი</translation>
+        <translation>მოდიდებული</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="149"/>
         <source>Text highlight color</source>
-        <translation>ტექსტის გასასველი ფერი</translation>
+        <translation>იტალიკური</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="150"/>
         <source>Bold</source>
-        <translation>მატარებელი</translation>
+        <translation>გადასმული</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="151"/>
         <source>Italic</source>
-        <translation>იტალიური</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>ქვემოთ ხაზი</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>დამატკივნებული</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>სიმბოლოები</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>ნომერები</translation>
+        <translation>ნუმერაცია</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
@@ -787,17 +673,17 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="157"/>
         <source>Recent</source>
-        <translation>განახლებული</translation>
+        <translation>ბოლო დროის</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="173"/>
         <source>Voice To Text</source>
-        <translation>ვოციდან ტექსტში</translation>
+        <translation>ხმის ტექსტში გადაყვანა</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>ვოცის კონვერსია ტექსტში</translation>
+        <translation>ხმის ტექსტში გადაყვანა</translation>
     </message>
 </context>
 </TS>

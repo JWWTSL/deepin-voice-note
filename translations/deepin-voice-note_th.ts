@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="th">
 <context>
     <name>AppMain</name>
     <message>
@@ -30,30 +30,17 @@
 <context>
     <name>FolderListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="517"/>
         <source>Rename</source>
         <translation>เปลี่ยนชื่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="526"/>
         <source>Delete</source>
         <translation>ลบ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/FolderListView.qml" line="545"/>
-        <source>New Note</source>
-        <translation>บันทึกใหม่</translation>
     </message>
 </context>
 <context>
     <name>InitialInterface</name>
     <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="66"/>
-        <source>After creating a new notepad, you can start recording voice and text</source>
-        <translation>หลังจากสร้างสมุดบันทึกใหม่ คุณสามารถเริ่มบันทึกเสียงและข้อความได้</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/InitialInterface.qml" line="73"/>
         <source>Create Notebook</source>
         <translation>สร้างสมุดบันทึก</translation>
     </message>
@@ -61,55 +48,25 @@
 <context>
     <name>ItemListView</name>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source>move </source>
-        <translation>ย้าย </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="79"/>
-        <source> notes to :</source>
-        <translation> บันทึกไปยัง:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="81"/>
-        <source> note to :</source>
-        <translation> บันทึกไปยัง:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="160"/>
-        <source>Save As</source>
-        <translation>บันทึกเป็น</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="279"/>
         <source>No search results</source>
-        <translation>ไม่พบผลการค้นหา</translation>
+        <translation>ไม่มีผลลัพธ์การค้นหา</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
-        <source>Unpin</source>
-        <translation>ถอดการยึด</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="295"/>
         <source>Sticky on Top</source>
-        <translation>ยึดไว้ด้านบน</translation>
+        <translation>ติดอยู่ด้านบน</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/ItemListView.qml" line="752"/>
         <source>Sticky Notes</source>
-        <translation>บันทึกที่ยึดไว้</translation>
+        <translation>บันทึกติด</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="370"/>
         <source>Create Notebook</source>
         <translation>สร้างสมุดบันทึก</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MainWindow.qml" line="523"/>
         <source>Search</source>
         <translation>ค้นหา</translation>
     </message>
@@ -117,45 +74,17 @@
 <context>
     <name>MoveDialog</name>
     <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="24"/>
-        <source>Move Note</source>
-        <translation>ย้ายบันทึก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="136"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/dialog/MoveDialog.qml" line="153"/>
-        <source>Ok</source>
-        <translation>ตกลง</translation>
     </message>
 </context>
 <context>
     <name>MultipleChoices</name>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="37"/>
-        <source>%1 note selected</source>
-        <translation>%1 บันทึกถูกเลือก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="56"/>
         <source>Move</source>
         <translation>ย้าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="69"/>
-        <source>Save Note</source>
-        <translation>บันทึกบันทึก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="82"/>
-        <source>Save Voice</source>
-        <translation>บันทึกเสียง</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/MultipleChoices.qml" line="93"/>
         <source>Delete</source>
         <translation>ลบ</translation>
     </message>
@@ -170,7 +99,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="70"/>
         <source>Voice to Text</source>
-        <translation>แปลเสียงเป็นข้อความ</translation>
+        <translation>เสียงเป็นข้อความ</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="71"/>
@@ -210,7 +139,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="93"/>
         <source>Text to Speech</source>
-        <translation>ข้อความเป็นเสียง</translation>
+        <translation>ข้อความเป็นเสียงพูด</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="94"/>
@@ -220,7 +149,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="95"/>
         <source>Speech to Text</source>
-        <translation>เสียงเป็นข้อความ</translation>
+        <translation>เสียงพูดเป็นข้อความ</translation>
     </message>
 </context>
 <context>
@@ -238,7 +167,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="49"/>
         <source>New note</source>
-        <translation>สร้างโน้ตใหม่</translation>
+        <translation>บันทึกใหม่</translation>
     </message>
 </context>
 <context>
@@ -256,7 +185,7 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="57"/>
         <source>Save note</source>
-        <translation>บันทึกโน้ต</translation>
+        <translation>บันทึกบันทึก</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="52"/>
@@ -276,35 +205,35 @@
     <message>
         <location filename="../src/common/actionmanager.cpp" line="58"/>
         <source>Save voice recording</source>
-        <translation>บันทึกเสียง</translation>
+        <translation>บันทึกการบันทึกเสียง</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="60"/>
         <source>New note</source>
-        <translation>สร้างโน้ตใหม่</translation>
+        <translation>บันทึกใหม่</translation>
     </message>
     <message>
         <location filename="../src/common/actionmanager.cpp" line="53"/>
         <source>Sticky on Top</source>
-        <translation>ติดอยู่ด้านบน</translation>
+        <translation>ติดบนสุด</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="261"/>
-        <source>Please install 'UOS AI' from the App Store before using</source>
-        <translation>กรุณาติดตั้ง 'UOS AI' จาก App Store ก่อนใช้งาน</translation>
+        <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
+        <translation>กรุณาติดตั้ง &apos;UOS AI&apos; จาก App Store ก่อนใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="263"/>
         <source>No audio input device detected. Please check and try again</source>
-        <translation>ไม่พบอุปกรณ์นำเข้าเสียง กรุณาตรวจสอบและลองอีกครั้ง</translation>
+        <translation>ไม่พบอุปกรณ์ป้อนเสียง โปรดตรวจสอบและลองอีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="265"/>
         <source>No audio output device detected. Please check and try again</source>
-        <translation>ไม่พบอุปกรณ์ส่งออกเสียง กรุณาตรวจสอบและลองอีกครั้ง</translation>
+        <translation>ไม่พบอุปกรณ์ส่งเสียง โปรดตรวจสอบและลองอีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="99"/>
@@ -338,24 +267,20 @@
 <context>
     <name>SettingDialog</name>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="27"/>
         <source>Basic</source>
-        <translation>พื้นฐาน</translation>
+        <translation>สมุดบันทึกใหม่</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="32"/>
         <source>Audio Source</source>
-        <translation>แหล่งเสียง</translation>
+        <translation>เปลี่ยนชื่อสมุดบันทึก</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="59"/>
         <source>Internal</source>
-        <translation>ภายใน</translation>
+        <translation>ลบสมุดบันทึก</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/SettingDialog.qml" line="68"/>
         <source>Microphone</source>
-        <translation>ไมโครโฟน</translation>
+        <translation>เปลี่ยนชื่อบันทึก</translation>
     </message>
 </context>
 <context>
@@ -363,17 +288,17 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="804"/>
         <source>New notebook</source>
-        <translation>สร้างสมุดบันทึกใหม่</translation>
+        <translation>ลบบันทึก</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="805"/>
         <source>Rename notebook</source>
-        <translation>เปลี่ยนชื่อสมุดบันทึก</translation>
+        <translation>เล่น/หยุดชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="806"/>
         <source>Delete notebook</source>
-        <translation>ลบสมุดบันทึก</translation>
+        <translation>บันทึกเสียง</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="828"/>
@@ -383,7 +308,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="829"/>
         <source>Rename note</source>
-        <translation>เปลี่ยนชื่อบันทึก</translation>
+        <translation>แก้ไขชื่อบันทึก</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="830"/>
@@ -393,7 +318,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="831"/>
         <source>Play/Pause</source>
-        <translation>เล่น/หยุด</translation>
+        <translation>เล่น/หยุดชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="832"/>
@@ -408,7 +333,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="834"/>
         <source>Save recordings</source>
-        <translation>บันทึกการบันทึกเสียง</translation>
+        <translation>บันทึกการจดบันทึก</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="854"/>
@@ -433,7 +358,7 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="858"/>
         <source>Undo</source>
-        <translation>ยกเลิก</translation>
+        <translation>ย้อนกลับ</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="859"/>
@@ -448,12 +373,12 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="883"/>
         <source>Help</source>
-        <translation>ความช่วยเหลือ</translation>
+        <translation>ช่วยเหลือ</translation>
     </message>
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="884"/>
         <source>Display shortcuts</source>
-        <translation>แสดงคำสั่งลัด</translation>
+        <translation>แสดงคีย์ลัด</translation>
     </message>
 </context>
 <context>
@@ -476,30 +401,14 @@
     <message>
         <location filename="../src/common/VNoteMainManager.cpp" line="888"/>
         <source>Settings</source>
-        <translation>การตั้งค่า</translation>
+        <translation>ตั้งค่า</translation>
     </message>
 </context>
 <context>
     <name>TitleBarMenu</name>
     <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="16"/>
         <source>Settings</source>
-        <translation>การตั้งค่า</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="30"/>
-        <source>Privacy Policy</source>
-        <translation>นโยบายความเป็นส่วนตัว</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="53"/>
-        <source>Voice Notes is a lightweight memo tool to make text notes and voice recordings.</source>
-        <translation>Voice Notes เป็นเครื่องมือบันทึกข้อมูลเบากลางเพื่อสร้างบันทึกข้อความและบันทึกเสียง</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/TitleBarMenu.qml" line="55"/>
-        <source>Voice Note</source>
-        <translation>บันทึกเสียง</translation>
+        <translation>ตั้งค่า</translation>
     </message>
 </context>
 <context>
@@ -507,30 +416,30 @@
     <message>
         <location filename="../src/importolddata/upgradeview.cpp" line="35"/>
         <source>Importing notes from the old version, please wait...</source>
-        <translation>กำลังนำข้อมูลจากเวอร์ชันเก่า กรุณารอสักครู่...</translation>
+        <translation>กำลังนำเข้าบันทึกจากเวอร์ชันเก่า โปรดรอสักครู่...</translation>
     </message>
 </context>
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/common/utils.cpp" line="46"/>
+        <location filename="../tests/src/common/ut_utils.cpp" line="32"/>
         <source>1 min ago</source>
-        <translation>1 นาทีก่อนหน้านี้</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="48"/>
-        <source>%1 mins ago</source>
-        <translation>%1 นาทีก่อนหน้านี้</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utils.cpp" line="56"/>
-        <source>Yesterday</source>
-        <translation>เมื่อวาน</translation>
+        <translation>1 นาทีที่แล้ว</translation>
     </message>
     <message>
         <location filename="../tests/src/common/ut_utils.cpp" line="33"/>
         <source>2 mins ago</source>
-        <translation>2 นาทีก่อนหน้านี้</translation>
+        <translation>2 นาทีที่แล้ว</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utils.cpp" line="48"/>
+        <source>%1 mins ago</source>
+        <translation>&apos;%1 นาทีที่แล้ว&apos;</translation>
+    </message>
+    <message>
+        <location filename="../tests/src/common/ut_utils.cpp" line="37"/>
+        <source>Yesterday</source>
+        <translation>เมื่อวาน</translation>
     </message>
 </context>
 <context>
@@ -545,18 +454,18 @@
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="39"/>
         <source>Are you sure you want to delete this notebook?
 All notes in it will be deleted</source>
-        <translation>คุณแน่ใจว่าต้องการลบสมุดบันทึกนี้หรือไม่?
-บันทึกทั้งหมดในนี้จะถูกลบ</translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบสมุดบันทึกนี้?
+ทุกบันทึกในสมุดบันทึกนี้จะถูกลบ</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="46"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>คุณต้องการหยุดการบันทึกที่กำลังดำเนินอยู่หรือไม่?</translation>
+        <translation>คุณต้องการหยุดการบันทึกปัจจุบันหรือไม่?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="52"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>ไม่สามารถแปลงบันทึกเสียงนี้ได้ เนื่องจากไม่รองรับบันทึกที่ยาวเกิน 20 นาทีในขณะนี้</translation>
+        <translation>ไม่สามารถแปลงบันทึกเสียงนี้ได้ เนื่องจากบันทึกที่ยาวกว่า 20 นาทีไม่ได้รับการสนับสนุนในปัจจุบัน</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="59"/>
@@ -566,22 +475,22 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="65"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>ระดับเสียงอินพุตต่ำอาจทำให้เกิดการบันทึกที่ไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>ระดับเสียงขาเข้าต่ำอาจทำให้การบันทึกไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="72"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>การบันทึกที่ถูกตัดและข้อความที่แปลงจะไม่ถูกวางไว้ คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>การบันทึกที่ตัดและข้อความที่แปลงจะไม่ถูกวาง คุณต้องการดำเนินการต่อหรือไม่?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="81"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกนี้หรือไม่?</translation>
+        <translation>คุณแน่ใจหรือไม่ที่จะลบบันทึกนี้?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="87"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกที่เลือกไว้ %1 ชิ้นหรือไม่?</translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบบันทึก %1 ที่เลือกไว้?</translation>
     </message>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="94"/>
@@ -608,7 +517,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../tests/src/dialog/ut_vnotemessagedialog.cpp" line="116"/>
         <source>The voice note has been deleted</source>
-        <translation>บันทึกเสียงถูกลบแล้ว</translation>
+        <translation>เสียงบันทึกได้ถูกลบแล้ว</translation>
     </message>
 </context>
 <context>
@@ -616,83 +525,81 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="97"/>
         <source>Are you sure you want to delete this notebook?</source>
-        <translation>คุณแน่ใจว่าต้องการลบสมุดบันทึกนี้หรือไม่?</translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบสมุดบันทึกนี้?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="99"/>
         <source>Do you want to stop the current recording?</source>
-        <translation>คุณต้องการหยุดการบันทึกที่กำลังดำเนินอยู่หรือไม่?</translation>
+        <translation>คุณต้องการยกเลิกการบันทึกปัจจุบันหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="103"/>
         <source>Are you sure you want to delete the selected %1 notes?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกที่เลือกไว้ %1 ชิ้นหรือไม่?</translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบบันทึกที่เลือก %_% บันทึก?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="107"/>
         <source>Are you sure you want to delete this note?</source>
-        <translation>คุณแน่ใจว่าต้องการลบบันทึกนี้หรือไม่?</translation>
+        <translation>คุณแน่ใจหรือไม่ว่าต้องการลบบันทึกนี้?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="110"/>
         <source>Cannot convert this voice note, as notes over 20 minutes are not supported at present.</source>
-        <translation>ไม่สามารถแปลงบันทึกเสียงนี้ได้ เนื่องจากไม่รองรับบันทึกที่ยาวเกิน 20 นาทีในขณะนี้</translation>
+        <translation>ไม่สามารถแปลงเสียงบันทึกนี้ได้ เนื่องจากบันทึกที่ยาวกว่า 20 นาทียังไม่ได้รับการสนับสนุนในขณะนี้</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="114"/>
         <source>Converting a voice note now. Do you want to stop it?</source>
-        <translation>กำลังแปลงบันทึกเสียงอยู่ คุณต้องการหยุดหรือไม่?</translation>
+        <translation>ระดับเสียงเข้าที่ต่ำอาจทำให้การบันทึกเสียงไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="116"/>
         <source>The low input volume may result in bad recordings. Do you want to continue?</source>
-        <translation>ระดับเสียงอินพุตต่ำอาจทำให้เกิดการบันทึกที่ไม่ดี คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>การบันทึกที่ตัดและข้อความที่แปลงจะไม่ถูกวาง คุณต้องการดำเนินการต่อหรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="119"/>
         <source>The clipped recordings and converted text will not be pasted. Do you want to continue?</source>
-        <translation>การบันทึกที่ถูกตัดและข้อความที่แปลงจะไม่ถูกวางไว้ คุณต้องการดำเนินการต่อหรือไม่?</translation>
+        <translation>คุณไม่มีสิทธิ์ในการบันทึกไฟล์ที่นั่น</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="123"/>
         <source>Save failed</source>
-        <translation>การบันทึกล้มเหลว</translation>
+        <translation>การแปลงเสียงบันทึกล้มเหลวเนื่องจากการเชื่อมต่อเครือข่ายไม่ดี กรุณาตรวจสอบ</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="125"/>
         <source>You do not have permission to save files there</source>
-        <translation>คุณไม่มีสิทธิ์ในการบันทึกไฟล์ที่นั่น</translation>
+        <translation>บันทึกทั้งหมดในนั้นจะถูกลบออก</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="127"/>
         <source>The voice note has been deleted</source>
-        <translation>บันทึกเสียงถูกลบแล้ว</translation>
+        <translation>ลบ</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="129"/>
         <source>The voice conversion failed due to the poor network connection, please have a check</source>
-        <translation>การแปลงเสียงเป็นข้อความล้มเหลวเนื่องจากสัญญาณเครือข่ายไม่ดี กรุณาตรวจสอบ</translation>
+        <translation>ตัวเอียง</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="141"/>
         <source>All notes in it will be deleted</source>
-        <translation>บันทึกทั้งหมดในมันจะถูกลบ</translation>
+        <translation>ขีดเส้นใต้</translation>
     </message>
     <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="154"/>
         <source>Delete</source>
-        <translation>ลบ</translation>
+        <translation>ขีดฆ่า</translation>
     </message>
 </context>
 <context>
     <name>VNoteMessageDialogLoader</name>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="150"/>
         <source>Cancel</source>
-        <translation>ยกเลิก</translation>
+        <translation>รายการจุด</translation>
     </message>
     <message>
-        <location filename="../src/gui/dialog/VNoteMessageDialogLoader.qml" line="183"/>
         <source>Confirm</source>
         <translation>ยืนยัน</translation>
     </message>
@@ -703,29 +610,6 @@ All notes in it will be deleted</source>
         <location filename="../src/handler/web_engine_handler.cpp" line="647"/>
         <source>save as MP3</source>
         <translation>บันทึกเป็น MP3</translation>
-    </message>
-</context>
-<context>
-    <name>WindowTitleBar</name>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="60"/>
-        <source>Create Note</source>
-        <translation>สร้างบันทึก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>Start recording</source>
-        <translation>เริ่มบันทึก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="100"/>
-        <source>No recording device detected</source>
-        <translation>ไม่พบอุปกรณ์บันทึก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow/WindowTitleBar.qml" line="119"/>
-        <source>Insert picture</source>
-        <translation>แทรกรูปภาพ</translation>
     </message>
 </context>
 <context>
@@ -763,22 +647,22 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="152"/>
         <source>Underline</source>
-        <translation>ตัวใต้เส้น</translation>
+        <translation>ขีดเส้นใต้</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="153"/>
         <source>Strikethrough</source>
-        <translation>ตัวถูกลบ</translation>
+        <translation>ขีดเส้นลบที่ข้อความ</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="154"/>
         <source>Bullets</source>
-        <translation>รายการแบบตัวกลม</translation>
+        <translation>รายการจุด</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="155"/>
         <source>Numbering</source>
-        <translation>รายการแบบตัวเลข</translation>
+        <translation>การจัดลำดับ</translation>
     </message>
     <message>
         <location filename="../src/common/jscontent.cpp" line="156"/>
@@ -798,7 +682,7 @@ All notes in it will be deleted</source>
     <message>
         <location filename="../src/common/jscontent.cpp" line="174"/>
         <source>Converting voice to text</source>
-        <translation>กำลังแปลงเสียงเป็นข้อความ</translation>
+        <translation>การแปลงเสียงเป็นข้อความ</translation>
     </message>
 </context>
 </TS>
