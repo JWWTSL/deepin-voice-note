@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import VNote 1.0
 import org.deepin.dtk 1.0
@@ -29,7 +30,16 @@ Item {
         anchors.top: rootWindow.top
         height: 40
 
+        background: MouseArea {
+            onPressed: function(mouse) {
+                if (mouse.button === Qt.LeftButton && title.Window.window)
+                    title.Window.window.startSystemMove();
+            }
+        }
+
         menu: TitleBarMenu {
+            Accessible.name: "InitialInterfaceTitleBarMenu"
+            Accessible.role: Accessible.PopupMenu
             onOpenPrivacy: {
                 VNoteMainManager.showPrivacy();
             }
@@ -68,6 +78,8 @@ Item {
         }
 
         RecommandButton {
+            Accessible.name: "CreateNotebookInitial"
+            Accessible.role: Accessible.Button
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Layout.topMargin: 10
             text: qsTr("Create Notebook")

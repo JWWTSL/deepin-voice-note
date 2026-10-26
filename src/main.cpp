@@ -8,10 +8,14 @@
 #include "common/jscontent.h"
 #include "common/imageprovider.h"
 #include "common/vtextspeechandtrmanager.h"
+#include "common/tiptapchannelbridge.h"
 
+#include "importolddata/dbmigration/migrationorchestrator.h"
+#include "common/migrationviewcontroller.h"
 #include "config.h"
 
 #include <QQmlApplicationEngine>
+#include <QWindow>
 #include <QScopedPointer>
 #include <QQmlContext>
 #include <QStandardPaths>
@@ -24,15 +28,9 @@
 #include <QCommandLineParser>
 #include <QTimer>
 
-// 条件编译：根据 Qt 版本包含不同的 WebEngine 头文件
-#ifdef USE_QT5
-#include <QtWebEngine/QtWebEngine>
-#else
-#include <QtWebEngineQuick/qtwebenginequickglobal.h>
-#endif
-
 #include <DApplication>
 #include <DGuiApplicationHelper>
+#include <DPlatformHandle>
 #include <DLog>
 
 #include <stdio.h>
@@ -43,6 +41,7 @@
 
 DWIDGET_USE_NAMESPACE
 DCORE_USE_NAMESPACE
+DGUI_USE_NAMESPACE
 
 static void activateExistingInstanceViaDBus()
 {
@@ -102,24 +101,21 @@ int main(int argc, char *argv[])
     app->setApplicationVersion(VERSION);
     qInfo() << "Application initialized with version:" << VERSION;
 
+#ifndef NDEBUG
     qputenv("QTWEBENGINE_REMOTE_DEBUGGING", "7777");
+#endif
     VNoteMainManager::instance()->initQMLRegister();
     
-    // 条件编译：根据 Qt 版本使用不同的 WebEngine 初始化方法
-#ifdef USE_QT5
-    QtWebEngine::initialize();
-#else
-    QtWebEngineQuick::initialize();
-#endif
-    
     ImageProvider *imageProvider = ImageProvider::instance();
-    qInfo() << "QML and WebEngine initialized successfully";
+    qInfo() << "QML types initialized successfully";
 
     app->loadTranslator();
     app->setApplicationDisplayName(QObject::tr("deepin-voice-note"));
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     engine.addImageProvider("Provider", imageProvider);
+    engine.rootContext()->setContextProperty(
+        "hasExistingFolders", VNoteMainManager::hasExistingFolders());
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
@@ -132,17 +128,29 @@ int main(int argc, char *argv[])
         },
         Qt::QueuedConnection);
     engine.load(url);
+
+    if (!engine.rootObjects().isEmpty()) {
+        if (auto *rootWindow = qobject_cast<QWindow *>(engine.rootObjects().constFirst())) {
+            // KWin skips its opacity startup animation when startEffectType is 0.
+            DPlatformHandle platformHandle(rootWindow);
+            platformHandle.setWindowStartUpEffect(DPlatformHandle::EffectTypes());
+            rootWindow->show();
+            rootWindow->requestActivate();
+        }
+    }
     qInfo() << "QML engine loaded successfully";
 
-    VNoteMainManager::instance()->initNote();
-    qInfo() << "Note manager initialized";
+    // Tiptap 已作为默认富文本编辑器，默认执行存量 Summernote 数据迁移。
+    // 如需临时回退旧编辑器，可显式设置 DVN_TIPTAP_DISABLE=1。
+    if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+        MigrationViewController::instance()->start();
+    } else {
+        qInfo() << "Tiptap migration skipped because Tiptap is disabled by environment";
+    }
 
     DLogManager::registerConsoleAppender();
     DLogManager::registerFileAppender();
     qInfo() << "Log system initialized";
 
-    VTextSpeechAndTrManager::instance()->checkUosAiExists();
-    qInfo() << "UOS AI check completed";
-    
     return app->exec();
 }

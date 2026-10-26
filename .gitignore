@@ -22,3 +22,6 @@ build
 .spec-workflow/
 .npm-cache/
 .codegraph/
+# Frontend dependencies
+web-editor/node_modules/
+build-ut/

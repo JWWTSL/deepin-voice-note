@@ -1,0 +1,704 @@
+/* SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+   SPDX-License-Identifier: GPL-3.0-or-later */
+
+.tiptap-toolbar {
+    display: flex;
+    /* 616px 默认右侧编辑区：宿主左边距 10px，工具栏内容预算约 606px。
+       以下密度 token 保留 30px 控件热区，仅压缩间距，保证设计稿中的全量按钮常驻一行。 */
+    --dvn-toolbar-group-gap: 2px;
+    --dvn-toolbar-separator-margin: 3px;
+    --dvn-toolbar-color-button-gap: 1px;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    width: max-content;
+    max-width: calc(100% - 10px);
+    flex-shrink: 0;
+    min-height: 40px;
+    box-sizing: border-box;
+    margin: 0 0 0 10px;
+    padding: 4px 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--dvn-toolbar-fg, #3f3f3f);
+    overflow: visible;
+    position: relative;
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", Helvetica, Arial, sans-serif;
+    user-select: none;
+}
+
+.tiptap-toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+.tiptap-toolbar-group {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dvn-toolbar-group-gap);
+}
+
+.tiptap-toolbar-separator {
+    flex: 0 0 1px;
+    width: 1px;
+    height: 20px;
+    margin: 0 var(--dvn-toolbar-separator-margin);
+    background: var(--dvn-toolbar-separator, rgba(0, 0, 0, 0.08));
+}
+
+.tiptap-toolbar button,
+.tiptap-toolbar select {
+    height: 30px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    outline: none;
+    font-size: 14px;
+}
+
+.tiptap-select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    height: 30px;
+}
+
+.tiptap-native-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tiptap-select-button {
+    position: relative;
+    width: 100%;
+    min-width: 0 !important;
+    padding: 0 4px 0 6px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 4px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tiptap-select-label {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*
+ * 标题/字体/字号混合时保留默认选项文字作为隐藏布局文本，使控件宽度和
+ * 箭头位置与默认态一致。QtWebEngine 对 visibility:hidden 的超宽文本仍可能
+ * 绘制 text-overflow 省略号，因此空白态必须同时关闭按钮和标签的省略号。
+ */
+.tiptap-select-wrap.is-layout-blank .tiptap-select-button,
+.tiptap-select-wrap.is-layout-blank .tiptap-select-label {
+    text-overflow: clip;
+}
+
+.tiptap-select-wrap.is-layout-blank .tiptap-select-label {
+    visibility: hidden;
+}
+
+.tiptap-select-arrow {
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+}
+
+.tiptap-select-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    display: none;
+    flex-direction: column;
+    min-width: 90px;
+    max-height: 360px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: var(--dvn-menu-padding, 8px 6px);
+    box-sizing: border-box;
+    z-index: 30;
+    background: var(--dvn-menu-bg, rgba(247, 247, 247, 0.92));
+    border: 1px solid var(--dvn-menu-border, rgba(0, 0, 0, 0.06));
+    border-radius: var(--dvn-menu-radius, 12px);
+    box-shadow: var(--dvn-menu-shadow, 0 8px 20px rgba(0, 0, 0, 0.12)),
+                inset 0 0 0 0.5px var(--dvn-menu-inner-border, rgba(255, 255, 255, 0.70));
+    -webkit-backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+    backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+}
+
+.tiptap-select-menu::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.tiptap-select-wrap.is-open .tiptap-select-menu {
+    display: flex;
+}
+
+.tiptap-select-option {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0;
+    height: var(--dvn-menu-item-height, 30px) !important;
+    flex: 0 0 var(--dvn-menu-item-height, 30px);
+    padding: 0 10px !important;
+    border: 0 !important;
+    border-radius: var(--dvn-menu-item-radius, 6px) !important;
+    background: transparent !important;
+    color: var(--dvn-menu-item-fg, var(--dvn-toolbar-fg, #000000)) !important;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: var(--dvn-menu-item-height, 30px);
+    text-align: left;
+    justify-content: flex-start !important;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tiptap-select-check {
+    display: inline-block;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    color: inherit;
+    background-color: currentColor;
+    -webkit-mask: var(--tiptap-select-check-mask) center / 16px 16px no-repeat;
+    mask: var(--tiptap-select-check-mask) center / 16px 16px no-repeat;
+    visibility: hidden;
+}
+
+.tiptap-select-option[aria-selected="true"] .tiptap-select-check {
+    visibility: visible;
+}
+
+.tiptap-select-option-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tiptap-select-option:hover,
+.tiptap-select-option:focus-visible,
+.tiptap-select-option[aria-selected="true"] {
+    background-color: var(--dvn-menu-selected-bg, var(--highlightColor, #2878e8)) !important;
+    color: var(--dvn-menu-selected-fg, #ffffff) !important;
+    outline: none;
+}
+
+.tiptap-select-heading {
+    width: 58px;
+}
+
+.tiptap-select-fontFamily {
+    width: 74px;
+}
+
+.tiptap-select-fontSize {
+    width: 40px;
+}
+
+.tiptap-select-fontFamily .tiptap-select-menu {
+    width: 220px;
+    min-width: 220px;
+    max-height: 220px;
+}
+
+.tiptap-select-fontFamily .tiptap-select-option {
+    font-size: 14px;
+}
+
+.tiptap-select-fontSize .tiptap-select-menu {
+    min-width: 58px;
+}
+
+.tiptap-select-heading .tiptap-select-menu {
+    width: 184px;
+    min-width: 184px;
+    padding: 4px 6px;
+}
+
+.tiptap-select-heading .tiptap-select-option {
+    --dvn-heading-option-height: 30px;
+    --dvn-heading-option-font-size: 14px;
+    --dvn-heading-option-font-weight: 700;
+    height: var(--dvn-heading-option-height) !important;
+    min-height: var(--dvn-heading-option-height);
+    flex: 0 0 var(--dvn-heading-option-height);
+    padding: 0 10px !important;
+    font-size: var(--dvn-heading-option-font-size);
+    font-weight: var(--dvn-heading-option-font-weight);
+    line-height: 1.2;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="p"] {
+    --dvn-heading-option-font-size: 14px;
+    --dvn-heading-option-font-weight: 400;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="1"] {
+    --dvn-heading-option-height: 42px;
+    --dvn-heading-option-font-size: 24px;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="2"] {
+    --dvn-heading-option-height: 40px;
+    --dvn-heading-option-font-size: 20px;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="3"] {
+    --dvn-heading-option-height: 34px;
+    --dvn-heading-option-font-size: 18px;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="4"] {
+    --dvn-heading-option-font-size: 16px;
+}
+
+.tiptap-select-heading .tiptap-select-option[data-value="5"] {
+    --dvn-heading-option-font-size: 14px;
+}
+
+
+.tiptap-toolbar button {
+    min-width: 30px;
+    padding: 0 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+
+/* Sketch：DTK/按钮/组合按钮/透明背景-文字左对齐-Light
+   外层 74/40px，内容左 6px、文字与 12px 箭头间距 4px、字号 12px。 */
+.tiptap-toolbar .tiptap-select-button {
+    padding: 0 4px 0 6px !important;
+    gap: 4px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.tiptap-toolbar .tiptap-select-label {
+    line-height: 16px;
+}
+
+.tiptap-toolbar .tiptap-select-button .tiptap-select-arrow {
+    flex: 0 0 12px;
+    width: 12px;
+    height: 12px;
+}
+
+.tiptap-toolbar button:hover,
+.tiptap-toolbar select:hover,
+.tiptap-toolbar .tiptap-select-wrap.is-open .tiptap-select-button,
+.tiptap-toolbar .tiptap-color-menu-button[aria-expanded="true"] {
+    background: var(--dvn-hover-bg, rgba(0, 0, 0, 0.06));
+}
+
+/*
+ * 选中/激活态统一使用主题色（与文本选区、右键菜单选中项、语音块选中一致）。
+ * press 是独立的交互反馈，不能复用选中色，否则鼠标按下时会看起来像直接
+ * 切换成了选中态。active/check 仍是主题色，长按先显示灰色 press，松开后
+ * 才落到最终的选中态。
+ */
+.tiptap-toolbar button.is-active,
+.tiptap-toolbar button[aria-pressed="true"] {
+    background: var(--dvn-menu-selected-bg, var(--highlightColor, #2878e8));
+}
+
+.tiptap-toolbar button:active:not(:disabled),
+.tiptap-toolbar button.is-pressing:not(:disabled) {
+    background: var(--dvn-press-bg, rgba(0, 0, 0, 0.10));
+}
+
+/* hover 只作用于普通态；已选中/展开/press 的按钮使用各自的交互色。 */
+.tiptap-toolbar button:hover:not(:disabled):not(:active):not(.is-pressing):not(.is-active):not([aria-pressed="true"]):not([aria-expanded="true"]) .tiptap-icon {
+    color: var(--dvn-toolbar-hover-fg, #000000);
+}
+
+.tiptap-toolbar button.is-active .tiptap-icon,
+.tiptap-toolbar button[aria-pressed="true"] .tiptap-icon {
+    color: var(--dvn-menu-selected-fg, #ffffff);
+}
+
+/* press 使用普通工具栏前景色；主动按钮松开后才进入 white-on-theme 选中态。 */
+.tiptap-toolbar button:active:not(:disabled) .tiptap-icon,
+.tiptap-toolbar button.is-pressing:not(:disabled) .tiptap-icon {
+    color: var(--dvn-toolbar-hover-fg, #000000);
+}
+
+/* 展开态只表示“面板已打开”，不属于选中，保持主题色图标 + 灰色浮层。 */
+.tiptap-toolbar .tiptap-more-button[aria-expanded="true"] .tiptap-icon,
+.tiptap-toolbar .tiptap-select-wrap.is-open .tiptap-select-button .tiptap-icon,
+.tiptap-toolbar .tiptap-color-menu-button[aria-expanded="true"] .tiptap-icon {
+    color: var(--highlightColor, #0081ff);
+}
+
+.tiptap-toolbar button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.tiptap-toolbar select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0 18px 0 5px;
+    cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 10px) 13px, calc(100% - 6px) 13px;
+    background-size: 4px 4px, 4px 4px;
+    background-repeat: no-repeat;
+}
+
+.tiptap-toolbar select[data-control="heading"] {
+    width: 58px;
+}
+
+.tiptap-toolbar select[data-control="fontFamily"] {
+    width: 74px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tiptap-toolbar select[data-control="fontSize"] {
+    width: 40px;
+}
+
+.tiptap-format-bold {
+    font-weight: 700;
+    font-size: 24px !important;
+}
+
+.tiptap-format-italic {
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 24px !important;
+}
+
+.tiptap-format-underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-size: 23px !important;
+}
+
+.tiptap-format-strike {
+    text-decoration: line-through;
+    font-size: 23px !important;
+}
+
+.tiptap-color-picker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+}
+
+.tiptap-color-button {
+    width: 30px;
+    min-width: 30px;
+    padding: 0 !important;
+}
+
+.tiptap-color-menu-button {
+    width: 12px;
+    min-width: 12px !important;
+    padding: 0 !important;
+}
+
+.tiptap-color-icon {
+    position: relative;
+    min-width: 18px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.tiptap-color-icon::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    bottom: 1px;
+    height: 3px;
+    background: var(--dvn-current-color, #000000);
+}
+
+.tiptap-color-button[data-format="backColor"] .tiptap-color-icon::after {
+    background: var(--dvn-current-color, #0081ff);
+}
+
+.tiptap-color-icon > .tiptap-icon {
+    width: 16px;
+    height: 17px;
+}
+
+.tiptap-color-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    margin-left: 0;
+}
+
+.tiptap-color-arrow > .tiptap-icon {
+    width: 12px;
+    height: 12px;
+}
+
+.tiptap-color-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: -12px;
+    grid-template-columns: repeat(5, 22px);
+    grid-auto-rows: 22px;
+    justify-content: center;
+    column-gap: 4px;
+    row-gap: 10px;
+    width: 153px;
+    box-sizing: border-box;
+    padding: 10px 10px;
+    z-index: 20;
+    background: var(--dvn-menu-bg, rgba(247, 247, 247, 0.92));
+    border: 1px solid var(--dvn-menu-border, rgba(0, 0, 0, 0.06));
+    border-radius: var(--vn-menu-radius, var(--dvn-menu-radius, 12px));
+    box-shadow: var(--dvn-menu-shadow, 0 8px 20px rgba(0, 0, 0, 0.12)),
+                inset 0 0 0 0.5px var(--dvn-menu-inner-border, rgba(255, 255, 255, 0.70));
+    -webkit-backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+    backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+}
+
+/* 颜色面板嵌在“更多”半透明面板中时，两个 backdrop-filter 会叠加，
+   让色板看起来像被穿透了一样。嵌套场景改用实色表面，普通工具栏的
+   独立色板仍保留设计稿要求的半透明模糊。 */
+.tiptap-overflow-panel .tiptap-color-panel {
+    background: var(--dvn-menu-solid-bg, #f7f7f7);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.tiptap-color-panel button[data-color] {
+    position: relative;
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    min-height: 22px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--dvn-color-chip-border, rgba(0, 0, 0, 0.20));
+    border-radius: 8px;
+    box-shadow: none;
+    transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.tiptap-color-panel button[data-color]:hover,
+.tiptap-color-panel button[data-color]:focus-visible,
+.tiptap-color-panel button[data-color][aria-pressed="true"] {
+    border-color: #ffffff;
+    box-shadow: 0 0 0 1.5px var(--highlightColor, #0883fb);
+    outline: none;
+    transform: scale(1.08);
+    z-index: 1;
+}
+
+.tiptap-color-panel button[data-color="transparent"] {
+    background: var(--dvn-color-transparent-bg, #ffffff) !important;
+    overflow: hidden;
+}
+
+.tiptap-color-panel button[data-color="transparent"]::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 110%;
+    height: 1px;
+    background-color: var(--dvn-color-transparent-line, rgba(0, 0, 0, 0.25));
+    transform: translate(-50%, -50%) rotate(135deg);
+    pointer-events: none;
+}
+
+.tiptap-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    fill: currentColor;
+    stroke: currentColor;
+}
+
+.tiptap-icon > svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.tiptap-icon > img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* 外部 SVG 作为 img 时不会继承 currentColor；统一用同一资源的 mask 渲染，
+   让普通态/hover/选中态都跟随工具栏主题色，暗色模式不再残留黑色图标。 */
+.tiptap-icon--asset {
+    position: relative;
+}
+
+.tiptap-icon--asset::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    -webkit-mask-image: var(--tiptap-icon-mask);
+    mask-image: var(--tiptap-icon-mask);
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.tiptap-icon--asset > img {
+    opacity: 0;
+}
+
+/* Resource insertion icons are part of the same toolbar icon system as the
+   migrated Summernote buttons, so keep them at 16px and theme them via currentColor. */
+.tiptap-resource-group .tiptap-icon {
+    width: 16px;
+    height: 16px;
+}
+
+
+.tiptap-more-button {
+    position: relative;
+    min-width: 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin-left: 0;
+    border-radius: var(--dvn-menu-item-radius, 6px) !important;
+    color: inherit !important;
+    font-size: 16px !important;
+    letter-spacing: 0;
+}
+
+/* Native title tooltips are misplaced by QtWebEngine in both the sticky
+   toolbar and the fixed overflow panel. Every toolbar control therefore uses
+   a hint anchored to the control itself, matching the Summernote tooltip. */
+.tiptap-toolbar button[data-tooltip] {
+    position: relative;
+}
+
+.tiptap-toolbar button[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    z-index: 50;
+    padding: 4px 8px;
+    border: 1px solid var(--dvn-tooltip-border, rgba(0, 0, 0, 0.08));
+    border-radius: 8px;
+    background: var(--dvn-tooltip-bg, rgba(245, 245, 245, 0.98));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    color: var(--dvn-tooltip-fg, #3f3f3f);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -2px);
+    transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+}
+
+.tiptap-toolbar button[data-tooltip]:not(:disabled):hover::after,
+.tiptap-toolbar button[data-tooltip]:not(:disabled):focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.tiptap-more-button[aria-expanded="true"] {
+    background: var(--dvn-hover-bg, rgba(0, 0, 0, 0.06));
+}
+
+.tiptap-more-button .tiptap-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.tiptap-overflow-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
+    z-index: 30;
+    align-items: center;
+    gap: 4px;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 4px 6px;
+    border: 1px solid var(--dvn-menu-border, rgba(0, 0, 0, 0.06));
+    border-radius: var(--dvn-menu-radius, 12px);
+    background: var(--dvn-menu-bg, rgba(247, 247, 247, 0.92));
+    box-shadow: var(--dvn-menu-shadow, 0 8px 20px rgba(0, 0, 0, 0.12)),
+                inset 0 0 0 0.5px var(--dvn-menu-inner-border, rgba(255, 255, 255, 0.70));
+    -webkit-backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+    backdrop-filter: blur(var(--dvn-menu-backdrop-blur, 20px));
+    max-width: calc(100vw - 12px);
+    /*
+     * The color palettes are absolutely positioned below their trigger.  The
+     * overflow toolbar is itself a fixed popover, so clipping its vertical
+     * overflow hides the palettes as soon as a color button is folded into
+     * the “more” menu.  Keep the popover content visible in both directions;
+     * its width is already constrained by max-width and the palette is
+     * clamped by the viewport positioning logic.
+     */
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.tiptap-overflow-panel.is-open {
+    display: flex;
+}
+
+.tiptap-overflow-panel .tiptap-toolbar-separator {
+    margin: 0 5px;
+}
+
+.tiptap-hidden-command {
+    display: none !important;
+}

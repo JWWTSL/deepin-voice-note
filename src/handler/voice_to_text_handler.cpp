@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2024 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -11,8 +11,10 @@
 #include "globaldef.h"
 #include "common/vnoteitem.h"
 #include "common/vnotea2tmanager.h"
+#include "common/uosaicapabilitymanager.h"
 #include "common/jscontent.h"
 #include "common/VNoteMainManager.h"
+#include "common/tiptapchannelbridge.h"
 #include "opsstateinterface.h"
 
 /**
@@ -34,6 +36,13 @@ void VoiceToTextHandler::setAudioToText(const QSharedPointer<VNVoiceBlock> &voic
     m_voiceBlock = voiceBlock;
     if (!m_voiceBlock) {
         qWarning() << "Voice block is null";
+        return;
+    }
+
+    auto capability = UosAiCapabilityManager::instance()->checkCapability(UosAiCapabilityManager::AudioToText);
+    if (UosAiCapabilityManager::instance()->isUpdateRequired(capability)) {
+        qWarning() << "Audio-to-text operation failed: UOS AI capability unavailable" << capability;
+        Q_EMIT uosAiUpdateRequired();
         return;
     }
 
@@ -124,12 +133,24 @@ void VoiceToTextHandler::onA2TSuccess(const QString &text)
 
     // 检查当前笔记是否是发起转换的笔记
     int currentNoteId = VNoteMainManager::instance()->currentNoteId();
+    bool isTiptapEnabled = TiptapChannelBridge::instance()->tiptapEnabled();
 
     if (currentNoteId == m_originalNoteId) {
-        // 当前在原始笔记，通过 voiceId 精确定位语音块更新 UI
-        Q_EMIT JsContent::instance()->callJsSetVoiceTextByPath(m_originalVoiceId, text, JsContent::AsrFlag::End);
+        if (isTiptapEnabled) {
+            // Tiptap 路径：仍在原始笔记，通过桥信号通知前端更新语音块
+            TiptapChannelBridge::instance()->emitVoiceToTextCompleted(m_originalVoiceId, text);
+        } else {
+            // Summernote 路径：通过 voiceId 精确定位语音块更新 UI
+            Q_EMIT JsContent::instance()->callJsSetVoiceTextByPath(m_originalVoiceId, text, JsContent::AsrFlag::End);
+        }
+    } else if (isTiptapEnabled) {
+        // Tiptap 路径：已切换笔记，写回 Tiptap JSON 信封并通知前端
+        qInfo() << "Note switched during conversion, saving result to original note:"
+                << m_originalNoteId << "current note:" << currentNoteId;
+        VNoteMainManager::instance()->insertVoiceTextToTiptapNote(m_originalNoteId, m_originalVoiceId, text);
+        TiptapChannelBridge::instance()->emitVoiceToTextCompleted(m_originalVoiceId, text);
     } else {
-        // 已切换到其他笔记，在 C++ 层直接修改原始笔记的 HTML
+        // Summernote 路径：已切换笔记，在 C++ 层直接修改原始笔记的 HTML
         qInfo() << "Note switched during conversion, saving result to original note:"
                 << m_originalNoteId << "current note:" << currentNoteId;
         VNoteMainManager::instance()->insertVoiceTextToNote(m_originalNoteId, m_originalVoiceId, text);

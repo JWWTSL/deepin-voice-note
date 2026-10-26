@@ -34,6 +34,8 @@ Item {
     property int topSize: 0
     property alias view: itemListView
     property bool webVisible: true
+    property Item scrollBarParent: null
+    property int scrollBarRightAnchor: 0
 
     signal deleteFinished
     signal deleteNotes(int number)
@@ -158,7 +160,7 @@ Item {
             moveFolderModel.append({
                 name: folder.name,
                 icon: folder.icon,
-                folderIndex: i
+                folderId: folder.folderId
             });
         }
     }
@@ -349,6 +351,9 @@ Item {
     }
 
     MoveDialog {
+        Accessible.name: "MoveNoteDialog"
+        Accessible.role: Accessible.Dialog
+
         id: dialogWindow
 
         folderModel: moveFolderModel
@@ -367,18 +372,25 @@ Item {
             }
             if (indexList.length === 0)
                 return;
-            var folderIndex = moveFolderModel.get(index).folderIndex;
-            VNoteMainManager.moveNotes(indexList, folderIndex);
+            var folderId = moveFolderModel.get(index).folderId;
+            VNoteMainManager.moveNotesToFolderId(indexList, folderId);
         }
     }
 
     VNoteMessageDialogLoader {
+        Accessible.name: "ItemListMessageDialog"
+        Accessible.role: Accessible.Dialog
+
         id: messageDialogLoader
 
     }
 
     DragControl {
+        Accessible.name: "ItemListDragControl"
+        Accessible.role: Accessible.Pane
+
         id: dragControl
+        parent: rootItem.Window.window ? rootItem.Window.window.contentItem : rootItem
 
     }
 
@@ -612,6 +624,9 @@ Item {
     }
 
     VNoteRightMenu {
+        Accessible.name: "NoteContextMenu"
+        Accessible.role: Accessible.PopupMenu
+
         id: noteCtxMenu
 
         menuType: ActionManager.NoteCtxMenu
@@ -763,6 +778,8 @@ Item {
     }
 
     ListView {
+        Accessible.name: "NoteItemListView"
+
         id: itemListView
 
         property var contextIndex: -1
@@ -787,17 +804,30 @@ Item {
         visible: true
 
         ScrollBar.vertical: ScrollBar {
+            Accessible.name: "NoteListScrollBar"
+
+            id: verticalScrollBar
+
+            parent: rootItem.scrollBarParent ? rootItem.scrollBarParent : itemListView
+            x: rootItem.scrollBarParent ? rootItem.scrollBarRightAnchor - width : parent.width - width
+            y: 0
+            height: parent.height
         }
 
         delegate: Rectangle {
             id: rootItemDelegate
 
+            Accessible.name: model.name
+            Accessible.description: qsTr("Note item")
+            Accessible.role: Accessible.ListItem
             property bool hovered: false
             property bool isRename: false
             property bool isSelected: selectedNoteItem.indexOf(index) !== -1
             property var startMove: [-1, -1]
 
-            color: isSelected ? (rootItem.activeFocus ? palette.highlight : (DTK.themeType === ApplicationHelper.LightType ? "#33000000" : "#33FFFFFF")) : (DTK.themeType === ApplicationHelper.LightType ? "white" : "#0CFFFFFF")
+            // 选中态始终使用系统主题高亮色；失焦时也不退化成灰色，
+            // 避免编辑器获得焦点后笔记选中项看起来像未选中。
+            color: isSelected ? palette.highlight : (DTK.themeType === ApplicationHelper.LightType ? "white" : "#0CFFFFFF")
             enabled: !isPlay || itemListView.currentIndex === index
             // 录音时：当前项保持正常显示，其他项置灰
             opacity: (isRecordingAudio && index !== itemListView.currentIndex) ? 0.5 : 1.0
@@ -871,7 +901,7 @@ Item {
 
                     // width: parent.width - 10
                     Layout.fillWidth: true
-                    color: DTK.themeType === ApplicationHelper.LightType ? (isSelected ? (rootItem.activeFocus ? palette.highlightedText : "black") : "black") : "white"
+                    color: isSelected ? palette.highlightedText : (DTK.themeType === ApplicationHelper.LightType ? "black" : "white")
                     elide: Text.ElideRight
                     font: DTK.fontManager.t6
                     height: implicitHeight
@@ -884,7 +914,7 @@ Item {
                     id: timeLabel
 
                     Layout.fillWidth: true
-                    color: isSelected ? (rootItem.activeFocus ? "#7FFFFFFF" : DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF") : (DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF")
+                    color: isSelected ? "#7FFFFFFF" : (DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF")
                     font.pixelSize: 10
                     height: implicitHeight
                     horizontalAlignment: Text.AlignHLeft
@@ -1016,7 +1046,7 @@ Item {
 
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        color: isSelected ? (rootItem.activeFocus ? "#7FFFFFFF" : DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF") : (DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF")
+                        color: isSelected ? "#7FFFFFFF" : (DTK.themeType === ApplicationHelper.LightType ? "#7F000000" : "#7FFFFFFF")
                         font.pixelSize: 10
                         horizontalAlignment: Text.AlignLeft
                         text: model.folderName
@@ -1033,7 +1063,6 @@ Item {
 
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 anchors.fill: parent
-                drag.target: this
                 hoverEnabled: true
 
                 onClicked: {
@@ -1083,14 +1112,12 @@ Item {
                         case Qt.ControlModifier:
                             var nextSelection = selectedNoteItem.slice();
                             var pos = nextSelection.indexOf(index);
-                            if (pos != -1) {
+                            if (pos != -1)
                                 nextSelection.splice(pos, 1);
-                                selectSize--;
-                            } else {
+                            else
                                 nextSelection.push(index);
-                                selectSize++;
-                            }
                             selectedNoteItem = nextSelection;
+                            selectSize = validSelectedNoteIndexes().length;
                             break;
                         case Qt.ShiftModifier:
                             var anchorIndex = Math.max(0, Math.min(itemListView.lastCurrentIndex, itemModel.count - 1));
@@ -1150,18 +1177,23 @@ Item {
                         dragControl.itemNumber = validIndexes.length;
                         dragControl.itemText = itemModel.get(validIndexes[0]).name;
                         dragControl.visible = true;
-                        dragControl.x = globPos.x;
-                        dragControl.y = globPos.y;
+                        var dragPos = dragControl.parent.mapFromGlobal(globPos.x, globPos.y);
+                        dragControl.x = dragPos.x;
+                        dragControl.y = dragPos.y;
                         mouseChanged(globPos.x, globPos.y);
                     } else {
                         dragControl.visible = false;
                     }
                 }
                 onPressed: function(mouse) {
+                    if (mouse.button === Qt.LeftButton && Window.window)
+                        Window.window.listPointerDown = true;
                     startMove[0] = mouse.x;
                     startMove[1] = mouse.y;
                 }
                 onReleased: function(mouse) {
+                    if (Window.window)
+                        Window.window.listPointerDown = false;
                     if (isRecordingAudio || isPlay) {
                         startMove = [-1, -1];
                         held = false;
@@ -1172,6 +1204,13 @@ Item {
                     if (held && dragControl.visible && mouse.button === Qt.LeftButton) {
                         dropRelease();
                     }
+                    held = false;
+                    dragControl.visible = false;
+                }
+                onCanceled: {
+                    if (Window.window)
+                        Window.window.listPointerDown = false;
+                    startMove = [-1, -1];
                     held = false;
                     dragControl.visible = false;
                 }
@@ -1214,12 +1253,17 @@ Item {
 
             delegate: Rectangle {
                 color: "transparent"
-                height: section == "top" ? (18) : 16
+                height: section == "top" ? Math.max(18, Math.ceil(sectionStickyFontMetrics.height) + 6) : 16
                 width: parent.width
+
+                FontMetrics {
+                    id: sectionStickyFontMetrics
+                    font.pixelSize: 12
+                }
 
                 RowLayout {
                     anchors.left: parent.left
-                    anchors.top: parent.top
+                    anchors.verticalCenter: parent.verticalCenter
                     spacing: 4
                     visible: section == "top" && !isSearch
                     
@@ -1238,6 +1282,7 @@ Item {
                     Text {
                         color: "#b3000000"
                         font.pixelSize: 12
+                        verticalAlignment: Text.AlignVCenter
                         text: qsTr("Sticky Notes")
                     }
                 }

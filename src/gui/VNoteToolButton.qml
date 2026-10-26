@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 import org.deepin.dtk 1.0
 
 /**
@@ -16,12 +17,18 @@ import org.deepin.dtk 1.0
  */
 ToolButton {
     id: root
+    // Base component template is not a runtime locator; concrete instances
+    // provide their own Accessible.name and opt back into accessibility.
+    Accessible.ignored: true
 
     activeFocusOnTab: true
+    display: text.length > 0 ? AbstractButton.TextBesideIcon : AbstractButton.IconOnly
     flat: true
     hoverEnabled: enabled
 
     background: VNoteButtonBackground {
+        Accessible.name: "VNoteToolButtonBackground"
+        Accessible.role: Accessible.Pane
         button: root
     }
 
