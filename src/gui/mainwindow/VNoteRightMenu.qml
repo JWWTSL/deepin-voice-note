@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2024 - 2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -147,6 +147,9 @@ Menu {
         id: menuItemCreator
 
         MenuItem {
+            id: menuItem
+            Accessible.name: ActionManager.actionText(menuItem.menuId)
+            Accessible.onPressAction: menuItem.triggered()
             property int menuId: 0
 
             height: visible ? implicitHeight : 0

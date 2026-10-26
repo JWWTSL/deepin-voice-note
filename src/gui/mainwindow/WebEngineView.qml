@@ -24,8 +24,16 @@ Item {
     property bool isRecordingAudio: false
     property bool isVoiceToText: false
     property bool noSearchResult: false
-    property bool webVisible: true
+    property bool webVisible: false
+    property bool summernoteVisible: true
     property alias titleBar: title
+    // 所有录音入口共用这一组条件，避免工具栏、标题栏和 Ctrl+R
+    // 在搜索、播放、转写、录音或没有可用音源时出现不一致。
+    readonly property bool recordingAvailable:
+        !initialVisible
+        && webVisible
+        && title.recordBtnEnabled
+        && !VNoteMainManager.isInSearchMode()
 
     Timer {
         id: txtMenuToolbarTimer
@@ -35,6 +43,7 @@ Item {
         readonly property int maxRetries: 8
         onTriggered: rootItem.passTxtMenuToToolbar(txtCtxMenu, retryCount)
     }
+
 
     // 累加可见子项 implicitHeight/height（来自 DTK 布局，不用硬编码行高）
     function txtMenuItemsHeight(menu) {
@@ -82,6 +91,128 @@ Item {
         return isFinite(n) ? n : 0;
     }
 
+    Timer {
+        id: tiptapSurfaceRefreshTimer
+        // 等窗口全屏/最大化的几何变化结束后再处理，避免在过渡动画中
+        // 用旧尺寸的 WebEngine backing surface 拉伸整页内容。
+        interval: 160
+        repeat: false
+        onTriggered: rootItem.refreshTiptapSurface()
+    }
+
+    Timer {
+        id: tiptapSurfaceRestoreTimer
+        // 至少跨过一个渲染帧，确保 visible=false 已被提交给 Scene Graph。
+        interval: 32
+        repeat: false
+        onTriggered: rootItem.restoreTiptapSurface()
+    }
+
+    property bool tiptapSurfaceHadFocus: false
+
+    function scheduleTiptapSurfaceRefresh() {
+        if (!TiptapChannel.tiptapEnabled || !tiptapLoader.item || !rootItem.webVisible) {
+            return;
+        }
+        tiptapSurfaceRefreshTimer.restart();
+    }
+
+    function refreshTiptapSurface() {
+        var tiptapView = tiptapLoader.item ? tiptapLoader.item.editor : null;
+        if (!tiptapView || !tiptapView.visible) {
+            return;
+        }
+
+        // QQuickWebEngineView 在窗口全屏/最大化后可能沿用切换前尺寸的
+        // 合成纹理，令文字、SVG 图标和菜单同时被低分辨率拉伸。临时卸载
+        // surface 后跨帧恢复，使其按最终窗口尺寸重新申请纹理；不刷新页面，
+        // 因而不会丢失当前笔记、光标或下拉菜单状态。
+        tiptapSurfaceHadFocus = tiptapView.activeFocus;
+        tiptapView.visible = false;
+        tiptapSurfaceRestoreTimer.restart();
+    }
+
+    function restoreTiptapSurface() {
+        var tiptapView = tiptapLoader.item ? tiptapLoader.item.editor : null;
+        if (!tiptapView || !rootItem.webVisible) {
+            return;
+        }
+        tiptapView.visible = true;
+        if (tiptapSurfaceHadFocus) {
+            tiptapView.forceActiveFocus();
+        }
+        tiptapSurfaceHadFocus = false;
+    }
+
+    function consumeTiptapNativeZoomFactor(tiptapView) {
+        if (!tiptapView || !TiptapChannel.tiptapEnabled) {
+            return;
+        }
+        var factor = Number(tiptapView.zoomFactor);
+        if (!isFinite(factor) || Math.abs(factor - 1.0) < 0.001) {
+            return;
+        }
+
+        // 工具栏是应用 chrome，不参与正文缩放。若 QtWebEngine 仍触发
+        // 整页 zoom，将本次 factor 转给 Tiptap 正文缩放并立即复位 WebEngine。
+        var safeFactor = Math.max(0.1, Math.min(10.0, factor));
+        tiptapView.runJavaScript(
+            "window.__dvnTiptapApplyNativeZoomFactor"
+            + "&& window.__dvnTiptapApplyNativeZoomFactor(" + safeFactor + ");");
+        tiptapView.dvnResettingNativeZoom = true;
+        tiptapView.zoomFactor = 1.0;
+        Qt.callLater(function() {
+            if (tiptapView) {
+                tiptapView.dvnResettingNativeZoom = false;
+            }
+        });
+    }
+
+    function clearTiptapInsertionSelection() {
+        var tiptapView = tiptapLoader.item ? tiptapLoader.item.editor : null;
+        if (tiptapView) {
+            tiptapView.runJavaScript(
+                "window.__dvnTiptapClearInsertionSelection"
+                + "&& window.__dvnTiptapClearInsertionSelection();");
+        }
+    }
+
+    function stableUrlList(urls) {
+        var copied = [];
+        if (!urls) {
+            return copied;
+        }
+        for (var i = 0; i < urls.length; ++i) {
+            copied.push(urls[i]);
+        }
+        return copied;
+    }
+
+    function insertImagesAtTiptapClientPoint(urls, x, y) {
+        // DropEvent 是临时事件对象，runJavaScript callback 异步触发时
+        // drop.urls 可能已经失效；必须先复制成稳定列表再进入回调。
+        var imageUrls = stableUrlList(urls);
+        if (imageUrls.length === 0) {
+            return;
+        }
+
+        var tiptapView = tiptapLoader.item ? tiptapLoader.item.editor : null;
+        if (!tiptapView) {
+            VNoteMainManager.insertImages(imageUrls);
+            return;
+        }
+
+        var safeX = toJsInt(x);
+        var safeY = toJsInt(y);
+        tiptapView.runJavaScript(
+            "(function(){return !!(window.__dvnTiptapCaptureInsertionPointFromClient"
+            + "&& window.__dvnTiptapCaptureInsertionPointFromClient("
+            + safeX + "," + safeY + "));})()",
+            function() {
+                VNoteMainManager.insertImages(imageUrls);
+            });
+    }
+
     function passTxtMenuToToolbar(menu, retryCount) {
         if (!menu.visible || !webView) {
             return;
@@ -119,12 +250,146 @@ Item {
     signal saveAudio
     signal saveNote
 
+    // QWebEnginePage::WebAction values are stable across Qt5/Qt6 here:
+    // Copy=5, Undo=7, Redo=8.  Keep Tiptap routing in one place so both
+    // global shortcuts and context-menu actions target the active editor.
+    function triggerTiptapWebAction(action, preferContextTranscript) {
+        var tiptapView = tiptapLoader.item ? tiptapLoader.item.editor : null;
+        if (!tiptapView) {
+            return;
+        }
+
+        var webAction = Number(action);
+        if (webAction === 7) {
+            tiptapView.runJavaScript("window.__dvnTiptapUndo && window.__dvnTiptapUndo()");
+            return;
+        }
+        if (webAction === 8) {
+            tiptapView.runJavaScript("window.__dvnTiptapRedo && window.__dvnTiptapRedo()");
+            return;
+        }
+        if (webAction === 5) {
+            // 语音转写文本位于 atom NodeView 内部，优先使用专用复制通道；
+            // 快捷键只使用当前 DOM 选区/近期选区缓存，避免误用历史右键上下文；
+            // 右键菜单 fallback 则允许使用当前 context transcript。
+            var transcriptCopyScript = preferContextTranscript
+                    ? "window.__dvnTiptapGetContextTranscriptCopyText ? window.__dvnTiptapGetContextTranscriptCopyText() : ''"
+                    : "window.__dvnTiptapGetShortcutTranscriptCopyText ? window.__dvnTiptapGetShortcutTranscriptCopyText() : ''";
+            tiptapView.runJavaScript(
+                transcriptCopyScript,
+                function(text) {
+                    if (typeof text === "string" && text.length > 0) {
+                        TiptapChannel.jsCopyPlainTextToClipboard(text);
+                    } else {
+                        tiptapView.triggerWebAction(action);
+                    }
+                });
+            return;
+        }
+        tiptapView.triggerWebAction(action);
+    }
+
     function copy() {
-        webView.triggerWebAction(5);
+        if (TiptapChannel.tiptapEnabled && tiptapLoader.item) {
+            triggerTiptapWebAction(5, false);
+        } else {
+            webView.triggerWebAction(5);
+        }
+    }
+
+    // Web 侧（正文或页内标题输入框）是否持有键盘焦点。窗口级 Ctrl+A 用它判断是否
+    // 需要接管：Web 侧有焦点时按键由 Web 自己处理，宿主不能抢。
+    readonly property bool editorOwnsKeyboardFocus: {
+        if (TiptapChannel.tiptapEnabled) {
+            return tiptapLoader.item ? tiptapLoader.item.editor.activeFocus : false;
+        }
+        return webView.activeFocus;
+    }
+
+    function selectAll() {
+        // 键盘焦点被 QML 控件（笔记列表、工具栏按钮等）抢走后，Ctrl+A 不会进入
+        // WebEngine，表现为"全选没反应"；这里显式聚焦 Web 编辑器再执行全选。
+        if (!webVisible) {
+            return;
+        }
+        if (TiptapChannel.tiptapEnabled && tiptapLoader.item) {
+            var tiptapView = tiptapLoader.item.editor;
+            tiptapView.forceActiveFocus();
+            tiptapView.runJavaScript(
+                "if(window.__dvnTiptapEditor){window.__dvnTiptapEditor.commands.focus();"
+                + "window.__dvnTiptapEditor.chain().selectAll().run();}");
+        } else {
+            webView.forceActiveFocus();
+            webView.triggerWebAction(9);
+        }
+    }
+
+    Timer {
+        id: resourceButtonSyncTimer
+        interval: 0
+        repeat: false
+        onTriggered: rootItem.syncTiptapResourceButtons()
+    }
+
+    // Tiptap 工具栏资源按钮由 Web DOM 承载，状态来源却分散在宿主侧
+    // 录音、播放、搜索、设备可用性等绑定里。统一走 0ms Timer 合并同步，
+    // 让 QML 绑定（尤其 title.recordBtnEnabled 的派生值）先稳定下来，
+    // 避免停止录音时先同步到 disabled，后续派生状态变为 enabled 却没有再刷 DOM。
+    function scheduleTiptapResourceButtonsSync() {
+        if (!TiptapChannel.tiptapEnabled) {
+            return;
+        }
+        resourceButtonSyncTimer.restart();
+    }
+
+    // 工具栏中的资源按钮不再由标题栏直接承载，需要把宿主侧运行态
+    // 同步到 Tiptap DOM，保持与原 Summernote 入口一致。
+    function syncTiptapResourceButtons() {
+        if (!TiptapChannel.tiptapEnabled || !tiptapLoader.item) {
+            return;
+        }
+
+        var tiptapView = tiptapLoader.item.editor;
+        if (!tiptapView) {
+            return;
+        }
+
+        var voiceEnabled = rootItem.recordingAvailable;
+        // Summernote 的图片入口原本只受 imageBtnEnable(webVisible) 控制。
+        var imageEnabled = webVisible;
+        var script = "window.__dvnTiptapSetResourceButtonsEnabled && "
+                + "window.__dvnTiptapSetResourceButtonsEnabled("
+                + (voiceEnabled ? "true" : "false") + ","
+                + (imageEnabled ? "true" : "false") + ");";
+        tiptapView.runJavaScript(script);
+    }
+
+    onRecordingAvailableChanged: scheduleTiptapResourceButtonsSync()
+    onIsRecordingAudioChanged: scheduleTiptapResourceButtonsSync()
+    onIsVoiceToTextChanged: scheduleTiptapResourceButtonsSync()
+    onWebVisibleChanged: scheduleTiptapResourceButtonsSync()
+    onInitialVisibleChanged: scheduleTiptapResourceButtonsSync()
+
+    Component.onCompleted: {
+        // changeMode() 可能早于 QML Connections 建立，不能只依赖
+        // updateRecordBtnState 信号初始化录音按钮。设备已插入时以当前
+        // 可解析的录音设备为准，避免被尚未刷新的缓存误判为不可用。
+        title.recorderBtnEnable = VoiceRecoderHandler.isRecordDeviceEnabled();
+        scheduleTiptapResourceButtonsSync();
     }
 
     function focusWebView() {
-        webView.forceActiveFocus();
+        // Tiptap 模式下编辑器位于 tiptapLoader 加载的 sourceComponent，需经 tiptapLoader.item
+        // 跨 Loader 作用域访问 tiptapWebView；item 为 null（inactive/加载中）时跳过聚焦避免 TypeError。
+        // 否则保持原有 Summernote webView 聚焦逻辑。
+        if (TiptapChannel.tiptapEnabled) {
+            if (tiptapLoader.item) {
+                tiptapLoader.item.editor.forceActiveFocus();
+                tiptapLoader.item.editor.runJavaScript("window._dvnTiptapFocus && window._dvnTiptapFocus()");
+            }
+        } else {
+            webView.forceActiveFocus();
+        }
     }
 
     function showJsContextMenu() {
@@ -226,18 +491,35 @@ Item {
     }
 
     function startRecording() {
-        if (VNoteMainManager.isInSearchMode()) {
-            console.log("Cannot show recording UI while in search mode");
-            return;
+        if (!recordingAvailable) {
+            console.log("Cannot start recording: recording is unavailable");
+            return false;
         }
-        
+
         if (!recorderViewLoader.active) {
             recorderViewLoader.active = true;
-        } else {
+        } else if (recorderViewLoader.item) {
             recorderViewLoader.item.visible = true;
         }
         isRecording = true;
         title.recorderBtnEnable = false;
+        scheduleTiptapResourceButtonsSync();
+        return true;
+    }
+
+    function resetRecordingUi() {
+        isRecording = false;
+        title.isRecording = false;
+        title.recorderBtnEnable = VoiceRecoderHandler.isRecordDeviceEnabled();
+        if (recorderViewLoader.active && recorderViewLoader.item) {
+            recorderViewLoader.item.visible = false;
+            recorderViewLoader.item.time = "00:00:00";
+        }
+        Qt.callLater(function() {
+            recorderViewLoader.active = false;
+            rootItem.scheduleTiptapResourceButtonsSync();
+        });
+        scheduleTiptapResourceButtonsSync();
     }
 
     function stopAndClose() {
@@ -263,7 +545,7 @@ Item {
     function toggleMultCho(choices) {
         if (choices > 1) {
             webVisible = false;
-            webRect.visible = false;
+            summernoteVisible = false;
             if (!multipleChoicesLoader.active) {
                 multipleChoicesLoader.active = true;
             }
@@ -274,15 +556,23 @@ Item {
         } else {
             multipleChoicesLoader.visible = false;
             webVisible = true;
-            webRect.visible = true;
+            summernoteVisible = true;
             multipleChoicesLoader.item.visible = false;
         }
     }
 
     visible: true
 
+    Connections {
+        target: Window.window
+
+        function onVisibilityChanged() {
+            rootItem.scheduleTiptapSurfaceRefresh();
+        }
+    }
+
     onNoSearchResultChanged: {
-        webRect.visible = !noSearchResult;
+        summernoteVisible = !noSearchResult;
     }
 
     ColumnLayout {
@@ -295,6 +585,9 @@ Item {
             id: titleBarHost
 
             Layout.fillWidth: true
+            // 没有笔记时其余区域均为不可见项，ColumnLayout 会把固定高度项
+            // 按默认 alignment 放到可用空间中间；标题栏必须始终贴在顶部。
+            Layout.alignment: Qt.AlignTop
             Layout.minimumHeight: 50
             Layout.maximumHeight: 50
 
@@ -307,10 +600,12 @@ Item {
             }
 
             WindowTitleBar {
+                Accessible.name: "WebViewTitleBar"
+                Accessible.role: Accessible.Pane
+
                 id: title
 
                 anchors.fill: parent
-                imageBtnEnable: webVisible
                 isInitialInterface: initialVisible
                 isRecordingAudio: rootItem.isRecordingAudio
                 isVoiceToText: rootItem.isVoiceToText
@@ -345,9 +640,12 @@ Item {
 
             Layout.fillHeight: true
             Layout.fillWidth: true
+            visible: summernoteVisible && !TiptapChannel.tiptapEnabled
             color: DTK.themeType === ApplicationHelper.LightType ? "#FFFFFF" : "#242424"
 
             WebEngineView {
+                Accessible.ignored: true
+
                 id: webView
 
                 anchors.fill: parent
@@ -356,13 +654,15 @@ Item {
                 visible: webVisible
 
                 Component.onCompleted: {
-                    noteWebChannel.registerObject("webobj", Webobj);
-                    // console.log("registerObject ret: " + ret)
-                    webView.webChannel = noteWebChannel;
-                    webView.url = Qt.resolvedUrl(Webobj.webPath());
+                    if (!TiptapChannel.tiptapEnabled) {
+                        noteWebChannel.registerObject("webobj", Webobj);
+                        // console.log("registerObject ret: " + ret)
+                        webView.webChannel = noteWebChannel;
+                        webView.url = Qt.resolvedUrl(Webobj.webPath());
 
-                    // 隐藏浮动工具栏
-                    Webobj.calllJsShowEditToolbar(0, 0);
+                        // 隐藏浮动工具栏
+                        Webobj.calllJsShowEditToolbar(0, 0);
+                    }
                 }
                 onContextMenuRequested: req => {
                     // 初始页可见或编辑器不可见时，屏蔽右键菜单
@@ -437,6 +737,7 @@ Item {
                     onPlayingVoice: isPlay => {
                         playStateChange(isPlay);
                         title.isPlaying = isPlay;
+                        rootItem.scheduleTiptapResourceButtonsSync();
                     }
                     onPopupToast: (message, msgId) => {
                         DTK.sendMessage(webView, message, "icon_warning", 4000, msgId);
@@ -448,10 +749,21 @@ Item {
                     }
                     onRequestMessageDialog: type => {
                         // 触发创建提示对话框
-                        messageDialogLoader.showDialog(type);
+                        if (type === VNoteMessageDialogHandler.UpdateUosAi) {
+                            messageDialogLoader.showDialog(type, ret => {
+                                if (ret)
+                                    VNoteMainManager.openUosAiInAppStore();
+                            });
+                        } else {
+                            messageDialogLoader.showDialog(type);
+                        }
                     }
                     onTriggerWebAction: action => {
-                        webView.triggerWebAction(action);
+                        if (TiptapChannel.tiptapEnabled && tiptapLoader.item) {
+                            triggerTiptapWebAction(action, true);
+                        } else {
+                            webView.triggerWebAction(action);
+                        }
                     }
                     onViewPicture: filePath => {
                         viewPictureLoader.path = filePath;
@@ -477,14 +789,191 @@ Item {
             }
         }
 
+
+        // Tiptap 默认富文本 WebEngineView
+        Loader {
+            id: tiptapLoader
+
+            active: TiptapChannel.tiptapEnabled
+            // 搜索无结果时由 noSearchRect 占据编辑区，Tiptap 不应继续参与布局，
+            // 否则会被 ColumnLayout 排到无结果区域下方，导致工具栏出现在底部。
+            // 多选占位页显示时 webVisible=false；此时 Tiptap Loader 不能继续
+            // 参与 ColumnLayout 分配高度，否则多选插图和操作浮窗会被挤到
+            // 编辑内容区下半部分，看起来不在内容区居中。
+            visible: active && !noSearchResult && rootItem.webVisible
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            sourceComponent: Item {
+                Accessible.name: "TiptapWebView"
+                Accessible.role: Accessible.Pane
+                property WebEngineView editor: tiptapWebView
+                anchors.fill: parent
+
+                WebEngineView {
+                    Accessible.ignored: true
+
+                    id: tiptapWebView
+
+                    property bool dvnResettingNativeZoom: false
+
+                    anchors.fill: parent
+                    backgroundColor: DTK.themeType === ApplicationHelper.LightType ? "white" : "black"
+                    visible: rootItem.webVisible
+
+                    settings.localContentCanAccessFileUrls: true
+
+                    Component.onCompleted: {
+                        tiptapWebChannel.registerObject("tiptapChannel", TiptapChannel);
+                        tiptapWebView.webChannel = tiptapWebChannel;
+                        tiptapWebView.url = Qt.resolvedUrl(TiptapChannel.tiptapHtmlPath());
+                    }
+
+                    onLoadingChanged: function(loadRequest) {
+                        if (loadRequest.status === WebEngineView.LoadSucceededStatus) {
+                            if (Math.abs(tiptapWebView.zoomFactor - 1.0) >= 0.001) {
+                                tiptapWebView.dvnResettingNativeZoom = true;
+                                tiptapWebView.zoomFactor = 1.0;
+                                Qt.callLater(function() { tiptapWebView.dvnResettingNativeZoom = false; });
+                            }
+                            tiptapWebView.forceActiveFocus();
+                            tiptapWebView.runJavaScript("window._dvnTiptapFocus && window._dvnTiptapFocus()");
+                            handler.onThemeChanged();
+                            rootItem.scheduleTiptapResourceButtonsSync();
+                        }
+                    }
+
+                    onZoomFactorChanged: {
+                        if (tiptapWebView.dvnResettingNativeZoom) {
+                        } else {
+                            rootItem.consumeTiptapNativeZoomFactor(tiptapWebView);
+                        }
+                    }
+
+                    onContextMenuRequested: req => {
+                        req.accepted = true;
+                        var rawX = Number(req.position.x);
+                        var rawY = Number(req.position.y);
+                        if (isNaN(rawX) || isNaN(rawY)) return;
+                        var sx = String(Math.round(rawX));
+                        var sy = String(Math.round(rawY));
+                        // QtWebEngine 在 Tiptap 空白正文处给出的 editFlags 不稳定；
+                        // 粘贴可用性最终还会结合宿主查询到的系统剪贴板状态。
+                        var nativeEditFlags = Number(req.editFlags);
+                        tiptapWebView.runJavaScript(
+                            "(function(){"
+                            + "function flags(canSelectAll,canCopy,canCut,canPaste,canDelete){return {canSelectAll:!!canSelectAll,canCopy:!!canCopy,canCut:!!canCut,canPaste:!!canPaste,canDelete:!!canDelete,canSpeech:!!canCopy,canDictation:!!canPaste};}"
+                            + "function selectionInside(target){var sel=window.getSelection();if(!target||!sel||sel.rangeCount===0)return false;for(var i=0;i<sel.rangeCount;i++){var r=sel.getRangeAt(i);var a=r.startContainer;var b=r.endContainer;if(target===a||target.contains(a)||target===b||target.contains(b))return true;}return false;}"
+                            + "function selectionTouches(target){var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed||!sel.toString())return false;for(var i=0;i<sel.rangeCount;i++){var r=sel.getRangeAt(i);if(r.intersectsNode){try{if(r.intersectsNode(target))return true;}catch(e){}}else{var cr=document.createRange();cr.selectNodeContents(target);if(r.compareBoundaryPoints(Range.END_TO_START,cr)>0&&r.compareBoundaryPoints(Range.START_TO_END,cr)<0)return true;}}return false;}"
+                            + "var el=document.elementFromPoint(" + sx + "," + sy + ");"
+                            + "var pointer=window.__dvnTiptapContextPointer||null;"
+                            + "var capturedTranscript=(window.__dvnTiptapContextTranscript&&document.contains(window.__dvnTiptapContextTranscript))?window.__dvnTiptapContextTranscript:null;"
+                            + "var clickedTranscript=(el&&el.closest)?el.closest('.translateText'):null;"
+                            + "var transcript=clickedTranscript||capturedTranscript;"
+                            + "var pointerTranscript=(pointer&&pointer.transcript===transcript)?pointer:null;"
+                            + "var transcriptSelectionActive=pointerTranscript?!!pointerTranscript.selectionInsideTranscript:!!(transcript&&selectionInside(transcript));"
+                            + "var pmSelection=window.__dvnTiptapEditor?window.__dvnTiptapEditor.state.selection:null;"
+                            + "var selectedVoiceDom=null;"
+                            + "if(pmSelection&&!pmSelection.empty&&pmSelection.node&&pmSelection.node.type&&pmSelection.node.type.name==='voiceBlock'){selectedVoiceDom=window.__dvnTiptapEditor.view.nodeDOM(pmSelection.from);}"
+                            + "var selectedVoiceBox=(selectedVoiceDom&&selectedVoiceDom.closest)?selectedVoiceDom.closest('.voiceBox'):null;"
+                            + "var clickedSelectedVoice=!!(selectedVoiceBox&&el&&selectedVoiceBox.contains(el));"
+                            + "var transcriptInSelectedVoice=!!(selectedVoiceBox&&transcript&&selectedVoiceBox.contains(transcript));"
+                            + "if(clickedSelectedVoice&&transcriptInSelectedVoice&&!transcriptSelectionActive){var selectedInfo=selectedVoiceBox.querySelector('.voiceInfoBox')||selectedVoiceBox;window.__dvnTiptapContextTranscript=null;return JSON.stringify({type:1,json:selectedInfo.getAttribute('data-voice-meta')||''});}"
+                            + "if(!el&&transcript){var copyText0=window.__dvnTiptapGetContextTranscriptCopyText?window.__dvnTiptapGetContextTranscriptCopyText():'';var menuCopy0=window.__dvnTiptapGetContextTranscriptMenuCopyText?window.__dvnTiptapGetContextTranscriptMenuCopyText():(selectionTouches(transcript)?copyText0:'');return JSON.stringify({type:2,json:'__tiptap_transcript_text:'+copyText0,flags:flags(true,!!menuCopy0,false,false,false),transcript:true});}"
+                            + "if(!el){window.__dvnTiptapContextTranscript=null;return JSON.stringify({type:2,json:'',flags:flags(true,false,false,true,false)});}"
+                            + "var contextProgressBar=el.closest?el.closest('.progressBar'):null;var contextPlayback=contextProgressBar&&contextProgressBar.closest('.voicePlayback');if(contextPlayback&&(contextPlayback.classList.contains('play')||contextPlayback.classList.contains('pause')))return JSON.stringify({type:3,suppress:true});"
+                            + "if(transcript){window.__dvnTiptapContextTranscript=transcript;var copyText=window.__dvnTiptapGetContextTranscriptCopyText?window.__dvnTiptapGetContextTranscriptCopyText():'';var menuCopy=window.__dvnTiptapGetContextTranscriptMenuCopyText?window.__dvnTiptapGetContextTranscriptMenuCopyText():(selectionTouches(transcript)?copyText:'');return JSON.stringify({type:2,json:'__tiptap_transcript_text:'+copyText,flags:flags(true,!!menuCopy,false,false,false),transcript:true});}"
+                            + "window.__dvnTiptapContextTranscript=null;"
+                            + "var vb=el.closest?el.closest('.voiceInfoBox'):null;"
+                            + "if(vb&&vb.getAttribute('data-type')==='voice-block'){if(window.__dvnTiptapSelectVoiceBlockFromElement)window.__dvnTiptapSelectVoiceBlockFromElement(vb);return JSON.stringify({type:1,json:vb.getAttribute('data-voice-meta')||''});}"
+                            + "var img=el.closest?el.closest('img[data-rel-path]'):null;"
+                            + "if(img){if(window.__dvnTiptapSelectImageFromElement)window.__dvnTiptapSelectImageFromElement(img);return JSON.stringify({type:0,json:img.getAttribute('src')||img.getAttribute('data-rel-path')||''});}"
+                            + "var sel=window.getSelection();var hasSelection=!!(sel&&sel.rangeCount>0&&!sel.isCollapsed&&sel.toString());var inEditor=!!(el.closest&&el.closest('.ProseMirror'));"
+                            + "return JSON.stringify({type:2,json:'',transcript:false,inEditor:inEditor,flags:flags(inEditor,hasSelection,hasSelection&&inEditor,inEditor,hasSelection&&inEditor)});"
+                            + "})()",
+                            function(result) {
+                                var info = null;
+                                try { info = JSON.parse(result); } catch(e) {}
+                                if (!info) return;
+                                if (info.suppress) return;
+                                if (info.type === 0) {
+                                    handler.onSaveMenuParam(info.type, info.json);
+                                    handler.onContextMenuRequested(req);
+                                    return;
+                                }
+                                if (info.type === 2) {
+                                    handler.onSaveMenuParam(info.type, info.json || "");
+                                    ActionManager.resetCtxMenu(ActionManager.TxtCtxMenu, false);
+                                    ActionManager.visibleAction(ActionManager.TxtStopreading, false);
+                                    var flags = info.flags || {};
+                                    // 空白正文处 Qt 的 CanPaste 可能为 false，但系统剪贴板实际
+                                    // 有内容。仅在 DOM 判断为可编辑文字时，用剪贴板状态和
+                                    // native flag 的并集修正；转写文字仍保持只读语义。
+                                    if (!info.transcript && info.inEditor) {
+                                        var clipboardCanPaste = TiptapChannel.clipboardHasPasteContent();
+                                        flags.canPaste = !!flags.canPaste
+                                                && (clipboardCanPaste || (Number.isFinite(nativeEditFlags) && (nativeEditFlags & 8) !== 0));
+                                        flags.canDictation = flags.canPaste;
+                                    }
+                                    ActionManager.enableAction(ActionManager.TxtSelectAll, !!flags.canSelectAll);
+                                    ActionManager.enableAction(ActionManager.TxtCopy, !!flags.canCopy);
+                                    ActionManager.enableAction(ActionManager.TxtCut, !!flags.canCut);
+                                    ActionManager.enableAction(ActionManager.TxtPaste, !!flags.canPaste);
+                                    ActionManager.enableAction(ActionManager.TxtDelete, !!flags.canDelete);
+                                    ActionManager.enableAction(ActionManager.TxtSpeech, !!flags.canSpeech);
+                                    ActionManager.enableAction(ActionManager.TxtDictation, !!flags.canDictation);
+                                    txtCtxMenu.popup(Qt.point(rawX, rawY));
+                                    return;
+                                }
+                                handler.onSaveMenuParam(info.type, info.json);
+                                handler.onContextMenuRequested(req);
+                            });
+                    }
+                }
+
+                DropArea {
+                    anchors.fill: parent
+
+                    property bool currentDragCanDropImages: false
+
+                    onEntered: function(drag) {
+                        currentDragCanDropImages = drag.hasUrls && VNoteMainManager.canInsertImages(drag.urls);
+                        drag.accepted = currentDragCanDropImages;
+                    }
+                    onExited: {
+                        currentDragCanDropImages = false;
+                    }
+                    onPositionChanged: function(drag) {
+                        drag.accepted = currentDragCanDropImages;
+                    }
+                    onDropped: function(drop) {
+                        if (currentDragCanDropImages) {
+                            drop.accepted = true;
+                            rootItem.insertImagesAtTiptapClientPoint(drop.urls, drop.x, drop.y);
+                        } else {
+                            drop.accepted = false;
+                        }
+                        currentDragCanDropImages = false;
+                    }
+                }
+
+                WebChannel {
+                    id: tiptapWebChannel
+                }
+            }
+        }
+
         Loader {
             id: multipleChoicesLoader
 
-            Layout.fillHeight: parent.height
-            Layout.fillWidth: parent.width
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             visible: false
 
             sourceComponent: MultipleChoices {
+                Accessible.name: "MultipleChoicesView"
+                Accessible.role: Accessible.Pane
+
                 anchors.fill: parent
 
                 onDeleteNote: {
@@ -503,18 +992,10 @@ Item {
         }
     }
 
-    Rectangle {
-        id: line
-
-        color: hasScroll ? (DTK.themeType === ApplicationHelper.LightType ? "#14000000" : "#66000000") : DTK.themeType === ApplicationHelper.LightType ? "white" : "#242424"
-        height: 1 / Screen.devicePixelRatio
-        width: webRect.width
-        y: 50
-        // 当富文本不可见时隐藏分隔线，避免显示白色缝隙
-        visible: webVisible
-    }
-
     VNoteMessageDialogLoader {
+        Accessible.name: "WebViewMessageDialog"
+        Accessible.role: Accessible.Dialog
+
         id: messageDialogLoader
 
     }
@@ -527,6 +1008,9 @@ Item {
         asynchronous: true
 
         sourceComponent: ViewPictureDialog {
+            Accessible.name: "ViewPictureDialog"
+            Accessible.role: Accessible.Dialog
+
             id: viewPictureWindow
 
             filePath: path
@@ -542,6 +1026,9 @@ Item {
         asynchronous: true
 
         VNoteRightMenu {
+            Accessible.name: "PictureContextMenu"
+            Accessible.role: Accessible.PopupMenu
+
             id: picturCtxMenu
 
             menuType: ActionManager.PictureCtxMenu
@@ -568,6 +1055,9 @@ Item {
         asynchronous: true
 
         VNoteRightMenu {
+            Accessible.name: "VoiceContextMenu"
+            Accessible.role: Accessible.PopupMenu
+
             id: voiceCtxMenu
 
             menuType: ActionManager.VoiceCtxMenu
@@ -598,6 +1088,9 @@ Item {
         asynchronous: true
 
         VNoteRightMenu {
+            Accessible.name: "TextContextMenu"
+            Accessible.role: Accessible.PopupMenu
+
             id: txtCtxMenu
 
             menuType: ActionManager.TxtCtxMenu
@@ -617,9 +1110,11 @@ Item {
 
             onClosed: {
                 txtMenuToolbarTimer.stop();
-                // 菜单关闭不隐藏工具栏，仅解除定位锁定（b80965d 原始行为）
-                webView.runJavaScript(
-                    "if(typeof restoreAirPopoverTooltipPlacement === 'function') restoreAirPopoverTooltipPlacement();");
+                // 菜单关闭不隐藏工具栏，仅解除 Summernote 定位锁定（b80965d 原始行为）
+                if (!TiptapChannel.tiptapEnabled) {
+                    webView.runJavaScript(
+                        "if(typeof restoreAirPopoverTooltipPlacement === 'function') restoreAirPopoverTooltipPlacement();");
+                }
             }
 
             Connections {
@@ -653,7 +1148,12 @@ Item {
             onAccepted: {
                 if (fileDialog.files.length > 0) {
                     VNoteMainManager.insertImages(fileDialog.files);
+                } else {
+                    rootItem.clearTiptapInsertionSelection();
                 }
+            }
+            onRejected: {
+                rootItem.clearTiptapInsertionSelection();
             }
         }
     }
@@ -667,10 +1167,7 @@ Item {
         }
 
         function onStopRecording() {
-            isRecording = false;
             VoiceRecoderHandler.stopRecoder();
-            title.recorderBtnEnable = true;
-            title.isRecording = false;
         }
 
         active: false
@@ -681,6 +1178,9 @@ Item {
         width: rootItem.width
 
         sourceComponent: RecordingView {
+            Accessible.name: "RecordingBar"
+            Accessible.role: Accessible.Pane
+
             id: recordingBar
 
             anchors.fill: parent
@@ -700,20 +1200,49 @@ Item {
     Connections {
         target: title
 
-        onCreateNote: {
-            if (!initialVisible && !rootItem.isVoiceToText) {
-                VNoteMainManager.createNote();
-            }
+        onIsPlayingChanged: rootItem.scheduleTiptapResourceButtonsSync()
+        onIsSearchingChanged: rootItem.scheduleTiptapResourceButtonsSync()
+        onIsRecordingAudioChanged: rootItem.scheduleTiptapResourceButtonsSync()
+        onIsVoiceToTextChanged: rootItem.scheduleTiptapResourceButtonsSync()
+        onRecorderBtnEnableChanged: rootItem.scheduleTiptapResourceButtonsSync()
+        onRecordBtnEnabledChanged: rootItem.scheduleTiptapResourceButtonsSync()
+    }
+
+    Connections {
+        target: TiptapChannel
+
+        onVoicePlaybackStateChanged: function(voiceId, state) {
+            // 与 Summernote 的 WebEngineHandler::onPlayingVoice 保持一致：
+            // 播放和暂停都属于“正在占用播放状态”，只有结束才恢复录音。
+            title.isPlaying = (state !== 2);
+            rootItem.scheduleTiptapResourceButtonsSync();
         }
-        onInsertImage: {
+
+        onPickImageRequested: {
+            if (!webVisible || VNoteMainManager.isInSearchMode()) {
+                rootItem.clearTiptapInsertionSelection();
+                return;
+            }
             if (!selectImgLoader.active) {
                 selectImgLoader.active = true;
             } else {
                 selectImgLoader.item.open();
             }
         }
-        onStartRecording: {
-            VoiceRecoderHandler.startRecoder();
+        onRecordVoiceRequested: {
+            if (VNoteMainManager.isInSearchMode() || !title.recordBtnEnabled || !webVisible) {
+                return;
+            }
+            if (startRecording()) {
+                VoiceRecoderHandler.startRecoder();
+            }
+        }
+        onViewPictureRequested: path => {
+            viewPictureLoader.path = path;
+            if (!viewPictureLoader.active)
+                viewPictureLoader.active = true;
+            else
+                viewPictureLoader.item.show();
         }
     }
 
@@ -722,60 +1251,66 @@ Item {
 
         onNeedUpdateNote: function(noteId) {
             var requestNoteId = noteId;
-            webView.runJavaScript("getHtml()", function (result) {
-                VNoteMainManager.updateNoteWithResultForNote(requestNoteId, result);
-            });
+            if (TiptapChannel.tiptapEnabled) {
+                TiptapChannel.requestEditorContent();
+            } else {
+                webView.runJavaScript("getHtml()", function (result) {
+                    VNoteMainManager.updateNoteWithResultForNote(requestNoteId, result);
+                });
+            }
         }
         onScrollChange: isTop => {
             hasScroll = !isTop;
         }
         onUpdateRichTextSearch: key => {
-            webView.findText(key);
+            if (TiptapChannel.tiptapEnabled) {
+                if (key && key.length > 0) {
+                    TiptapChannel.setSearchQuery(key);
+                } else {
+                    TiptapChannel.clearSearchQuery();
+                }
+            } else {
+                webView.findText(key);
+            }
         }
     }
 
     Connections {
         target: VoiceRecoderHandler
 
-        onRecoderStateChange: {
-            var currentType = VoiceRecoderHandler.getRecoderType();
+        onRecoderStateChange: function(type) {
+            var currentType = type;
             if (recorderViewLoader.item) {
                 recorderViewLoader.item.isRecording = (currentType === VoiceRecoderHandler.Recording);
             }
-            
+
             // 当录音状态变为Idle时，完全关闭录音界面并重置状态
             if (currentType === VoiceRecoderHandler.Idle) {
-                isRecording = false;
-                title.recorderBtnEnable = true;
-                title.isRecording = false;
-                
-                // 完全关闭录音界面
-                if (recorderViewLoader.active && recorderViewLoader.item) {
-                    recorderViewLoader.item.visible = false;
-                    recorderViewLoader.item.time = "00:00:00";
-                }
-                // 延迟销毁Loader以确保动画完成
-                Qt.callLater(function() {
-                    recorderViewLoader.active = false;
-                });
+                // 停止、启动失败以及设备热插拔都统一走同一套 UI 恢复逻辑。
+                rootItem.resetRecordingUi();
             }
+            rootItem.scheduleTiptapResourceButtonsSync();
         }
-        onUpdateRecordBtnState: {
+        onUpdateRecordBtnState: function(enable) {
             title.recorderBtnEnable = enable;
+            rootItem.scheduleTiptapResourceButtonsSync();
         }
-        onUpdateRecorderTime: {
-            recorderViewLoader.item.time = time;
+        onUpdateRecorderTime: function(time) {
+            if (recorderViewLoader.item) {
+                recorderViewLoader.item.time = time;
+            }
         }
         onVolumeTooLow: isLow => {
             if (isLow) {
                 messageDialogLoader.showDialog(VNoteMessageDialogHandler.VolumeTooLow, ret => {
                     if (ret) {
-                        startRecording();
+                        // 录音界面在低音量确认前已经展示，确认时只启动后端，
+                        // 不要再次创建/定位录音界面。
                         VoiceRecoderHandler.confirmStartRecoder();
+                    } else {
+                        rootItem.resetRecordingUi();
                     }
                 });
-            } else {
-                startRecording();
             }
         }
     }
@@ -791,6 +1326,35 @@ Item {
         onVoiceToTextStateChanged: isConverting => {
             if (multipleChoicesLoader.active && multipleChoicesLoader.item) {
                 multipleChoicesLoader.item.setOperationEnabled(!isConverting, !isConverting);
+            }
+        }
+    }
+
+    Connections {
+        target: Webobj
+
+        // tiptapWebView 声明在 tiptapLoader 的内部组件中，文件级 Connections 作用域取不到；
+        // 必须经 tiptapLoader.item.editor 跨 Loader 访问，否则会抛
+        // ReferenceError: tiptapWebView is not defined，导致右键菜单“全选/删除”无声失效。
+        onCallJsSelectAll: {
+            if (TiptapChannel.tiptapEnabled && tiptapLoader.item && tiptapLoader.item.editor) {
+                var tiptapView = tiptapLoader.item.editor;
+                tiptapView.forceActiveFocus();
+                tiptapView.runJavaScript(
+                    "if(window.__dvnTiptapSelectContextAll)window.__dvnTiptapSelectContextAll();" +
+                    "else if(window.__dvnTiptapEditor)window.__dvnTiptapEditor.chain().selectAll().run();");
+            }
+        }
+        onCallJsDeleteSelection: {
+            if (TiptapChannel.tiptapEnabled && tiptapLoader.item && tiptapLoader.item.editor) {
+                tiptapLoader.item.editor.runJavaScript(
+                    "if(window.__dvnTiptapEditor)window.__dvnTiptapEditor.chain().deleteSelection().run()");
+            }
+        }
+        onCallJsFocusEditor: {
+            if (TiptapChannel.tiptapEnabled && tiptapLoader.item && tiptapLoader.item.editor) {
+                tiptapLoader.item.editor.runJavaScript(
+                    "if(window.__dvnTiptapEditor)window.__dvnTiptapEditor.commands.focus()");
             }
         }
     }

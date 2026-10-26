@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2019-2025 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2019-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -25,6 +25,7 @@ public:
         NoUserAgreement,    // whether the user agrees to the user agreement.
         NoInputDevice,
         NoOutputDevice,
+        UosAiUnsupported,
 
         Success = Enable,
         Failed = Disable,
@@ -44,6 +45,7 @@ public:
     Status onTextTranslate();
 
     QString errorString(Status status);
+    bool isUosAiUpdateRequired(Status status) const;
 
 private:
     explicit VTextSpeechAndTrManager(QObject *parent = nullptr);

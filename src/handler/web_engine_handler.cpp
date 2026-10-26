@@ -10,15 +10,18 @@
 #include "vtextspeechandtrmanager.h"
 #include "voice_player_handler.h"
 #include "voice_to_text_handler.h"
+#include "voice_to_text_task_manager.h"
 #include "voice_recoder_handler.h"
 #include "setting.h"
 #include "globaldef.h"
 #include "common/utils.h"
 #include "common/VNoteMainManager.h"
+#include "common/tiptapchannelbridge.h"
 
 #include <QApplication>
 #include <QCursor>
 #include <QDBusInterface>
+#include <QBuffer>
 #include <QDBusPendingReply>
 #include <QKeyEvent>
 #include <QJsonDocument>
@@ -29,17 +32,20 @@
 #include <QDropEvent>
 #include <QFile>
 #include <QFileInfo>
+#include <QFontDatabase>
 #include <QTimer>
 #include <QCursor>
 #include <QMimeData>
 #include <QUuid>
 #include <QUrl>
+#include <QRegularExpression>
 // 条件编译：QWebEngineContextMenuRequest 只在 Qt6 中存在
 #ifndef USE_QT5
 #include <QWebEngineContextMenuRequest>
 #endif
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <cstring>
 // 条件编译：根据 Qt 版本包含不同的音频设备头文件
 #ifdef USE_QT5
 #include <QAudioDeviceInfo>
@@ -71,6 +77,133 @@ const QString DEEPIN_DAEMON_APPEARANCE_INTERFACE = isV20() ? APPEARANCE_INTERFAC
 DGUI_USE_NAMESPACE
 
 namespace {
+
+constexpr const char *kTiptapVoiceBlockMime = "application/x-deepin-voice-note-voice-block";
+constexpr const char *kTiptapTranscriptTextPrefix = "__tiptap_transcript_text:";
+
+bool copyPlainTextToClipboard(const QString &text)
+{
+    if (text.isEmpty()) {
+        return false;
+    }
+
+    auto *mimeData = new QMimeData;
+    mimeData->setText(text);
+    QApplication::clipboard()->setMimeData(mimeData);
+    return true;
+}
+
+bool copyTiptapTranscriptTextToClipboard(const QVariant &menuJson)
+{
+    const QString value = menuJson.toString();
+    if (!value.startsWith(QString::fromLatin1(kTiptapTranscriptTextPrefix))) {
+        return false;
+    }
+
+    const QString text = value.mid(int(strlen(kTiptapTranscriptTextPrefix)));
+    if (!copyPlainTextToClipboard(text)) {
+        qWarning() << "Cannot copy Tiptap transcript: empty text";
+        return false;
+    }
+
+    qInfo() << "Tiptap transcript text copied to clipboard, length:" << text.length();
+    return true;
+}
+
+bool copyTiptapVoiceBlockToClipboard(const QVariant &menuJson)
+{
+    const QString voiceInfoJson = menuJson.toString();
+    if (voiceInfoJson.isEmpty()) {
+        qWarning() << "Cannot copy Tiptap voice block: empty menu json";
+        return false;
+    }
+
+    QJsonParseError parseError;
+    const QJsonObject voiceInfo = QJsonDocument::fromJson(voiceInfoJson.toUtf8(), &parseError).object();
+    if (parseError.error != QJsonParseError::NoError
+        || voiceInfo.value(QStringLiteral("voiceId")).toString().isEmpty()
+        || voiceInfo.value(QStringLiteral("voicePath")).toString().isEmpty()) {
+        qWarning() << "Cannot copy Tiptap voice block: invalid menu json" << parseError.errorString();
+        return false;
+    }
+
+    auto *mimeData = new QMimeData;
+    const QByteArray jsonUtf8 = voiceInfoJson.toUtf8();
+    mimeData->setData(kTiptapVoiceBlockMime, jsonUtf8);
+    mimeData->setHtml(QStringLiteral("<div data-dvn-voice-block=\"%1\"></div>")
+                          .arg(QString::fromLatin1(jsonUtf8.toBase64())));
+
+    const QString title = voiceInfo.value(QStringLiteral("title")).toString();
+    mimeData->setText(title.isEmpty() ? QStringLiteral("voice") : title);
+
+    QApplication::clipboard()->setMimeData(mimeData);
+    qInfo() << "Tiptap voice block copied to clipboard, voiceId:"
+            << voiceInfo.value(QStringLiteral("voiceId")).toString();
+    return true;
+}
+
+bool hasTiptapVoiceBlockClipboard()
+{
+    const QMimeData *mimeData = QApplication::clipboard()->mimeData();
+    if (!mimeData) {
+        return false;
+    }
+    if (mimeData->hasFormat(kTiptapVoiceBlockMime)) {
+        return true;
+    }
+    return mimeData->hasHtml() && mimeData->html().contains(QStringLiteral("data-dvn-voice-block"));
+}
+
+QString tiptapVoiceBlockClipboardJson()
+{
+    const QMimeData *mimeData = QApplication::clipboard()->mimeData();
+    if (!mimeData) {
+        return QString();
+    }
+
+    if (mimeData->hasFormat(kTiptapVoiceBlockMime)) {
+        return QString::fromUtf8(mimeData->data(kTiptapVoiceBlockMime));
+    }
+
+    if (!mimeData->hasHtml()) {
+        return QString();
+    }
+
+    const QRegularExpression re(QStringLiteral("data-dvn-voice-block=\\\"([^\\\"]+)\\\""));
+    const QRegularExpressionMatch match = re.match(mimeData->html());
+    if (!match.hasMatch()) {
+        return QString();
+    }
+
+    return QString::fromUtf8(QByteArray::fromBase64(match.captured(1).toLatin1()));
+}
+
+bool pasteTiptapVoiceBlockFromClipboard()
+{
+    const QString clipboardJson = tiptapVoiceBlockClipboardJson();
+    if (clipboardJson.isEmpty()) {
+        qWarning() << "Cannot paste Tiptap voice block: clipboard json is empty";
+        return false;
+    }
+
+    QJsonParseError parseError;
+    QJsonObject voiceInfo = QJsonDocument::fromJson(clipboardJson.toUtf8(), &parseError).object();
+    if (parseError.error != QJsonParseError::NoError
+        || voiceInfo.value(QStringLiteral("voicePath")).toString().isEmpty()) {
+        qWarning() << "Cannot paste Tiptap voice block: invalid clipboard json" << parseError.errorString();
+        return false;
+    }
+
+    voiceInfo.insert(QStringLiteral("voiceId"), QUuid::createUuid().toString(QUuid::WithoutBraces));
+    voiceInfo.remove(QStringLiteral("text"));
+    voiceInfo.insert(QStringLiteral("translateUnfold"), true);
+
+    TiptapChannelBridge::instance()->sendInsertVoiceBlock(
+        QString::fromUtf8(QJsonDocument(voiceInfo).toJson(QJsonDocument::Compact)));
+    qInfo() << "Tiptap voice block paste requested from clipboard, voiceId:"
+            << voiceInfo.value(QStringLiteral("voiceId")).toString();
+    return true;
+}
 
 QString normalizePicturePath(const QString &path)
 {
@@ -120,6 +253,9 @@ WebEngineHandler::WebEngineHandler(QObject *parent)
 {
     qInfo() << "WebEngineHandler constructor called";
     initFontsInformation();
+    // 字体服务可能在应用启动阶段尚未就绪。这里先把已取得的系统字体
+    // 缓存到 Tiptap 通道，编辑器就绪后会立即补发，避免下拉只剩占位项。
+    TiptapChannelBridge::instance()->sendFontList(m_fontList, m_defaultFont);
     connectWebContent();
 
     connect(DGuiApplicationHelper::instance(), &DGuiApplicationHelper::themeTypeChanged, this, &WebEngineHandler::onThemeChanged);
@@ -131,6 +267,9 @@ WebEngineHandler::WebEngineHandler(QObject *parent)
     });
     connect(m_voiceToTextHandler, &VoiceToTextHandler::noNetworkConnection, this, [this]() {
             Q_EMIT requestMessageDialog(VNoteMessageDialogHandler::NoNetwork);
+    });
+    connect(m_voiceToTextHandler, &VoiceToTextHandler::uosAiUpdateRequired, this, [this]() {
+        Q_EMIT requestMessageDialog(VNoteMessageDialogHandler::UpdateUosAi);
     });
     connect(m_voicePlayerHandler, &VoicePlayerHandler::playStatusChanged, this, [=](VoicePlayerHandler::PlayState state){
         if (state == VoicePlayerHandler::PlayState::End) {
@@ -318,6 +457,26 @@ void WebEngineHandler::initFontsInformation()
     } else {
         qWarning() << "Font service initialization failed. Service:" << DEEPIN_DAEMON_APPEARANCE_SERVICE << "not found";
     }
+
+    // 外观服务不可用时仍使用 Qt 的系统字体库兜底。字体名保持系统原值，
+    // 不翻译、不改写，确保简中与繁体行为一致且下拉不会为空。
+    if (m_fontList.isEmpty()) {
+        m_fontList = QFontDatabase::families();
+        m_fontList.removeAll(QString());
+        m_fontList.removeDuplicates();
+        if (m_defaultFont.isEmpty()) {
+            m_defaultFont = QApplication::font().family();
+        }
+        std::sort(m_fontList.begin(), m_fontList.end(), [](const QString &left, const QString &right) {
+            QCollator collator;
+            return collator.compare(left, right) < 0;
+        });
+    }
+    if (m_defaultFont.isEmpty() && !m_fontList.isEmpty()) {
+        m_defaultFont = m_fontList.first();
+    }
+    qInfo() << "System font list ready, total fonts:" << m_fontList.size()
+            << "default font:" << m_defaultFont;
     qInfo() << "Fonts information initialization finished";
 }
 
@@ -341,6 +500,85 @@ void WebEngineHandler::connectWebContent()
     connect(JsContent::instance(), &JsContent::viewPictrue, this, &WebEngineHandler::viewPicture);
     connect(JsContent::instance(), &JsContent::saveAudio, this, &WebEngineHandler::saveAudio);
     connect(JsContent::instance(), &JsContent::createNote, this, &WebEngineHandler::createNote);
+    // 字体列表宿主下发：编辑器就绪后把字体列表下发到 Tiptap 工具栏
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::editorReady,
+            this, [this]() {
+                TiptapChannelBridge::instance()->sendFontList(m_fontList, m_defaultFont);
+                // 主题信号可能早于 Tiptap QWebChannel 建立而发出；编辑器
+                // ready 后主动补发一次，保证首次打开时深浅色样式正确。
+                onThemeChanged();
+            });
+    // --- Tiptap voice 播放/转写通道接线 ---
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::voicePlaybackRequested,
+            this, [this](const QString &voiceInfoJson, bool isSame) {
+        m_voicePlayerHandler->playVoice(voiceInfoJson, isSame);
+    });
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::voicePlaybackStopRequested,
+            this, [this]() {
+        m_voicePlayerHandler->onStop();
+    });
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::voicePlaybackSeekRequested,
+            this, [this](qint64 ms) {
+        m_voicePlayerHandler->setPlayPosition(ms);
+    });
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::voiceToTextRequested,
+            this, [this](const QString &voiceInfoJson) {
+        QJsonDocument doc = QJsonDocument::fromJson(voiceInfoJson.toUtf8());
+        QJsonObject obj = doc.object();
+        auto voiceBlock = QSharedPointer<VNVoiceBlock>::create();
+        voiceBlock->voiceId = obj.value(QStringLiteral("voiceId")).toString();
+        voiceBlock->voicePath = obj.value(QStringLiteral("voicePath")).toString();
+        voiceBlock->voiceSize = static_cast<qint64>(obj.value(QStringLiteral("voiceSize")).toVariant().toLongLong());
+        voiceBlock->voiceTitle = obj.value(QStringLiteral("title")).toString();
+        // 展开相对路径为绝对路径，ASR D-Bus 服务需要可定位的文件路径
+        voiceBlock->voicePath = Utils::makeVoiceAbsolute(voiceBlock->voicePath);
+        m_voiceToTextHandler->setAudioToText(voiceBlock);
+    });
+
+    // voice 播放信号映射为 voiceId 作用域桥信号
+    connect(m_voicePlayerHandler, &VoicePlayerHandler::playStatusChanged, this,
+            [this](VoicePlayerHandler::PlayState state) {
+        const QString &voiceId = TiptapChannelBridge::instance()->currentVoiceId();
+        if (!voiceId.isEmpty()) {
+            TiptapChannelBridge::instance()->emitVoicePlaybackStateChanged(voiceId, static_cast<int>(state));
+        }
+    });
+    connect(m_voicePlayerHandler, &VoicePlayerHandler::playPositionChanged, this,
+            [this](qint64 ms) {
+        const QString &voiceId = TiptapChannelBridge::instance()->currentVoiceId();
+        if (!voiceId.isEmpty()) {
+            TiptapChannelBridge::instance()->emitVoicePlaybackPositionChanged(voiceId, ms);
+        }
+    });
+    connect(m_voicePlayerHandler, &VoicePlayerHandler::playDurationChanged, this,
+            [this](qint64 ms) {
+        const QString &voiceId = TiptapChannelBridge::instance()->currentVoiceId();
+        if (!voiceId.isEmpty()) {
+            TiptapChannelBridge::instance()->emitVoicePlaybackDurationChanged(voiceId, ms);
+        }
+    });
+    connect(m_voicePlayerHandler, &VoicePlayerHandler::voiceFileError, this, [this]() {
+        const QString &voiceId = TiptapChannelBridge::instance()->currentVoiceId();
+        if (!voiceId.isEmpty()) {
+            TiptapChannelBridge::instance()->emitVoiceFileError(voiceId);
+        }
+    });
+
+    // 转写结果桥接（Tiptap 模式下路由到 TiptapChannelBridge）
+    connect(JsContent::instance(), &JsContent::callJsSetVoiceTextByPath,
+            this, [this](const QString &voiceId, const QString &text, int asrFlag) {
+        if (!TiptapChannelBridge::instance()->tiptapEnabled()) return;
+        if (asrFlag == JsContent::AsrFlag::Start) {
+            TiptapChannelBridge::instance()->emitVoiceToTextStarted(voiceId);
+        } else {
+            if (text.isEmpty()) {
+                TiptapChannelBridge::instance()->emitVoiceToTextFailed(voiceId);
+            } else {
+                TiptapChannelBridge::instance()->emitVoiceToTextCompleted(voiceId, text);
+            }
+        }
+    });
+
     qInfo() << "Web content connection finished";
 }
 
@@ -416,6 +654,12 @@ void WebEngineHandler::onInsertVoiceItem(const QString &voicePath, quint64 voice
     QVariant value;
     parse.makeMetaData(&data, value);
 
+    // Tiptap 编辑器路径，下发相对 voicePath
+    if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+        TiptapChannelBridge::instance()->sendInsertVoiceBlock(value.toString());
+        return;
+    }
+
     // 关闭应用时，需要同步插入语音并进行后台更新
     if (OpsStateInterface::instance()->isAppQuit()) {
         qDebug() << "App is quitting, performing synchronous voice insertion";
@@ -443,6 +687,9 @@ void WebEngineHandler::onThemeChanged()
     QString backgroundColor = DGuiApplicationHelper::LightType == theme ? "#FBFCFD" : "#090A17";
     // 现在背景色主要由 qml 组件和 web 前端 css 共同实现，但在 sw 下保留兼容设置
     emit JsContent::instance()->callJsSetTheme(theme, activeHightColor, disableHightColor, backgroundColor);
+    // Tiptap 编辑器主题下发（复用取色逻辑，只增一路）
+    QString themeStr = (theme == DGuiApplicationHelper::LightType) ? QStringLiteral("light") : QStringLiteral("dark");
+    TiptapChannelBridge::instance()->emitThemeProvided(themeStr, activeHightColor, disableHightColor, backgroundColor);
     qInfo() << "Theme change handling finished";
 }
 
@@ -487,8 +734,23 @@ void WebEngineHandler::onMenuClicked(ActionManager::ActionKind kind)
             Q_EMIT JsContent::instance()->callJsSelectAll();
             break;
         case ActionManager::VoiceCopy:
+            if (TiptapChannelBridge::instance()->tiptapEnabled() && copyTiptapVoiceBlockToClipboard(menuJson)) {
+                break;
+            }
+            // 非 Tiptap 模式或复制失败时继续调用 web 端原生复制事件
+#ifdef USE_QT5
+            Q_EMIT triggerWebAction((int)QWebEnginePage::Copy);
+#else
+            Q_EMIT triggerWebAction(QWebEnginePage::Copy);
+#endif
+            break;
         case ActionManager::PictureCopy:
         case ActionManager::TxtCopy:
+            if (kind == ActionManager::TxtCopy
+                && TiptapChannelBridge::instance()->tiptapEnabled()
+                && copyTiptapTranscriptTextToClipboard(menuJson)) {
+                break;
+            }
             // 直接调用web端的复制事件
 #ifdef USE_QT5
             Q_EMIT triggerWebAction((int)QWebEnginePage::Copy);
@@ -510,7 +772,7 @@ void WebEngineHandler::onMenuClicked(ActionManager::ActionKind kind)
         case ActionManager::PicturePaste:
         case ActionManager::TxtPaste:
             // 粘贴事件，从剪贴板获取数据
-            onPaste(isVoicePaste());
+            onPaste(isVoicePaste() || (TiptapChannelBridge::instance()->tiptapEnabled() && hasTiptapVoiceBlockClipboard()));
             break;
         case ActionManager::PictureView: {
             // 查看图片
@@ -568,6 +830,11 @@ void WebEngineHandler::onMenuClicked(ActionManager::ActionKind kind)
         case ActionManager::TxtDictation: {
             auto status = VTextSpeechAndTrManager::instance()->onSpeechToText();
             if (VTextSpeechAndTrManager::Success != status) {
+                if (VTextSpeechAndTrManager::instance()->isUosAiUpdateRequired(status)) {
+                    Q_EMIT requestMessageDialog(VNoteMessageDialogHandler::UpdateUosAi);
+                    break;
+                }
+
                 QString errString = VTextSpeechAndTrManager::instance()->errorString(status);
                 if (!errString.isEmpty()) {
                     Q_EMIT popupToast(errString, status);
@@ -591,6 +858,13 @@ void WebEngineHandler::onMenuClicked(ActionManager::ActionKind kind)
 void WebEngineHandler::onPaste(bool isVoice)
 {
     qDebug() << "Paste operation requested, isVoice:" << isVoice;
+    if (TiptapChannelBridge::instance()->tiptapEnabled() && hasTiptapVoiceBlockClipboard()) {
+        if (pasteTiptapVoiceBlockFromClipboard()) {
+            qInfo() << "Tiptap voice block paste handled directly";
+            return;
+        }
+    }
+
     if (isVoice) {
         qInfo() << "Paste operation requested, isVoice is true";
 #ifdef USE_QT5
@@ -604,17 +878,44 @@ void WebEngineHandler::onPaste(bool isVoice)
     // 获取剪贴板信息
     QClipboard *clipboard = QApplication::clipboard();
     const QMimeData *mimeData = clipboard->mimeData();
-    
-    // 存在文件url
-    if (mimeData->hasUrls()) {
+
+    // Tiptap 不使用 JsContent 的 Summernote 插入信号。文件图片通过
+    // VNoteMainManager 复用 Tiptap 图片下发链路；位图剪贴板则编码为
+    // data URL，交给 TiptapChannelBridge::jsPasteImage 统一落盘。
+    if (TiptapChannelBridge::instance()->tiptapEnabled() && mimeData) {
+        if (mimeData->hasUrls()) {
+            qInfo() << "Tiptap paste: mimeData has urls";
+            VNoteMainManager::instance()->insertImages(mimeData->urls());
+            return;
+        }
+        if (mimeData->hasImage()) {
+            const QImage image = qvariant_cast<QImage>(mimeData->imageData());
+            if (!image.isNull()) {
+                QByteArray imageBytes;
+                QBuffer buffer(&imageBytes);
+                if (buffer.open(QIODevice::WriteOnly) && image.save(&buffer, "PNG")) {
+                    const QString dataUrl = QStringLiteral("data:image/png;base64,")
+                            + QString::fromLatin1(imageBytes.toBase64());
+                    TiptapChannelBridge::instance()->jsPasteImage(dataUrl);
+                    qInfo() << "Tiptap paste: clipboard image routed to Tiptap";
+                    return;
+                }
+            }
+            qWarning() << "Tiptap paste: clipboard image is invalid";
+            return;
+        }
+    }
+
+    // Summernote 路径：存在文件 URL 或位图时由 JsContent 负责落盘。
+    if (mimeData && mimeData->hasUrls()) {
         qInfo() << "mimeData has urls";
         QStringList paths;
-        for (auto url : mimeData->urls()) {
+        for (const auto &url : mimeData->urls()) {
             paths.push_back(url.path());
         }
         qDebug() << "Pasting URLs:" << paths;
         JsContent::instance()->insertImages(paths);
-    } else if (mimeData->hasImage()) {
+    } else if (mimeData && mimeData->hasImage()) {
         qDebug() << "Pasting image from clipboard";
         JsContent::instance()->insertImages(qvariant_cast<QImage>(mimeData->imageData()));
     } else {
@@ -653,8 +954,10 @@ void WebEngineHandler::processVoiceMenuRequest(QObject *request)
         // 异步操作，防止阻塞前端事件
         QTimer::singleShot(0, this, [this] {
             Q_EMIT requestMessageDialog(VNoteMessageDialogHandler::VoicePathNoAvail);
-            // 调用 js 删除删除语音文本
-            Q_EMIT JsContent::instance()->callJsDeleteSelection();
+            // Tiptap 模式下不走 Summernote JS 删除路径
+            if (!TiptapChannelBridge::instance()->tiptapEnabled()) {
+                Q_EMIT JsContent::instance()->callJsDeleteSelection();
+            }
         });
         return;
     }
@@ -689,8 +992,10 @@ void WebEngineHandler::processVoiceMenuRequest(QWebEngineContextMenuRequest *req
         // 异步操作，防止阻塞前端事件
         QTimer::singleShot(0, this, [this] {
             Q_EMIT requestMessageDialog(VNoteMessageDialogHandler::VoicePathNoAvail);
-            // 调用 js 删除删除语音文本
-            Q_EMIT JsContent::instance()->callJsDeleteSelection();
+            // Tiptap 模式下不走 Summernote JS 删除路径
+            if (!TiptapChannelBridge::instance()->tiptapEnabled()) {
+                Q_EMIT JsContent::instance()->callJsDeleteSelection();
+            }
         });
         return;
     }

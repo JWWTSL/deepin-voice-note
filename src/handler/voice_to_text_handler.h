@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024 UnionTech Software Technology Co., Ltd.
+// SPDX-FileCopyrightText: 2024-2026 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -21,6 +21,7 @@ public:
 
     Q_SIGNAL void audioLengthLimit();
     Q_SIGNAL void noNetworkConnection();
+    Q_SIGNAL void uosAiUpdateRequired();
 
 private:
     void onA2TStart();

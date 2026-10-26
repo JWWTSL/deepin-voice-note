@@ -22,9 +22,9 @@
         <translation>语音</translation>
     </message>
     <message>
-        <location filename="../src/db/vnoteitemoper.cpp" line="228"/>
+        <location filename="../src/db/vnoteitemoper.cpp" line="264"/>
         <source>Text</source>
-        <translation>文本</translation>
+        <translation>未命名文本</translation>
     </message>
 </context>
 <context>
@@ -307,6 +307,11 @@
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="278"/>
         <source>Please install &apos;UOS AI&apos; from the App Store before using</source>
         <translation>请前往应用商店安装“UOS AI”后再使用</translation>
+    </message>
+    <message>
+        <location filename="../src/common/vtextspeechandtrmanager.cpp" line="287"/>
+        <source>Please update UOS AI from the App Store before using</source>
+        <translation>请前往应用商店更新“小U同学”后再使用</translation>
     </message>
     <message>
         <location filename="../src/common/vtextspeechandtrmanager.cpp" line="280"/>
@@ -613,6 +618,16 @@
         <translation>当前网络状态差，语音转写失败，请确保网络畅通</translation>
     </message>
     <message>
+        <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="174"/>
+        <source>Please update UOS AI</source>
+        <translation>请更新小U同学版本</translation>
+    </message>
+    <message>
+        <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="190"/>
+        <source>Speech dictation and speech-to-text depend on the new UOS AI client. Please update UOS AI in the App Store and try again.</source>
+        <translation>语音听写、语音转文字功能依赖新版本小U同学客户端，请前往商店更新小U同学后重试</translation>
+    </message>
+    <message>
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="159"/>
         <source>All notes in it will be deleted</source>
         <translation>包含的所有笔记将被删除</translation>
@@ -621,6 +636,21 @@
         <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="174"/>
         <source>Delete</source>
         <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="219"/>
+        <source>Update</source>
+        <translation>前往更新</translation>
+    </message>
+    <message>
+        <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="225"/>
+        <source>Confirm</source>
+        <translation>确 定</translation>
+    </message>
+    <message>
+        <location filename="../src/handler/vnote_message_dialog_handler.cpp" line="230"/>
+        <source>Cancel</source>
+        <translation>取 消</translation>
     </message>
 </context>
 <context>
@@ -738,6 +768,76 @@
         <location filename="../src/common/jscontent.cpp" line="221"/>
         <source>Converting voice to text</source>
         <translation>正在转为文字</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="161"/>
+        <source>Note title</source>
+        <translation>笔记标题</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="162"/>
+        <source>Enter text</source>
+        <translation>请输入正文</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="168"/>
+        <source>Task list</source>
+        <translation>待办列表</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="169"/>
+        <source>Heading</source>
+        <translation>标题</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="170"/>
+        <source>Heading %1</source>
+        <translation>标题%1</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="171"/>
+        <source>Paragraph</source>
+        <translation>正文</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="177"/>
+        <source>Transparent</source>
+        <translation>透明</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="178"/>
+        <source>Quote</source>
+        <translation>引用</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="179"/>
+        <source>Increase indent</source>
+        <translation>增加缩进</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="180"/>
+        <source>Decrease indent</source>
+        <translation>减少缩进</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="181"/>
+        <source>Record voice</source>
+        <translation>录音</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="182"/>
+        <source>Insert picture</source>
+        <translation>插入图片</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="183"/>
+        <source>More formats</source>
+        <translation>更多格式</translation>
+    </message>
+    <message>
+        <location filename="../src/common/tiptapchannelbridge.cpp" line="186"/>
+        <source>To Text</source>
+        <translation>转文字</translation>
     </message>
 </context>
 </TS>

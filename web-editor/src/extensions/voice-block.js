@@ -1,0 +1,1018 @@
+// SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import { Node, mergeAttributes } from '@tiptap/core'
+import { Plugin, PluginKey, TextSelection } from '@tiptap/pm/state'
+import { Slice, Fragment } from '@tiptap/pm/model'
+import voiceBlockCss from './voice-block.css?inline'
+import { DEFAULT_TIPTAP_UI_STRINGS } from '../runtime/ui-strings.js'
+import playNormalLightIconUrl from '../../../src/web/img/audio_file_play/Normal/Light.svg?url'
+import playHoverLightIconUrl from '../../../src/web/img/audio_file_play/Hover/Light.svg?url'
+import playPressedLightIconUrl from '../../../src/web/img/audio_file_play/Pressed/Light.svg?url'
+import playNormalDarkIconUrl from '../../../src/web/img/audio_file_play/Normal/Dark.svg?url'
+import playHoverDarkIconUrl from '../../../src/web/img/audio_file_play/Hover/Dark.svg?url'
+import playPressedDarkIconUrl from '../../../src/web/img/audio_file_play/Pressed/Dark.svg?url'
+import playingPauseIconUrl from '../../../src/web/img/audio_file_playing_pause/Normal.svg?url'
+import playingPlayIconUrl from '../../../src/web/img/audio_file_playing_play/Normal.svg?url'
+import closePlaybackIconUrl from '../../../src/web/img/playbar_pause_close/Normal.svg?url'
+import { getVoiceBridge, subscribeVoiceEvents } from '../runtime/tiptap-channel.js'
+import { updateTranscriptSelectionCache } from '../runtime/transcript-copy.js'
+
+const VOICE_BLOCK_CLIPBOARD_MIME = 'application/x-deepin-voice-note-voice-block'
+
+// Inject self-contained styles at runtime (no external CSS link needed)
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style')
+  style.textContent = voiceBlockCss
+    .replaceAll('__PLAY_NORMAL_LIGHT_ICON__', playNormalLightIconUrl)
+    .replaceAll('__PLAY_HOVER_LIGHT_ICON__', playHoverLightIconUrl)
+    .replaceAll('__PLAY_PRESSED_LIGHT_ICON__', playPressedLightIconUrl)
+    .replaceAll('__PLAY_NORMAL_DARK_ICON__', playNormalDarkIconUrl)
+    .replaceAll('__PLAY_HOVER_DARK_ICON__', playHoverDarkIconUrl)
+    .replaceAll('__PLAY_PRESSED_DARK_ICON__', playPressedDarkIconUrl)
+    .replaceAll('__PLAYING_PAUSE_ICON__', playingPauseIconUrl)
+    .replaceAll('__PLAYING_PLAY_ICON__', playingPlayIconUrl)
+    .replaceAll('__CLOSE_PLAYBACK_ICON__', closePlaybackIconUrl)
+  document.head.appendChild(style)
+}
+
+/**
+ * 生成语音块唯一标识（UUID）。优先使用 crypto.randomUUID，
+ * 测试环境（happy-dom）回退到 Math.random 方案。
+ * @returns {string}
+ */
+function generateVoiceId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
+
+function isEmptyParagraphNode(node) {
+  return !!node && node.type?.name === 'paragraph' && node.content.size === 0
+}
+
+function createEmptyParagraph(schema) {
+  return schema.nodes.paragraph.create()
+}
+
+function fragmentHasVoiceBlock(fragment) {
+  for (let i = 0; i < fragment.childCount; i++) {
+    const node = fragment.child(i)
+    if (node.type.name === 'voiceBlock') return true
+    if (node.content && node.content.size > 0 && fragmentHasVoiceBlock(node.content)) return true
+  }
+  return false
+}
+
+function cloneVoiceBlockForPaste(node) {
+  return node.type.create({
+    ...node.attrs,
+    text: null,
+    voiceId: generateVoiceId(),
+    translateUnfold: true,
+  }, node.content, node.marks)
+}
+
+function decodeBase64Utf8(value) {
+  const binary = atob(value)
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  return new TextDecoder().decode(bytes)
+}
+
+function parseClipboardVoiceInfo(clipboardData) {
+  if (!clipboardData) return null
+
+  const customData = clipboardData.getData?.(VOICE_BLOCK_CLIPBOARD_MIME)
+  if (customData) {
+    try {
+      return JSON.parse(customData)
+    } catch (error) {
+      console.warn('[tiptap] invalid voice clipboard json:', error)
+    }
+  }
+
+  const html = clipboardData.getData?.('text/html')
+  if (!html) return null
+
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  const encoded = doc.querySelector('[data-dvn-voice-block]')?.getAttribute('data-dvn-voice-block')
+  if (encoded) {
+    try {
+      return JSON.parse(decodeBase64Utf8(encoded))
+    } catch (error) {
+      console.warn('[tiptap] invalid voice clipboard html:', error)
+    }
+  }
+
+  const meta = doc.querySelector('[data-voice-meta]')?.getAttribute('data-voice-meta')
+  if (meta) {
+    try {
+      return JSON.parse(meta)
+    } catch (error) {
+      console.warn('[tiptap] invalid voice meta clipboard html:', error)
+    }
+  }
+
+  return null
+}
+
+function createVoiceBlockFromClipboard(schema, clipboardData) {
+  const voiceInfo = parseClipboardVoiceInfo(clipboardData)
+  if (!voiceInfo || !voiceInfo.voiceId || !voiceInfo.voicePath) return null
+
+  return schema.nodes.voiceBlock.create({
+    voiceId: String(voiceInfo.voiceId),
+    voicePath: String(voiceInfo.voicePath),
+    voiceSize: Number(voiceInfo.voiceSize) || 0,
+    createTime: voiceInfo.createTime ?? null,
+    title: voiceInfo.title ?? null,
+    text: voiceInfo.text ?? null,
+    translateUnfold: voiceInfo.translateUnfold !== false,
+  })
+}
+
+function normalizePastedVoiceFragment(fragment, schema) {
+  const nodes = []
+  const voiceIds = []
+
+  function transformNode(node) {
+    if (node.type.name === 'voiceBlock') {
+      const voiceNode = cloneVoiceBlockForPaste(node)
+      voiceIds.push(voiceNode.attrs.voiceId)
+      return voiceNode
+    }
+    if (node.content && node.content.size > 0) {
+      const transformedContent = normalizeNestedVoiceFragment(node.content)
+      if (transformedContent !== node.content) return node.copy(transformedContent)
+    }
+    return node
+  }
+
+  function normalizeNestedVoiceFragment(nestedFragment) {
+    let changed = false
+    const nestedNodes = []
+    for (let i = 0; i < nestedFragment.childCount; i++) {
+      const child = nestedFragment.child(i)
+      const transformed = transformNode(child)
+      if (transformed !== child) changed = true
+      nestedNodes.push(transformed)
+    }
+    return changed ? Fragment.from(nestedNodes) : nestedFragment
+  }
+
+  for (let i = 0; i < fragment.childCount; i++) {
+    const original = fragment.child(i)
+    const node = transformNode(original)
+
+    if (node.type.name === 'voiceBlock') {
+      const prev = nodes[nodes.length - 1]
+      if (!isEmptyParagraphNode(prev)) {
+        nodes.push(createEmptyParagraph(schema))
+      }
+      nodes.push(node)
+      const nextOriginal = i + 1 < fragment.childCount ? fragment.child(i + 1) : null
+      if (!isEmptyParagraphNode(nextOriginal)) {
+        nodes.push(createEmptyParagraph(schema))
+      }
+    } else {
+      nodes.push(node)
+    }
+  }
+
+  return { fragment: Fragment.from(nodes), voiceIds }
+}
+
+function resolveVoicePasteInsertRange(state) {
+  const { selection } = state
+  if (selection.node?.type?.name === 'voiceBlock') {
+    const nextNode = selection.$to.nodeAfter
+    if (isEmptyParagraphNode(nextNode)) {
+      return { from: selection.to, to: selection.to + nextNode.nodeSize }
+    }
+    return { from: selection.to, to: selection.to }
+  }
+  return null
+}
+
+function findLastVoiceBlockById(doc, voiceIds) {
+  const idSet = new Set(voiceIds)
+  let found = null
+  doc.descendants((node, pos) => {
+    if (node.type.name === 'voiceBlock' && idSet.has(node.attrs.voiceId)) {
+      found = { node, pos }
+    }
+    return true
+  })
+  return found
+}
+
+function cursorPositionAfterVoiceBlock(doc, found) {
+  if (!found) return null
+  const paragraphStart = found.pos + found.node.nodeSize
+  const nextNode = doc.resolve(paragraphStart).nodeAfter
+  if (!isEmptyParagraphNode(nextNode)) return null
+  return paragraphStart + 1
+}
+
+function insertPastedVoiceBlockSlice(view, slice) {
+  if (!fragmentHasVoiceBlock(slice.content)) return false
+
+  const { state } = view
+  const { fragment, voiceIds } = normalizePastedVoiceFragment(slice.content, state.schema)
+  const insertRange = resolveVoicePasteInsertRange(state)
+  let tr = state.tr
+
+  if (insertRange == null) {
+    tr = tr.replaceSelection(new Slice(fragment, 0, 0))
+  } else if (insertRange.from === insertRange.to) {
+    tr = tr.insert(insertRange.from, fragment)
+  } else {
+    tr = tr.replaceWith(insertRange.from, insertRange.to, fragment)
+  }
+
+  tr = tr.setMeta('paste', true)
+  const cursorPos = cursorPositionAfterVoiceBlock(tr.doc, findLastVoiceBlockById(tr.doc, voiceIds))
+  if (cursorPos != null) {
+    tr = tr.setSelection(TextSelection.create(tr.doc, cursorPos))
+  }
+
+  view.dispatch(tr.scrollIntoView())
+  return true
+}
+
+/**
+ * 毫秒转 mm:ss 文本。
+ * @param {number} ms
+ * @returns {string}
+ */
+function formatTime(ms) {
+  if (typeof ms !== 'number' || ms < 0) ms = 0
+  const totalSeconds = Math.floor(ms / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
+/**
+ * 旧语音块显示到分钟，日期分隔符使用 /。
+ * @param {string|null|undefined} value
+ * @returns {string}
+ */
+function formatCreateTime(value) {
+  if (typeof value !== 'string' || value.length === 0) return ''
+  return value.slice(0, 16).replace(/-/g, '/')
+}
+
+/**
+ * 由节点 attrs 构造发给宿主的 voiceInfoJson（MetaDataParser 可解析格式）。
+ * @param {object} attrs
+ * @returns {string}
+ */
+function buildVoiceInfoJson(attrs) {
+  return JSON.stringify({
+    type: 2,
+    voiceId: attrs.voiceId,
+    voicePath: attrs.voicePath,
+    voiceSize: attrs.voiceSize,
+    title: attrs.title,
+    createTime: attrs.createTime,
+  })
+}
+
+/**
+ * 由节点 attrs 构造宿主菜单可解析的 voice JSON（MetaDataParser 兼容格式）。
+ * 与 buildVoiceInfoJson 的区别：使用键 type（而非 dataType），并补齐 text/state，
+ * 供右键菜单探测脚本通过 data-voice-meta 属性读取后下发给 C++ processVoiceMenuRequest。
+ * @param {object} attrs
+ * @returns {string}
+ */
+function buildVoiceMenuJson(attrs) {
+  return JSON.stringify({
+    type: 2,
+    voiceId: attrs.voiceId,
+    voicePath: attrs.voicePath,
+    voiceSize: attrs.voiceSize,
+    title: attrs.title,
+    createTime: attrs.createTime,
+    text: attrs.text,
+    state: !!attrs.text,
+  })
+}
+
+export const VoiceBlock = Node.create({
+  name: 'voiceBlock',
+
+  group: 'block',
+  atom: true,
+  selectable: true,
+  draggable: true,
+
+  addAttributes() {
+    return {
+      voiceId: { default: null },
+      voicePath: { default: null },
+      voiceSize: { default: 0 },
+      createTime: { default: null },
+      title: { default: null },
+      text: { default: null },
+      translateUnfold: { default: true },
+    }
+  },
+
+  parseHTML() {
+    return [{ tag: 'div[data-type="voice-block"]' }]
+  },
+
+  addOptions() {
+    return { strings: DEFAULT_TIPTAP_UI_STRINGS, getStrings: null }
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['div', mergeAttributes(HTMLAttributes, { 'data-type': 'voice-block' })]
+  },
+
+  addNodeView() {
+    return ({ node, view, getPos, editor }) => {
+      // 编辑器先创建、宿主文案随后下发时，configure() 深合并得到的 strings
+      // 是快照；getStrings 保持对运行时文案对象的引用，NodeView 创建时再读取。
+      const strings = this.options.getStrings?.() || this.options.strings || DEFAULT_TIPTAP_UI_STRINGS
+      // --- 运行态（视图态，不进 addAttributes，不进持久化 JSON） ---
+      let playing = false
+      let paused = false
+      let translating = false
+      let progress = 0
+      let duration = node.attrs.voiceSize || 0
+      let seeking = false
+      let unplayable = false
+      let currentNode = node
+      let destroyed = false
+      let dragGhost = null
+
+      function removeDragGhost() {
+        if (!dragGhost) return
+        dragGhost.remove()
+        dragGhost = null
+        document.removeEventListener('dragend', removeDragGhost, true)
+      }
+
+      function onVoiceBoxDragStart(event) {
+        const dataTransfer = event.dataTransfer
+        if (!dataTransfer?.setDragImage) return
+
+        removeDragGhost()
+        const rect = wrapper.getBoundingClientRect()
+        const width = Math.max(1, Math.round(rect.width))
+        const height = Math.max(1, Math.round(rect.height))
+        const ghost = wrapper.cloneNode(true)
+        ghost.classList.add('dvn-voice-drag-ghost')
+        Object.assign(ghost.style, {
+          position: 'fixed',
+          left: '-10000px',
+          top: '-10000px',
+          width: `${width}px`,
+          height: `${height}px`,
+          margin: '0',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          clipPath: 'inset(0 round 12px)',
+          webkitClipPath: 'inset(0 round 12px)',
+          pointerEvents: 'none',
+        })
+        document.body.appendChild(ghost)
+        dragGhost = ghost
+
+        const offsetX = Number.isFinite(event.clientX)
+          ? Math.max(0, Math.min(width, event.clientX - rect.left))
+          : Math.round(width / 2)
+        const offsetY = Number.isFinite(event.clientY)
+          ? Math.max(0, Math.min(height, event.clientY - rect.top))
+          : Math.round(height / 2)
+        dataTransfer.setDragImage(ghost, Math.round(offsetX), Math.round(offsetY))
+        document.addEventListener('dragend', removeDragGhost, true)
+      }
+
+      // --- 构建 DOM ---
+      const wrapper = document.createElement('div')
+      wrapper.className = 'voiceBox'
+      wrapper.setAttribute('data-type', 'voice-block')
+      wrapper.setAttribute('data-voice-meta', buildVoiceMenuJson(node.attrs))
+      // ProseMirror marks atom NodeViews without contentDOM as
+      // contenteditable=false unless the root already declares the attribute.
+      // That non-editable ancestor is exactly what broke WebEngine text
+      // selection/copy for Summernote voice transcripts historically.  Keep
+      // the voice block as an atomic document node, but expose a guarded
+      // read-only editable island so browser/QtWebEngine selection semantics
+      // can work normally inside .translateText.
+      wrapper.setAttribute('contenteditable', 'true')
+      wrapper.setAttribute('aria-readonly', 'true')
+      wrapper.setAttribute('spellcheck', 'false')
+
+      const box = document.createElement('div')
+      box.className = 'voiceInfoBox'
+      box.setAttribute('data-type', 'voice-block')
+      box.setAttribute('data-voice-meta', buildVoiceMenuJson(node.attrs))
+      wrapper.appendChild(box)
+
+      const playback = document.createElement('div')
+      playback.className = 'voicePlayback'
+      box.appendChild(playback)
+
+      const left = document.createElement('div')
+      left.className = 'left'
+
+      const voiceBtn = document.createElement('div')
+      voiceBtn.className = 'voiceBtn'
+      voiceBtn.setAttribute('contenteditable', 'false')
+
+      const titleEl = document.createElement('div')
+      titleEl.className = 'title'
+      titleEl.setAttribute('contenteditable', 'false')
+      titleEl.textContent = node.attrs.title || ''
+
+      left.appendChild(voiceBtn)
+      left.appendChild(titleEl)
+      playback.appendChild(left)
+
+      const createTimeEl = document.createElement('div')
+      createTimeEl.className = 'createTime'
+      createTimeEl.textContent = formatCreateTime(node.attrs.createTime)
+
+      const progressBar = document.createElement('input')
+      progressBar.setAttribute('contenteditable', 'false')
+      progressBar.type = 'range'
+      progressBar.className = 'progressBar'
+      progressBar.min = 0
+      progressBar.max = Math.max(duration, 1)
+      progressBar.value = 0
+      playback.appendChild(progressBar)
+
+      const right = document.createElement('div')
+      right.className = 'right'
+      const timeField = document.createElement('div')
+      timeField.className = 'timeField'
+      timeField.setAttribute('contenteditable', 'false')
+      const timePassed = document.createElement('div')
+      timePassed.className = 'timePassed'
+      timePassed.textContent = '00:00/'
+      const timeTotal = document.createElement('div')
+      timeTotal.className = 'timeTotal'
+      timeTotal.textContent = formatTime(duration)
+      timeField.appendChild(timePassed)
+      timeField.appendChild(timeTotal)
+      right.appendChild(timeField)
+
+      const toTextLabel = document.createElement('div')
+      toTextLabel.className = 'voiceToTextLabel'
+      toTextLabel.setAttribute('contenteditable', 'false')
+      const toTextIcon = document.createElement('div')
+      toTextIcon.className = 'voiceToTextIcon'
+      const translatingLabel = document.createElement('span')
+      translatingLabel.className = 'translatingLabel'
+      translatingLabel.textContent = strings.convertingVoiceToText
+      toTextLabel.appendChild(toTextIcon)
+      toTextLabel.appendChild(translatingLabel)
+      right.appendChild(toTextLabel)
+
+      const toTextTrigger = document.createElement('div')
+      toTextTrigger.className = 'voiceToTextTrigger'
+      toTextTrigger.setAttribute('contenteditable', 'false')
+      toTextTrigger.textContent = strings.toText
+      right.appendChild(toTextTrigger)
+
+      const closePlaybackBarBtn = document.createElement('div')
+      closePlaybackBarBtn.className = 'closePlaybackBarBtn'
+      closePlaybackBarBtn.setAttribute('contenteditable', 'false')
+      right.appendChild(closePlaybackBarBtn)
+
+      playback.appendChild(right)
+
+      // 转写结果区
+      const translate = document.createElement('div')
+      translate.className = 'voiceTranscript translate'
+      const translateHeader = document.createElement('div')
+      translateHeader.className = 'translateHeader'
+      translateHeader.setAttribute('contenteditable', 'false')
+      const translateIcon = document.createElement('div')
+      translateIcon.className = 'translateIcon'
+      const translateLabel = document.createElement('span')
+      translateLabel.className = 'translateLabel'
+      translateLabel.textContent = strings.voiceToText
+      const foldBtn = document.createElement('div')
+      foldBtn.className = 'foldBtn'
+      translateHeader.appendChild(translateIcon)
+      translateHeader.appendChild(translateLabel)
+      translateHeader.appendChild(foldBtn)
+      translate.appendChild(translateHeader)
+
+      const translateText = document.createElement('div')
+      translateText.className = 'translateText'
+      translateText.setAttribute('data-dvn-transcript', 'true')
+      translateText.setAttribute('draggable', 'false')
+      // ProseMirror marks the whole atom NodeView as contenteditable=false.
+      // Make the transcript an inner selectable island for QtWebEngine native
+      // copy, while JS event guards below keep it logically read-only.
+      translateText.setAttribute('contenteditable', 'true')
+      translateText.setAttribute('aria-readonly', 'true')
+      translateText.setAttribute('role', 'textbox')
+      translateText.setAttribute('tabindex', '0')
+      translateText.setAttribute('spellcheck', 'false')
+      renderTranscriptText()
+      translate.appendChild(translateText)
+      box.appendChild(translate)
+
+      function renderTranscriptText() {
+        // A voice block is a read-only widget. None of its displayed text is
+        // part of the editor search index, so always render the transcript as
+        // plain text without search spans.
+        translateText.textContent = currentNode.attrs.text || ''
+      }
+
+      // --- 初始状态渲染 ---
+      function refreshState() {
+        playback.classList.toggle('play', playing)
+        playback.classList.toggle('pause', paused)
+        playback.classList.toggle('voiceToText', translating)
+        playback.classList.toggle('unplayable', unplayable)
+
+        const hasText = !!(currentNode.attrs.text && currentNode.attrs.text.length > 0)
+        box.classList.toggle('containText', hasText)
+        toTextTrigger.style.display = 'none'
+        createTimeEl.style.display = (playing || paused || translating) ? 'none' : ''
+
+        const unfold = currentNode.attrs.translateUnfold !== false
+        translateHeader.classList.toggle('unfold', unfold)
+        translateText.style.display = (hasText && unfold) ? '' : 'none'
+        renderTranscriptText()
+
+        // 进度
+        const pct = duration > 0 ? Math.min((progress / duration) * 100, 100) : 0
+        progressBar.style.setProperty('--progressValue', pct + '%')
+        timePassed.textContent = formatTime(progress) + '/'
+        timeTotal.textContent = formatTime(duration)
+        progressBar.max = Math.max(duration, 1)
+        progressBar.value = Math.min(progress, progressBar.max)
+      }
+
+      // --- 事件处理 ---
+
+      function onVoiceBtnClick() {
+        const bridge = getVoiceBridge()
+        if (!bridge || unplayable) return
+        if (bridge.jsRequestVoicePlayback) {
+          bridge.jsRequestVoicePlayback(buildVoiceInfoJson(currentNode.attrs))
+        }
+      }
+
+      function onToTextTriggerClick() {
+        const bridge = getVoiceBridge()
+        if (!bridge || translating) return
+        if (bridge.jsRequestVoiceToText) {
+          bridge.jsRequestVoiceToText(buildVoiceInfoJson(currentNode.attrs))
+        }
+      }
+
+      function onClosePlaybackClick() {
+        const bridge = getVoiceBridge()
+        if (bridge && bridge.jsRequestVoicePlaybackStop) {
+          bridge.jsRequestVoicePlaybackStop()
+        }
+        playing = false
+        paused = false
+        progress = 0
+        refreshState()
+      }
+
+      function onFoldToggle() {
+        const pos = getPos()
+        if (pos == null || pos < 0) return
+        view.dispatch(view.state.tr.setNodeMarkup(pos, undefined, {
+          ...currentNode.attrs,
+          translateUnfold: currentNode.attrs.translateUnfold === false ? true : false,
+        }))
+      }
+
+      let restoreVoiceDrag = null
+      function restoreWrapperDrag() {
+        if (!restoreVoiceDrag) return
+        restoreVoiceDrag()
+        restoreVoiceDrag = null
+      }
+
+      function onTranslateTextPointerDown(event) {
+        // The voiceBlock node is draggable as a whole.  When the user starts in
+        // transcript text, keep the event inside the DOM so the browser can make
+        // a normal text selection instead of ProseMirror dragging the atom node.
+        event.stopPropagation()
+        restoreWrapperDrag()
+
+        const previousDraggable = wrapper.getAttribute('draggable')
+        wrapper.setAttribute('draggable', 'false')
+        restoreVoiceDrag = () => {
+          if (previousDraggable === null) {
+            wrapper.removeAttribute('draggable')
+          } else {
+            wrapper.setAttribute('draggable', previousDraggable)
+          }
+          document.removeEventListener('mouseup', restoreWrapperDrag, true)
+          document.removeEventListener('pointerup', restoreWrapperDrag, true)
+          document.removeEventListener('touchend', restoreWrapperDrag, true)
+          document.removeEventListener('dragend', restoreWrapperDrag, true)
+        }
+
+        document.addEventListener('mouseup', restoreWrapperDrag, true)
+        document.addEventListener('pointerup', restoreWrapperDrag, true)
+        document.addEventListener('touchend', restoreWrapperDrag, true)
+        document.addEventListener('dragend', restoreWrapperDrag, true)
+      }
+
+      function onTranslateTextDragStart(event) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
+      function isCopyShortcut(event) {
+        return (event.ctrlKey || event.metaKey) && !event.altKey && String(event.key).toLowerCase() === 'c'
+      }
+
+      function isSelectAllShortcut(event) {
+        return (event.ctrlKey || event.metaKey) && !event.altKey && String(event.key).toLowerCase() === 'a'
+      }
+
+      function selectWholeTranscript() {
+        const range = document.createRange()
+        range.selectNodeContents(translateText)
+        const selection = window.getSelection?.()
+        if (!selection) return false
+        selection.removeAllRanges()
+        selection.addRange(range)
+        updateTranscriptSelectionCache(selection)
+        return true
+      }
+
+      function onTranslateTextBeforeInput(event) {
+        event.preventDefault()
+      }
+
+      function onTranslateTextInput(event) {
+        // Defensive repair for old WebEngine paths where an editing event slips
+        // past beforeinput/keydown.  The source of truth remains attrs.text.
+        event.preventDefault?.()
+        renderTranscriptText()
+      }
+
+      function onTranslateTextClipboardMutatingEvent(event) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      function onVoiceBoxBeforeInput(event) {
+        // The wrapper is contenteditable only to remove the non-editable
+        // ancestor around transcript text.  It must never become an editable
+        // source of truth; attrs remain authoritative.
+        event.preventDefault()
+      }
+
+      function onVoiceBoxInput(event) {
+        event.preventDefault?.()
+        renderTranscriptText()
+      }
+
+      function onVoiceBoxKeyDown(event) {
+        if (event.target instanceof HTMLElement && event.target.closest('.translateText')) {
+          return
+        }
+        if (isCopyShortcut(event)) {
+          return
+        }
+        if (isSelectAllShortcut(event)) {
+          event.preventDefault()
+          event.stopPropagation()
+          return
+        }
+        const key = String(event.key || '')
+        const navigationKeys = new Set([
+          'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+          'Home', 'End', 'PageUp', 'PageDown', 'Shift', 'Control', 'Meta', 'Alt',
+          'Escape', 'Tab',
+        ])
+        if (navigationKeys.has(key)) return
+        if (key.length === 1 || key === 'Backspace' || key === 'Delete' || key === 'Enter') {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+      }
+
+      function onTranslateTextKeyDown(event) {
+        if (isCopyShortcut(event)) {
+          updateTranscriptSelectionCache()
+          return
+        }
+        if (isSelectAllShortcut(event)) {
+          event.preventDefault()
+          event.stopPropagation()
+          selectWholeTranscript()
+          return
+        }
+
+        // Keep navigation/selection keys usable.  Block keys that would mutate
+        // the contenteditable island or create undo state in the WebEngine.
+        const key = String(event.key || '')
+        const navigationKeys = new Set([
+          'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+          'Home', 'End', 'PageUp', 'PageDown', 'Shift', 'Control', 'Meta', 'Alt',
+          'Escape', 'Tab',
+        ])
+        if (navigationKeys.has(key)) return
+
+        if (key.length === 1 || key === 'Backspace' || key === 'Delete' || key === 'Enter') {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+      }
+
+      function onTranslateTextSelectionEnd() {
+        updateTranscriptSelectionCache()
+      }
+
+
+      wrapper.addEventListener('dragstart', onVoiceBoxDragStart)
+      wrapper.addEventListener('dragend', removeDragGhost)
+      wrapper.addEventListener('beforeinput', onVoiceBoxBeforeInput)
+      wrapper.addEventListener('input', onVoiceBoxInput)
+      wrapper.addEventListener('keydown', onVoiceBoxKeyDown)
+      wrapper.addEventListener('paste', onTranslateTextClipboardMutatingEvent)
+      wrapper.addEventListener('cut', onTranslateTextClipboardMutatingEvent)
+      wrapper.addEventListener('drop', onTranslateTextClipboardMutatingEvent)
+      voiceBtn.addEventListener('click', onVoiceBtnClick)
+      toTextTrigger.addEventListener('click', onToTextTriggerClick)
+      closePlaybackBarBtn.addEventListener('click', onClosePlaybackClick)
+      foldBtn.addEventListener('click', onFoldToggle)
+      translateText.addEventListener('mousedown', onTranslateTextPointerDown)
+      translateText.addEventListener('pointerdown', onTranslateTextPointerDown)
+      translateText.addEventListener('touchstart', onTranslateTextPointerDown)
+      translateText.addEventListener('dragstart', onTranslateTextDragStart)
+      translateText.addEventListener('beforeinput', onTranslateTextBeforeInput)
+      translateText.addEventListener('input', onTranslateTextInput)
+      translateText.addEventListener('paste', onTranslateTextClipboardMutatingEvent)
+      translateText.addEventListener('cut', onTranslateTextClipboardMutatingEvent)
+      translateText.addEventListener('drop', onTranslateTextClipboardMutatingEvent)
+      translateText.addEventListener('keydown', onTranslateTextKeyDown)
+      translateText.addEventListener('mouseup', onTranslateTextSelectionEnd)
+      translateText.addEventListener('keyup', onTranslateTextSelectionEnd)
+      translateHeader.addEventListener('click', (e) => {
+        // 折叠/展开头部点击切换
+        if (e.target === foldBtn) return
+        onFoldToggle()
+      })
+
+      // 进度条拖拽
+      progressBar.addEventListener('input', () => {
+        seeking = true
+        progress = Number(progressBar.value)
+        progressBar.style.setProperty('--progressValue',
+          (duration > 0 ? (progress / duration) * 100 : 0) + '%')
+        timePassed.textContent = formatTime(progress)
+      })
+      progressBar.addEventListener('change', () => {
+        const bridge = getVoiceBridge()
+        if (bridge && bridge.jsRequestVoiceSeek) {
+          bridge.jsRequestVoiceSeek(String(Number(progressBar.value)))
+        }
+        seeking = false
+      })
+
+      // --- voice 事件订阅 ---
+      const unsubscribe = subscribeVoiceEvents(node.attrs.voiceId, {
+        onPlaybackStateChanged(state) {
+          // state: 0=Playing, 1=Paused, 2=End
+          if (state === 0) {
+            playing = true
+            paused = false
+          } else if (state === 1) {
+            playing = false
+            paused = true
+          } else {
+            playing = false
+            paused = false
+            progress = 0
+          }
+          refreshState()
+        },
+        onPositionChanged(ms) {
+          if (seeking) return
+          progress = ms
+          refreshState()
+        },
+        onDurationChanged(ms) {
+          duration = ms
+          refreshState()
+        },
+        onFileError() {
+          unplayable = true
+          playing = false
+          paused = false
+          refreshState()
+        },
+        onToTextStarted() {
+          translating = true
+          refreshState()
+        },
+        onToTextFailed() {
+          translating = false
+          refreshState()
+        },
+        onToTextCompleted(text) {
+          translating = false
+          // 写回 attrs.text，触发保存
+          const pos = getPos()
+          if (pos != null && pos >= 0) {
+            view.dispatch(view.state.tr.setNodeMarkup(pos, undefined, {
+              ...currentNode.attrs,
+              text,
+            }))
+          }
+          refreshState()
+        },
+      })
+
+      refreshState()
+
+      return {
+        dom: wrapper,
+        update(updatedNode) {
+          if (updatedNode.type.name !== 'voiceBlock') return false
+          currentNode = updatedNode
+          titleEl.textContent = updatedNode.attrs.title || ''
+          createTimeEl.textContent = formatCreateTime(updatedNode.attrs.createTime)
+          renderTranscriptText()
+          wrapper.setAttribute('data-voice-meta', buildVoiceMenuJson(updatedNode.attrs))
+          box.setAttribute('data-voice-meta', buildVoiceMenuJson(updatedNode.attrs))
+          refreshState()
+          return true
+        },
+        stopEvent(event) {
+          const target = event.target
+          if (target instanceof HTMLElement) {
+            if (target.closest('.voiceBtn, .progressBar, .voiceToTextTrigger, .closePlaybackBarBtn, .foldBtn, .translateHeader, .translateText')) {
+              return true
+            }
+          }
+          return false
+        },
+        ignoreMutation() {
+          return true
+        },
+        selectNode() {
+          wrapper.classList.add('ProseMirror-selectednode', 'active')
+        },
+        deselectNode() {
+          wrapper.classList.remove('ProseMirror-selectednode', 'active')
+        },
+        destroy() {
+          if (destroyed) return
+          destroyed = true
+          unsubscribe()
+          wrapper.removeEventListener('dragstart', onVoiceBoxDragStart)
+          wrapper.removeEventListener('dragend', removeDragGhost)
+          removeDragGhost()
+          wrapper.removeEventListener('beforeinput', onVoiceBoxBeforeInput)
+          wrapper.removeEventListener('input', onVoiceBoxInput)
+          wrapper.removeEventListener('keydown', onVoiceBoxKeyDown)
+          wrapper.removeEventListener('paste', onTranslateTextClipboardMutatingEvent)
+          wrapper.removeEventListener('cut', onTranslateTextClipboardMutatingEvent)
+          wrapper.removeEventListener('drop', onTranslateTextClipboardMutatingEvent)
+          voiceBtn.removeEventListener('click', onVoiceBtnClick)
+          toTextTrigger.removeEventListener('click', onToTextTriggerClick)
+          closePlaybackBarBtn.removeEventListener('click', onClosePlaybackClick)
+          foldBtn.removeEventListener('click', onFoldToggle)
+          translateText.removeEventListener('mousedown', onTranslateTextPointerDown)
+          translateText.removeEventListener('pointerdown', onTranslateTextPointerDown)
+          translateText.removeEventListener('touchstart', onTranslateTextPointerDown)
+          translateText.removeEventListener('dragstart', onTranslateTextDragStart)
+          translateText.removeEventListener('beforeinput', onTranslateTextBeforeInput)
+          translateText.removeEventListener('input', onTranslateTextInput)
+          translateText.removeEventListener('paste', onTranslateTextClipboardMutatingEvent)
+          translateText.removeEventListener('cut', onTranslateTextClipboardMutatingEvent)
+          translateText.removeEventListener('drop', onTranslateTextClipboardMutatingEvent)
+          translateText.removeEventListener('keydown', onTranslateTextKeyDown)
+          translateText.removeEventListener('mouseup', onTranslateTextSelectionEnd)
+          translateText.removeEventListener('keyup', onTranslateTextSelectionEnd)
+          restoreWrapperDrag()
+        },
+      }
+    }
+  },
+
+  addProseMirrorPlugins() {
+    let internalVoiceDrag = false
+    const resetInternalVoiceDrag = () => {
+      internalVoiceDrag = false
+    }
+
+    return [
+      new Plugin({
+        key: new PluginKey('voiceBlockCopyClear'),
+        props: {
+          handlePaste(view, event, slice) {
+            const clipboardVoiceNode = createVoiceBlockFromClipboard(view.state.schema, event.clipboardData)
+            const voiceSlice = clipboardVoiceNode
+              ? new Slice(Fragment.from(clipboardVoiceNode), 0, 0)
+              : slice
+            const handled = insertPastedVoiceBlockSlice(view, voiceSlice)
+            if (handled) {
+              event.preventDefault()
+            }
+            return handled
+          },
+          handleDOMEvents: {
+            dragstart(view, event) {
+              const target = event.target
+              if (target instanceof HTMLElement
+                && target.closest('.voiceBox')
+                && !target.closest('.translateText')) {
+                internalVoiceDrag = true
+              }
+              return false
+            },
+            drop() {
+              resetInternalVoiceDrag()
+              return false
+            },
+            dragend() {
+              resetInternalVoiceDrag()
+              return false
+            },
+            copy() {
+              resetInternalVoiceDrag()
+              return false
+            },
+          },
+          transformCopied(slice) {
+            if (internalVoiceDrag) return slice
+
+            let modified = false
+            function transformFragment(fragment) {
+              const newNodes = []
+              for (let i = 0; i < fragment.childCount; i++) {
+                const node = fragment.child(i)
+                if (node.type.name === 'voiceBlock') {
+                  modified = true
+                  newNodes.push(node.type.create({
+                    ...node.attrs,
+                    text: null,
+                    voiceId: generateVoiceId(),
+                    translateUnfold: true,
+                  }, node.content, node.marks))
+                } else if (node.content && node.content.size > 0) {
+                  const newContent = transformFragment(node.content)
+                  if (newContent !== node.content) {
+                    newNodes.push(node.copy(newContent))
+                  } else {
+                    newNodes.push(node)
+                  }
+                } else {
+                  newNodes.push(node)
+                }
+              }
+              return Fragment.from(newNodes)
+            }
+            const newContent = transformFragment(slice.content)
+            if (!modified) return slice
+            return new Slice(newContent, slice.openStart, slice.openEnd)
+          },
+        },
+      }),
+      new Plugin({
+        key: new PluginKey('voiceBlockPasteId'),
+        appendTransaction(transactions, oldState, newState) {
+          const isPaste = transactions.some((t) => t.getMeta('paste'))
+          if (!isPaste) return null
+
+          const seen = new Set()
+          let tr = newState.tr
+          let modified = false
+
+          newState.doc.descendants((node, pos) => {
+            if (node.type.name !== 'voiceBlock') return
+            const id = node.attrs.voiceId
+            if (seen.has(id)) {
+              const newId = generateVoiceId()
+              tr = tr.setNodeMarkup(pos, undefined, { ...node.attrs, voiceId: newId })
+              modified = true
+            } else {
+              seen.add(id)
+            }
+          })
+
+          return modified ? tr : null
+        },
+      }),
+    ]
+  },
+})

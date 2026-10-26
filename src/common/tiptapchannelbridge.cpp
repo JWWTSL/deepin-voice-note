@@ -1,0 +1,648 @@
+// SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#include "tiptapchannelbridge.h"
+#include "VNoteMainManager.h"
+
+#include <QResource>
+#include <QCoreApplication>
+#include <QApplication>
+#include <QClipboard>
+#include <QDebug>
+#include <QDir>
+#include <QFile>
+#include <QImage>
+#include <QDateTime>
+#include <QBuffer>
+#include <QByteArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QStandardPaths>
+#include <QHash>
+#include <QUrl>
+#include <QMimeData>
+
+namespace {
+
+bool isTruthyEnvValue(const QByteArray &value)
+{
+    const QByteArray normalized = value.trimmed().toLower();
+    return normalized == "1" || normalized == "true" || normalized == "yes" || normalized == "on";
+}
+
+bool isFalsyEnvValue(const QByteArray &value)
+{
+    const QByteArray normalized = value.trimmed().toLower();
+    return normalized == "0" || normalized == "false" || normalized == "no" || normalized == "off";
+}
+// 复用 web_engine_handler.cpp 的图片路径归一化逻辑：将 file:// URL、
+// images/ 相对路径或 WEB_PATH/images 绝对路径统一解析为 AppData/images 内的本地路径，
+// 校验结果必须落在 AppData/images 目录内，否则返回空串（拒绝越界路径）。
+QString normalizePicturePath(const QString &path)
+{
+    QString localPath = path;
+    const QUrl url(path);
+    if (url.isLocalFile()) {
+        localPath = url.toLocalFile();
+    }
+
+    const QString normalized = QDir::cleanPath(QDir::fromNativeSeparators(localPath));
+    QString result;
+    const QDir appDataDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    const QString appImageRoot = QDir::cleanPath(appDataDir.filePath(QStringLiteral("images")));
+    const QString appImageRootWithSep = appImageRoot + QStringLiteral("/");
+
+    if (normalized.startsWith(QStringLiteral("images/"))) {
+        result = QDir::cleanPath(appDataDir.filePath(normalized));
+    } else if (normalized.startsWith(appImageRootWithSep)) {
+        result = normalized;
+    } else {
+        const QString webImageRoot = QDir::fromNativeSeparators(QStringLiteral(WEB_PATH) + QStringLiteral("/images/"));
+        if (normalized.startsWith(webImageRoot)) {
+            result = QDir::cleanPath(QDir(appImageRoot).filePath(normalized.mid(webImageRoot.size())));
+        }
+    }
+
+    if (!result.startsWith(appImageRootWithSep)) {
+        return QString();
+    }
+    return result;
+}
+
+} // namespace
+
+TiptapChannelBridge::TiptapChannelBridge(QObject *parent)
+    : QObject(parent)
+    , m_editorReady(false)
+    , m_pendingFontListValid(false)
+    , m_imageSeq(0)
+{
+}
+
+TiptapChannelBridge *TiptapChannelBridge::instance()
+{
+    static TiptapChannelBridge inst;
+    return &inst;
+}
+
+bool TiptapChannelBridge::tiptapEnabled() const
+{
+    // Tiptap 已切为默认编辑器。保留显式回退开关，方便定位线上问题，
+    // 但不再要求 DVN_TIPTAP_DEBUG=1 才进入 Tiptap 流程。
+    if (qEnvironmentVariableIsSet("DVN_TIPTAP_DISABLE")
+        && isTruthyEnvValue(qgetenv("DVN_TIPTAP_DISABLE"))) {
+        return false;
+    }
+
+    if (qEnvironmentVariableIsSet("DVN_SUMMERNOTE_LEGACY")
+        && isTruthyEnvValue(qgetenv("DVN_SUMMERNOTE_LEGACY"))) {
+        return false;
+    }
+
+    if (qEnvironmentVariableIsSet("DVN_TIPTAP_DEBUG")
+        && isFalsyEnvValue(qgetenv("DVN_TIPTAP_DEBUG"))) {
+        return false;
+    }
+
+    return true;
+}
+
+bool TiptapChannelBridge::debugEnabled() const
+{
+    return tiptapEnabled();
+}
+
+QString TiptapChannelBridge::tiptapHtmlPath() const
+{
+    // Tiptap needs to resolve AppData images through file:// URLs. Loading the
+    // editor itself from file:// keeps the page in QtWebEngine's local-file path.
+    // A qrc: page cannot load file:// images (QtWebEngine reports
+    // "Not allowed to load local resource"), so only use qrc as the final fallback
+    // when no filesystem copy exists.
+    const QString appDir = QCoreApplication::applicationDirPath();
+    const QStringList candidates = {
+        QStringLiteral(TIPTAP_WEB_PATH "/tiptap-editor.html"),
+        // Installed layout: <prefix>/bin/deepin-voice-note -> <prefix>/share/deepin-voice-note/tiptap
+        QDir(appDir).filePath(QStringLiteral("../share/deepin-voice-note/tiptap/tiptap-editor.html")),
+        // Source-tree build layout: <repo>/build/src/deepin-voice-note -> <repo>/web-editor/dist
+        QDir(appDir).filePath(QStringLiteral("../../web-editor/dist/tiptap-editor.html")),
+    };
+    for (const QString &candidate : candidates) {
+        const QString filePath = QDir::cleanPath(candidate);
+        if (QFile::exists(filePath)) {
+            return QUrl::fromLocalFile(filePath).toString();
+        }
+    }
+    return QStringLiteral("qrc:/tiptap-editor.html");
+}
+
+QString TiptapChannelBridge::resourceBaseUrl() const
+{
+    // 用户数据（图片/语音）存储在 AppDataLocation，前端用此根 + "images/xxx" 拼接绝对路径
+    const QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (appDataPath.isEmpty()) {
+        return QString();
+    }
+    return QUrl::fromLocalFile(appDataPath).toString();
+}
+
+QString TiptapChannelBridge::uiStringsJson() const
+{
+    const auto webText = [](const char *source) {
+        return QApplication::translate("web", source);
+    };
+
+    QJsonObject strings;
+    // 默认笔记标题必须与 VNoteItemOper::getDefaultNoteName 使用同一翻译，
+    // 前端才能把生成标题识别为可覆盖的占位文本。
+    strings.insert(QStringLiteral("generatedTitlePrefix"),
+                   QApplication::translate("DefaultName", "Text"));
+    strings.insert(QStringLiteral("noteTitle"), webText("Note title"));
+    strings.insert(QStringLiteral("bodyPlaceholder"), webText("Enter text"));
+    strings.insert(QStringLiteral("bold"), webText("Bold"));
+    strings.insert(QStringLiteral("italic"), webText("Italic"));
+    strings.insert(QStringLiteral("underline"), webText("Underline"));
+    strings.insert(QStringLiteral("strikethrough"), webText("Strikethrough"));
+    strings.insert(QStringLiteral("bullets"), webText("Bullets"));
+    strings.insert(QStringLiteral("numbering"), webText("Numbering"));
+    strings.insert(QStringLiteral("taskList"), webText("Task list"));
+    strings.insert(QStringLiteral("heading"), webText("Heading"));
+    strings.insert(QStringLiteral("headingLevel"), webText("Heading %1"));
+    strings.insert(QStringLiteral("paragraph"), webText("Paragraph"));
+    strings.insert(QStringLiteral("font"), webText("Font"));
+    strings.insert(QStringLiteral("fontSize"), webText("Font size"));
+    strings.insert(QStringLiteral("fontColor"), webText("Font color"));
+    strings.insert(QStringLiteral("textHighlightColor"), webText("Text highlight color"));
+    strings.insert(QStringLiteral("moreColors"), webText("More colors"));
+    strings.insert(QStringLiteral("transparent"), webText("Transparent"));
+    strings.insert(QStringLiteral("quote"), webText("Quote"));
+    strings.insert(QStringLiteral("increaseIndent"), webText("Increase indent"));
+    strings.insert(QStringLiteral("decreaseIndent"), webText("Decrease indent"));
+    strings.insert(QStringLiteral("recordVoice"), webText("Record voice"));
+    strings.insert(QStringLiteral("insertPicture"), webText("Insert picture"));
+    strings.insert(QStringLiteral("moreFormats"), webText("More formats"));
+    strings.insert(QStringLiteral("voiceToText"), webText("Voice To Text"));
+    strings.insert(QStringLiteral("convertingVoiceToText"), webText("Converting voice to text"));
+    strings.insert(QStringLiteral("toText"), webText("To Text"));
+
+    return QString::fromUtf8(QJsonDocument(strings).toJson(QJsonDocument::Compact));
+}
+
+// ---------------------------------------------------------------------------
+// 加载就绪缓存语义（R6）
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::notifyEditorReady()
+{
+    m_editorReady = true;
+
+    // 主题信号可能在 QWebChannel 绑定前已由宿主侧发出。前端会先绑定
+    // themeProvided 再调用 jsEditorReady，因此这里先补发缓存主题；随后
+    // editorReady 回调里若重新采集当前系统主题，会再用最新值覆盖。
+    if (m_hasTheme) {
+        emit themeProvided(m_lastTheme, m_lastHighlightColor, m_lastDisableHighlightColor, m_lastBackgroundColor);
+    }
+
+    emit editorReady();
+
+    // 就绪后补发缓存的 envelope，不丢数据
+    if (!m_pendingEnvelope.isEmpty()) {
+        emit loadEnvelopeRequested(m_pendingEnvelope);
+        m_pendingEnvelope.clear();
+    }
+
+    // 就绪后补发缓存的字体列表，不丢数据
+    if (m_pendingFontListValid) {
+        emit fontListProvided(m_pendingFontList, m_pendingDefaultFont);
+        m_pendingFontList.clear();
+        m_pendingDefaultFont.clear();
+        m_pendingFontListValid = false;
+    }
+
+    // 工具栏在 QWebChannel 完成绑定前即可被点击；图片复制完成后若此时
+    // 编辑器尚未 ready，不能直接 emit，否则 QWebChannel 信号会丢失。
+    const QStringList pendingImages = m_pendingInsertImages;
+    m_pendingInsertImages.clear();
+    for (const QString &imageInfoJson : pendingImages) {
+        emit insertImage(imageInfoJson);
+    }
+
+    if (!m_currentSearchQuery.isEmpty()) {
+        emit searchQueryChanged(m_currentSearchQuery);
+    }
+}
+
+void TiptapChannelBridge::loadEnvelope(const QString &envelopeJson)
+{
+    if (m_editorReady) {
+        // 已就绪，直接下发
+        emit loadEnvelopeRequested(envelopeJson);
+    } else {
+        // 未就绪，缓存待发
+        m_pendingEnvelope = envelopeJson;
+    }
+}
+
+void TiptapChannelBridge::sendFontList(const QStringList &fonts, const QString &defaultFont)
+{
+    if (m_editorReady) {
+        // 已就绪，直接下发
+        emit fontListProvided(fonts, defaultFont);
+    } else {
+        // 未就绪，缓存待发
+        m_pendingFontList = fonts;
+        m_pendingDefaultFont = defaultFont;
+        m_pendingFontListValid = true;
+    }
+}
+
+QString TiptapChannelBridge::pendingEnvelope() const
+{
+    return m_pendingEnvelope;
+}
+
+QStringList TiptapChannelBridge::pendingFontList() const
+{
+    return m_pendingFontList;
+}
+
+QString TiptapChannelBridge::pendingDefaultFont() const
+{
+    return m_pendingDefaultFont;
+}
+
+bool TiptapChannelBridge::isEditorReady() const
+{
+    return m_editorReady;
+}
+
+// ---------------------------------------------------------------------------
+// 保存往返
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::requestEditorContent()
+{
+    emit requestContent();
+}
+
+// ---------------------------------------------------------------------------
+// 插入图片 / 语音
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::sendInsertImage(const QString &imageInfoJson)
+{
+    if (!m_editorReady) {
+        m_pendingInsertImages.append(imageInfoJson);
+        qInfo() << "Queueing image insertion until Tiptap editor is ready";
+        return;
+    }
+    emit insertImage(imageInfoJson);
+}
+
+void TiptapChannelBridge::sendInsertVoiceBlock(const QString &voiceInfoJson)
+{
+    emit insertVoiceBlock(voiceInfoJson);
+}
+
+// ---------------------------------------------------------------------------
+// JS→C++ 回告入口
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::jsEditorReady()
+{
+    qInfo() << "Tiptap editor ready (TiptapChannelBridge)";
+    notifyEditorReady();
+}
+
+void TiptapChannelBridge::jsContentChanged()
+{
+    emit contentChanged();
+}
+
+void TiptapChannelBridge::jsContentSaved(const QString &envelopeJson)
+{
+    qInfo() << "Tiptap content saved, envelope length:" << envelopeJson.length();
+    emit contentSaved(envelopeJson);
+}
+
+void TiptapChannelBridge::jsInsertImageFailed(const QString &reason)
+{
+    qWarning() << "Tiptap insert image failed:" << reason;
+    emit insertImageFailed(reason);
+}
+
+void TiptapChannelBridge::jsInsertVoiceBlockFailed(const QString &reason)
+{
+    qWarning() << "Tiptap insert voice block failed:" << reason;
+    emit insertVoiceBlockFailed(reason);
+}
+
+// ---------------------------------------------------------------------------
+// 图片 UI 交互（不改动既有五类数据通道事件签名）
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::jsRequestPickImage()
+{
+    emit pickImageRequested();
+}
+
+void TiptapChannelBridge::jsRequestRecordVoice()
+{
+    emit recordVoiceRequested();
+}
+
+QString TiptapChannelBridge::currentSearchQuery() const
+{
+    return m_currentSearchQuery;
+}
+
+void TiptapChannelBridge::setSearchQuery(const QString &query)
+{
+    const QString normalized = query.trimmed();
+    if (m_currentSearchQuery == normalized) {
+        if (m_editorReady && !normalized.isEmpty()) {
+            emit searchQueryChanged(normalized);
+        }
+        return;
+    }
+
+    m_currentSearchQuery = normalized;
+    if (m_currentSearchQuery.isEmpty()) {
+        // currentSearchQuery 的 NOTIFY 是 searchQueryChanged：清空同样必须
+        // 发出，否则 QWebChannel/QML 侧缓存的属性值会停留在旧 query。
+        emit searchQueryChanged(QString());
+        emit searchCleared();
+    } else {
+        emit searchQueryChanged(m_currentSearchQuery);
+    }
+}
+
+void TiptapChannelBridge::clearSearchQuery()
+{
+    // 清除操作必须是幂等的。即使桥接层已经记录为空，前端仍可能
+    // 保留旧的运行态 decoration（例如编辑器切换或 WebEngine 重载期间），
+    // 因此每次清除都主动通知前端移除搜索高亮。
+    const bool hadQuery = !m_currentSearchQuery.isEmpty();
+    m_currentSearchQuery.clear();
+    if (hadQuery) {
+        // 同步刷新 currentSearchQuery 的 QWebChannel 属性缓存，避免清空后
+        // 延迟到达的内容重载仍读到旧 query 而重新套上高亮。
+        emit searchQueryChanged(QString());
+    }
+    emit searchCleared();
+}
+
+int TiptapChannelBridge::currentNoteId() const
+{
+    return VNoteMainManager::instance()->currentNoteId();
+}
+
+QString TiptapChannelBridge::currentNoteTitle() const
+{
+    const int noteId = currentNoteId();
+    return VNoteMainManager::instance()->getNotePlainTitle(noteId);
+}
+
+void TiptapChannelBridge::renameCurrentNote(const QString &title)
+{
+    VNoteMainManager::instance()->renameNote(currentNoteId(), title);
+}
+
+void TiptapChannelBridge::jsRequestViewPicture(const QString &url)
+{
+    const QString localPath = normalizePicturePath(url);
+    if (localPath.isEmpty()) {
+        qWarning() << "jsRequestViewPicture: refused unsafe image path:" << url;
+        return;
+    }
+    emit viewPictureRequested(localPath);
+}
+
+void TiptapChannelBridge::jsCopyPlainTextToClipboard(const QString &text)
+{
+    if (text.isEmpty()) {
+        return;
+    }
+
+    QClipboard *clipboard = QApplication::clipboard();
+    if (!clipboard) {
+        qWarning() << "Tiptap copy plain text: clipboard is unavailable";
+        return;
+    }
+
+    auto *mimeData = new QMimeData;
+    mimeData->setText(text);
+    clipboard->setMimeData(mimeData);
+    qInfo() << "Tiptap copied plain text to clipboard, length:" << text.length();
+}
+
+void TiptapChannelBridge::jsClearClipboard()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    if (!clipboard) {
+        qWarning() << "Tiptap clear clipboard: clipboard is unavailable";
+        return;
+    }
+    clipboard->clear();
+    qInfo() << "Tiptap cleared clipboard";
+}
+
+bool TiptapChannelBridge::clipboardHasPasteContent() const
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    if (!clipboard) {
+        return false;
+    }
+
+    const QMimeData *mimeData = clipboard->mimeData();
+    if (!mimeData) {
+        return false;
+    }
+
+    return mimeData->hasText()
+        || mimeData->hasHtml()
+        || mimeData->hasImage()
+        || mimeData->hasUrls();
+}
+
+void TiptapChannelBridge::jsPasteImage(const QString &dataUrl)
+{
+    // data URL 形如 data:image/png;base64,XXXX
+    const int comma = dataUrl.indexOf(QLatin1Char(','));
+    if (comma < 0) {
+        qWarning() << "jsPasteImage: invalid data url";
+        emit insertImageFailed("invalid pasted image data");
+        return;
+    }
+
+    const QString meta = dataUrl.left(comma);
+    const QByteArray base64 = dataUrl.mid(comma + 1).toUtf8();
+
+    // 解析 mime 类型
+    const int colon = meta.indexOf(QLatin1Char(':'));
+    const int semi = meta.indexOf(QLatin1Char(';'));
+    QString mime;
+    if (colon >= 0 && semi > colon) {
+        mime = meta.mid(colon + 1, semi - colon - 1);
+    } else if (colon >= 0) {
+        mime = meta.mid(colon + 1);
+    }
+
+    QString suffix;
+    if (mime == QStringLiteral("image/png")) {
+        suffix = QStringLiteral("png");
+    } else if (mime == QStringLiteral("image/jpeg")) {
+        suffix = QStringLiteral("jpg");
+    } else if (mime == QStringLiteral("image/bmp")) {
+        suffix = QStringLiteral("bmp");
+    } else {
+        qWarning() << "jsPasteImage: unsupported image format" << mime;
+        emit insertImageFailed("unsupported pasted image format");
+        return;
+    }
+
+    const QByteArray bytes = QByteArray::fromBase64(base64);
+    QImage image;
+    if (!image.loadFromData(bytes)) {
+        qWarning() << "jsPasteImage: failed to decode image";
+        emit insertImageFailed("failed to decode pasted image");
+        return;
+    }
+
+    const QString dirPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+                            + QStringLiteral("/images");
+    QDir().mkdir(dirPath);
+    const QString date = QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMddhhmmss"));
+    const QString fileName = QString("%1_%2.%3").arg(date).arg(++m_imageSeq).arg(suffix);
+    const QString imgPath = dirPath + QLatin1Char('/') + fileName;
+
+    static const QHash<QString, QByteArray> formatBySuffix = {
+        {QStringLiteral("png"), QByteArrayLiteral("PNG")},
+        {QStringLiteral("jpg"), QByteArrayLiteral("JPEG")},
+        {QStringLiteral("bmp"), QByteArrayLiteral("BMP")},
+    };
+    const QByteArray format = formatBySuffix.value(suffix);
+    if (!image.save(imgPath, format.constData())) {
+        qWarning() << "jsPasteImage: failed to save image to" << imgPath;
+        emit insertImageFailed("failed to save pasted image");
+        return;
+    }
+
+    QJsonObject info;
+    info.insert(QStringLiteral("relPath"), QString(QStringLiteral("images/") + fileName));
+    emit insertImage(QJsonDocument(info).toJson(QJsonDocument::Compact));
+}
+
+// ---------------------------------------------------------------------------
+// 滚动位置上报（JS→C++）
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::jsReportScroll(int scrollTop)
+{
+    const bool isTop = (scrollTop <= 0);
+    emit scrollChanged(isTop);
+}
+
+
+// ---------------------------------------------------------------------------
+// Voice 播放/转写入口（JS→C++）
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::jsRequestVoicePlayback(const QString &voiceInfoJson)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(voiceInfoJson.toUtf8());
+    QJsonObject obj = doc.object();
+    QString voiceId = obj.value(QStringLiteral("voiceId")).toString();
+    bool isSame = (voiceId == m_currentVoiceId);
+    // 切换到不同语音块前，先向旧 voiceId 派发结束状态，让旧 NodeView 复位为非播放态。
+    // 2 = End（与 VoicePlayerHandler::PlayState::End 对齐，前端 NodeView 据此重置）。
+    if (!isSame && !m_currentVoiceId.isEmpty()) {
+        emit voicePlaybackStateChanged(m_currentVoiceId, 2);
+    }
+    m_currentVoiceId = voiceId;
+    emit voicePlaybackRequested(voiceInfoJson, isSame);
+}
+
+void TiptapChannelBridge::jsRequestVoicePlaybackStop()
+{
+    emit voicePlaybackStopRequested();
+}
+
+void TiptapChannelBridge::jsRequestVoiceSeek(const QString &ms)
+{
+    bool ok = false;
+    qint64 pos = ms.toLongLong(&ok);
+    if (ok) {
+        emit voicePlaybackSeekRequested(pos);
+    }
+}
+
+void TiptapChannelBridge::jsRequestVoiceToText(const QString &voiceInfoJson)
+{
+    emit voiceToTextRequested(voiceInfoJson);
+}
+
+// ---------------------------------------------------------------------------
+// Voice 播放/转写/主题信号下发（C++→JS）
+// ---------------------------------------------------------------------------
+
+void TiptapChannelBridge::emitVoicePlaybackStateChanged(const QString &voiceId, int state)
+{
+    emit voicePlaybackStateChanged(voiceId, state);
+}
+
+void TiptapChannelBridge::emitVoicePlaybackPositionChanged(const QString &voiceId, qint64 ms)
+{
+    emit voicePlaybackPositionChanged(voiceId, ms);
+}
+
+void TiptapChannelBridge::emitVoicePlaybackDurationChanged(const QString &voiceId, qint64 ms)
+{
+    emit voicePlaybackDurationChanged(voiceId, ms);
+}
+
+void TiptapChannelBridge::emitVoiceFileError(const QString &voiceId)
+{
+    emit voiceFileError(voiceId);
+}
+
+void TiptapChannelBridge::emitVoiceToTextStarted(const QString &voiceId)
+{
+    emit voiceToTextStarted(voiceId);
+}
+
+void TiptapChannelBridge::emitVoiceToTextFailed(const QString &voiceId)
+{
+    emit voiceToTextFailed(voiceId);
+}
+
+void TiptapChannelBridge::emitVoiceToTextCompleted(const QString &voiceId, const QString &text)
+{
+    emit voiceToTextCompleted(voiceId, text);
+}
+
+void TiptapChannelBridge::emitThemeProvided(const QString &theme, const QString &highlightColor,
+                                             const QString &disableHighlightColor,
+                                             const QString &backgroundColor)
+{
+    m_lastTheme = theme;
+    m_lastHighlightColor = highlightColor;
+    m_lastDisableHighlightColor = disableHighlightColor;
+    m_lastBackgroundColor = backgroundColor;
+    m_hasTheme = true;
+
+    if (m_editorReady) {
+        emit themeProvided(theme, highlightColor, disableHighlightColor, backgroundColor);
+    }
+}
+
+QString TiptapChannelBridge::currentVoiceId() const
+{
+    return m_currentVoiceId;
+}
+
+void TiptapChannelBridge::setCurrentVoiceId(const QString &voiceId)
+{
+    m_currentVoiceId = voiceId;
+}

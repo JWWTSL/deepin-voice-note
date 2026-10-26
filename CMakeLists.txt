@@ -8,9 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-endif()
+# CMAKE_CXX_STANDARD 17 (set above) is the authoritative standard; the
+# previous -std=c++11 override was dead code that conflicted with it and
+# with Qt6's C++17 requirement, and has been removed.
 
 set(APP_RES_DIR "assets")
 set(APP_DESKTOP "${APP_RES_DIR}/deepin-voice-note.desktop")
@@ -22,6 +22,13 @@ if (CMAKE_BUILD_TYPE MATCHES Debug)
     add_definitions(-DWEB_PATH="${CMAKE_SOURCE_DIR}/src/web")
 else()
     add_definitions(-DWEB_PATH="${CMAKE_INSTALL_PREFIX}/share/deepin-voice-note/web")
+endif()
+
+# TTP-022: Tiptap 运行时 web 资源路径（dev→源树 web-editor/dist，install→安装目录）
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DTIPTAP_WEB_PATH="${CMAKE_SOURCE_DIR}/web-editor/dist")
+else()
+    add_definitions(-DTIPTAP_WEB_PATH="${CMAKE_INSTALL_PREFIX}/share/deepin-voice-note/tiptap")
 endif()
 
 execute_process(COMMAND bash
@@ -72,6 +79,8 @@ install(FILES ${APP_DESKTOP} DESTINATION share/applications)
 install(FILES ${APP_CONFIG} DESTINATION share/deepin-voice-note)
 install(FILES ${APP_LOGO} DESTINATION  ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/web    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-voice-note)
+# TTP-022: 安装 Tiptap 运行时打包产物
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/web-editor/dist/   DESTINATION ${CMAKE_INSTALL_PREFIX}/share/deepin-voice-note/tiptap)
 install(FILES ${CMAKE_SOURCE_DIR}/assets/org.deepin.voicenote.service DESTINATION share/dbus-1/services)
 if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "sw_64")
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/assets/sw/deepin-voice-note     DESTINATION share/deepin-manual/manual-assets/application/)
@@ -81,6 +90,5 @@ endif()
 
 # Unit Tests
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    # QML 改造早期屏蔽
-    # add_subdirectory(tests)
+    add_subdirectory(tests)
 endif()

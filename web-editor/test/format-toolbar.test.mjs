@@ -1,0 +1,3726 @@
+// SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+// 格式工具栏单测（happy-dom）：十项格式 apply/clear/激活态、setFontList 填充、常驻可见。
+
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import { Window } from 'happy-dom'
+import { Editor } from '@tiptap/core'
+import { createTiptapExtensions } from '../src/runtime/tiptap-extensions.js'
+import { createFormatToolbar } from '../src/runtime/format-toolbar.js'
+import { FORE_COLORS, BACK_COLORS, DARK_FORE_COLORS, DARK_BACK_COLORS } from '../src/runtime/format-palette.js'
+import toolbarCss from '../src/runtime/format-toolbar.css?raw'
+import tiptapEditorHtml from '../src/runtime/tiptap-editor.html?raw'
+import { syncEmptyPlaceholderState } from '../src/runtime/empty-placeholder-state.js'
+import { createEmptyDoc, createEnvelope, validateEnvelope } from '../src/schema/document-envelope.js'
+import { listItemMarkerFontSize } from '../src/runtime/normal-list-markers.js'
+
+function defineGlobal(name, value) {
+  Object.defineProperty(globalThis, name, {
+    value,
+    writable: true,
+    configurable: true,
+  })
+}
+
+function setupDom() {
+  const window = new Window()
+  defineGlobal('window', window)
+  defineGlobal('document', window.document)
+  defineGlobal('navigator', window.navigator)
+  defineGlobal('Node', window.Node)
+  defineGlobal('Element', window.Element)
+  defineGlobal('HTMLElement', window.HTMLElement)
+  defineGlobal('DocumentFragment', window.DocumentFragment)
+  defineGlobal('Event', window.Event)
+  defineGlobal('CustomEvent', window.CustomEvent)
+  defineGlobal('MutationObserver', window.MutationObserver)
+  defineGlobal('getComputedStyle', window.getComputedStyle.bind(window))
+  defineGlobal('requestAnimationFrame', (cb) => setTimeout(cb, 0))
+  defineGlobal('cancelAnimationFrame', (id) => clearTimeout(id))
+  return window
+}
+
+function createEditorWithToolbar(uiStrings) {
+  const window = setupDom()
+  const element = document.createElement('div')
+  document.body.appendChild(element)
+  const editor = new Editor({
+    element,
+    extensions: createTiptapExtensions(),
+    content: createEmptyDoc(),
+  })
+  const host = document.createElement('div')
+  host.id = 'toolbar-host'
+  document.body.appendChild(host)
+  const toolbar = createFormatToolbar(editor, host, uiStrings)
+  return { editor, host, toolbar, window, appElement: element }
+}
+
+function insertText(editor, text) {
+  editor.commands.insertContent({ type: 'text', text })
+}
+
+// 选中首个段落内的全部文本（跳过文档边界位置 0），对 mark 与块级 toggle 均可用
+function markEditorFocused(editor) {
+  editor.isFocused = true
+}
+
+function selectText(editor) {
+  markEditorFocused(editor)
+  const size = editor.state.doc.content.size
+  editor.chain().focus().setTextSelection({ from: 1, to: Math.max(1, size - 1) }).run()
+}
+
+// ---------------------------------------------------------------------------
+// 常驻可见性
+// ---------------------------------------------------------------------------
+
+test('toolbar is always visible once mounted', () => {
+  const { host, editor } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  assert.ok(toolbar, 'toolbar should be mounted in host')
+  assert.notEqual(toolbar.style.display, 'none', 'toolbar must not be hidden')
+  editor.destroy()
+})
+
+test('toolbar group separators are rendered on initial mount', () => {
+  const { host, editor } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  assert.equal(
+    toolbar.querySelectorAll('.tiptap-toolbar-separator').length,
+    4,
+    'all main toolbar group separators should be present before a resize',
+  )
+  editor.destroy()
+})
+
+
+test('toolbar icons use imported assets or sanitized SVG nodes and follow theme color', () => {
+  const { host, editor } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  for (const format of ['bulletList', 'orderedList', 'taskList', 'insertVoice', 'insertImage']) {
+    const button = toolbar.querySelector(`button[data-format="${format}"]`)
+    assert.ok(button, `${format} button should exist`)
+    const icon = button.querySelector('.tiptap-icon')
+    assert.ok(icon, `${format} should render an icon node`)
+    assert.ok(icon.querySelector('svg, img'), `${format} should render an icon node`)
+    assert.equal(icon.querySelector('script'), null, `${format} must not render scripts`)
+    assert.equal(icon.querySelector('foreignObject'), null, `${format} must not render foreign objects`)
+  }
+
+  assert.match(toolbarCss, /\.tiptap-icon--asset::after \{[\s\S]*background-color: currentColor;/)
+  assert.match(toolbarCss, /\.tiptap-icon--asset::after \{[\s\S]*opacity: 1;/)
+  assert.match(toolbarCss, /\.tiptap-icon--asset > img \{[\s\S]*opacity: 0;/)
+  assert.match(toolbarCss, /\.tiptap-toolbar button:hover:not\(:disabled\):not\(:active\):not\(\.is-pressing\):not\(\.is-active\):not\(\[aria-pressed="true"\]\):not\(\[aria-expanded="true"\]\) \.tiptap-icon \{[\s\S]*color: var\(--dvn-toolbar-hover-fg/, 'toolbar icons should darken on hover')
+  assert.match(toolbarCss, /\.tiptap-toolbar button\.is-active,[\s\S]*\.tiptap-toolbar button\[aria-pressed="true"\] \{[\s\S]*background: var\(--dvn-menu-selected-bg/, 'toolbar selected state should use the theme highlight background')
+  assert.match(toolbarCss, /\.tiptap-toolbar button:active:not\(:disabled\),[\s\S]*\.tiptap-toolbar button\.is-pressing:not\(:disabled\) \{[\s\S]*background: var\(--dvn-press-bg/, 'toolbar press state should be distinct from the selected state')
+  assert.match(toolbarCss, /\.tiptap-toolbar button\.is-active \.tiptap-icon,[\s\S]*color: var\(--dvn-menu-selected-fg/, 'toolbar selected state should use the selection foreground color')
+  assert.match(toolbarCss, /\.tiptap-toolbar button:active:not\(:disabled\) \.tiptap-icon,[\s\S]*\.tiptap-toolbar button\.is-pressing:not\(:disabled\) \.tiptap-icon \{[\s\S]*color: var\(--dvn-toolbar-hover-fg/, 'toolbar press state should not look like an already selected button')
+  assert.equal(toolbar.querySelector('button[data-format="insertImage"] .tiptap-icon--asset') != null, true, 'insert image icon should follow the themed mask pipeline like voice')
+  assert.equal(toolbar.querySelector('button[data-format="insertImage"] .tiptap-icon--raw-asset'), null, 'insert image icon should not bypass dark theme recoloring')
+  assert.match(toolbarCss, /\.tiptap-toolbar button\.is-active \.tiptap-icon,[\s\S]*color: var\(--highlightColor/)
+
+  editor.destroy()
+})
+
+test('toolbar button keeps a pressed visual class until pointer release', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const button = host.querySelector('button[data-format="bold"]')
+  assert.ok(button)
+
+  button.dispatchEvent(new window.Event('pointerdown', { bubbles: true, cancelable: true }))
+  assert.equal(button.classList.contains('is-pressing'), true)
+
+  window.dispatchEvent(new window.Event('pointerup', { bubbles: true, cancelable: true }))
+  assert.equal(button.classList.contains('is-pressing'), false)
+  editor.destroy()
+})
+
+test('toolbar keeps every tool visible at the default 616px editor pane width', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  let hostWidth = 616
+
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => hostWidth,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => 606,
+  })
+
+  window.dispatchEvent(new window.Event('resize'))
+  assert.equal(toolbar.querySelector('[data-format="more"]'), null)
+  for (const format of ['bold', 'italic', 'underline', 'strike', 'foreColor', 'backColor', 'bulletList', 'orderedList', 'taskList', 'insertVoice', 'insertImage']) {
+    assert.equal(
+      toolbar.querySelector(`[data-format="${format}"]`)?.closest('.tiptap-overflow-panel'),
+      null,
+      `${format} should remain visible at the default pane width`,
+    )
+  }
+
+  hostWidth = 614
+  window.dispatchEvent(new window.Event('resize'))
+  assert.ok(toolbar.querySelector('[data-format="more"]'))
+  editor.destroy()
+})
+
+test('open dropdown triggers use the active icon state', () => {
+  const { host, editor } = createEditorWithToolbar()
+
+  const headingButton = host.querySelector('.tiptap-select-heading .tiptap-select-button')
+  const fontButton = host.querySelector('.tiptap-select-fontFamily .tiptap-select-button')
+  const foreColorMenuButton = host.querySelector('button[data-color-menu="foreColor"]')
+  assert.ok(headingButton && fontButton && foreColorMenuButton)
+
+  headingButton.click()
+  assert.equal(headingButton.getAttribute('aria-expanded'), 'true')
+  assert.equal(headingButton.closest('.tiptap-select-wrap').classList.contains('is-open'), true)
+
+  fontButton.click()
+  assert.equal(fontButton.getAttribute('aria-expanded'), 'true')
+  assert.equal(fontButton.closest('.tiptap-select-wrap').classList.contains('is-open'), true)
+  assert.equal(headingButton.getAttribute('aria-expanded'), 'false')
+
+  foreColorMenuButton.click()
+  assert.equal(foreColorMenuButton.getAttribute('aria-expanded'), 'true')
+
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-select-wrap\.is-open \.tiptap-select-button,[\s\S]*background: var\(--dvn-hover-bg/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-color-menu-button\[aria-expanded="true"\][\s\S]*background: var\(--dvn-hover-bg/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-select-wrap\.is-open \.tiptap-select-button \.tiptap-icon,[\s\S]*color: var\(--highlightColor/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-color-menu-button\[aria-expanded="true"\] \.tiptap-icon[\s\S]*color: var\(--highlightColor/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-more-button\[aria-expanded="true"\] \.tiptap-icon,[\s\S]*color: var\(--highlightColor/)
+  editor.destroy()
+})
+
+test('color controls split current color apply and more color menu actions', () => {
+  const { host, editor } = createEditorWithToolbar()
+  insertText(editor, 'colored')
+  selectText(editor)
+
+  const applyButton = host.querySelector('button[data-format="foreColor"]')
+  const menuButton = host.querySelector('button[data-color-menu="foreColor"]')
+  const panel = host.querySelector('[data-panel="foreColor"]')
+  assert.ok(applyButton && menuButton && panel)
+  assert.equal(applyButton.querySelector('.tiptap-color-icon') != null, true)
+  assert.equal(applyButton.querySelector('.tiptap-color-arrow'), null)
+  assert.equal(menuButton.querySelector('.tiptap-color-arrow') != null, true)
+
+  applyButton.click()
+  assert.notEqual(panel.style.display, 'grid', 'current color button should not open the palette')
+
+  menuButton.click()
+  assert.equal(panel.style.display, 'grid', 'arrow button should open the palette')
+
+  const color = 'rgb(205, 35, 62)'
+  panel.querySelector(`button[data-color="${color}"]`).click()
+  assert.ok(editor.isActive('color', { color }))
+
+  menuButton.click()
+  assert.equal(panel.style.display, 'grid')
+  applyButton.click()
+  assert.notEqual(panel.style.display, 'grid', 'current color button should apply color and close the palette')
+  assert.ok(editor.isActive('color', { color }))
+  editor.destroy()
+})
+
+test('toolbar controls anchor tooltips to themselves instead of native title', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => 600,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => 700,
+  })
+  window.dispatchEvent(new window.Event('resize'))
+
+  const expected = new Map([
+    ['bold', '粗体'],
+    ['italic', '斜体'],
+    ['underline', '下划线'],
+    ['strike', '删除线'],
+    ['foreColor', '文字颜色'],
+    ['backColor', '背景颜色'],
+    ['bulletList', '无序列表'],
+    ['orderedList', '有序列表'],
+    ['taskList', '待办列表'],
+    ['insertVoice', '录音'],
+    ['insertImage', '插入图片'],
+    ['more', '更多格式'],
+  ])
+  for (const [format, label] of expected) {
+    const button = toolbar.querySelector(`button[data-format="${format}"]`)
+    assert.ok(button, `${format} button should exist`)
+    assert.equal(button.getAttribute('title'), null, `${format} must not use QtWebEngine native title positioning`)
+    assert.equal(button.getAttribute('data-tooltip'), label)
+    assert.equal(button.getAttribute('aria-label'), label)
+  }
+
+  const colorMenu = toolbar.querySelector('button[data-color-menu="foreColor"]')
+  assert.ok(colorMenu)
+  assert.equal(colorMenu.getAttribute('title'), null)
+  assert.equal(colorMenu.getAttribute('data-tooltip'), '更多颜色')
+  assert.equal(colorMenu.getAttribute('aria-label'), '更多颜色')
+
+  const colorCell = toolbar.querySelector('.tiptap-color-panel button[data-color]')
+  assert.ok(colorCell)
+  assert.equal(colorCell.getAttribute('title'), null)
+  assert.ok(colorCell.getAttribute('data-tooltip'))
+
+  assert.match(toolbarCss, /\.tiptap-toolbar button\[data-tooltip\]::after/)
+  assert.match(toolbarCss, /button\[data-tooltip\]:not\(:disabled\):hover::after/)
+  editor.destroy()
+})
+
+test('toolbar applies localized host strings to controls and heading options', () => {
+  const { host, editor } = createEditorWithToolbar({
+    bodyPlaceholder: 'Enter text',
+    bold: 'Bold',
+    bullets: 'Bullets',
+    numbering: 'Numbering',
+    taskList: 'Task list',
+    heading: 'Heading',
+    headingLevel: 'Heading %1',
+    paragraph: 'Paragraph',
+    font: 'Font',
+    fontSize: 'Font size',
+    fontColor: 'Font color',
+    textHighlightColor: 'Text highlight color',
+    moreColors: 'More colors',
+    transparent: 'Transparent',
+    recordVoice: 'Record voice',
+    insertPicture: 'Insert picture',
+    moreFormats: 'More formats',
+  })
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+
+  assert.equal(toolbar.querySelector('button[data-format="bold"]')?.getAttribute('data-tooltip'), 'Bold')
+  assert.equal(toolbar.querySelector('button[data-format="taskList"]')?.getAttribute('data-tooltip'), 'Task list')
+  assert.equal(toolbar.querySelector('button[data-format="insertVoice"]')?.getAttribute('data-tooltip'), 'Record voice')
+  assert.equal(toolbar.querySelector('button[data-format="insertImage"]')?.getAttribute('data-tooltip'), 'Insert picture')
+  assert.equal(toolbar.querySelector('button[data-color-menu="foreColor"]')?.getAttribute('data-tooltip'), 'More colors')
+
+  const headingOptions = Array.from(
+    toolbar.querySelectorAll('.tiptap-select-heading .tiptap-select-option-label'),
+  ).map((node) => node.textContent)
+  assert.deepEqual(headingOptions, ['Paragraph', 'Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5'])
+  editor.destroy()
+})
+
+test('toolbar overflow moves buttons dynamically by available width', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  let hostWidth = 380
+
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => hostWidth,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => {
+      const mainControls = Array.from(toolbar.querySelectorAll('[data-format]'))
+        .filter((node) => !node.closest('.tiptap-overflow-panel'))
+        .filter((node) => node.getAttribute('data-format') !== 'blockquote')
+      return 100 + mainControls.length * 30
+    },
+  })
+
+  window.dispatchEvent(new window.Event('resize'))
+  let overflowCount = toolbar.querySelectorAll('.tiptap-overflow-panel [data-format]').length
+  assert.ok(overflowCount > 0, 'narrow width should move trailing buttons into more panel')
+  const visualOrder = ['bold', 'italic', 'underline', 'strike', 'foreColor', 'backColor', 'bulletList', 'orderedList', 'taskList', 'insertVoice', 'insertImage']
+  let enteredOverflowSuffix = false
+  for (const format of visualOrder) {
+    const control = toolbar.querySelector(`[data-format=\"${format}\"]`)
+    const inOverflow = Boolean(control?.closest('.tiptap-overflow-panel'))
+    if (inOverflow) enteredOverflowSuffix = true
+    if (enteredOverflowSuffix) {
+      assert.equal(inOverflow, true, `${format} should be part of one reverse-order overflow suffix`)
+    }
+  }
+  for (const format of ['insertImage', 'insertVoice']) {
+    const control = toolbar.querySelector(`[data-format=\"${format}\"]`)
+    assert.equal(Boolean(control?.closest('.tiptap-overflow-panel')), true, `${format} should overflow before earlier toolbar actions`)
+  }
+  const moreButton = toolbar.querySelector('button[data-format="more"]')
+  assert.ok(moreButton, 'more button should exist when the toolbar overflows')
+  assert.ok(moreButton.querySelector('img'), 'more should render an image asset')
+
+  hostWidth = 410
+  window.dispatchEvent(new window.Event('resize'))
+  const widerOverflowCount = toolbar.querySelectorAll('.tiptap-overflow-panel [data-format]').length
+  assert.ok(widerOverflowCount > 0, 'medium width should still keep some buttons overflowed')
+  assert.ok(widerOverflowCount < overflowCount, 'wider width should overflow fewer buttons')
+
+  hostWidth = 900
+  window.dispatchEvent(new window.Event('resize'))
+  assert.equal(toolbar.querySelectorAll('.tiptap-overflow-panel [data-format]').length, 0)
+  assert.equal(toolbar.querySelector('[data-format="more"]'), null, 'wide width should restore all buttons to main toolbar')
+  editor.destroy()
+})
+
+test('more button highlights only while the more panel is opened', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => 380,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => 700,
+  })
+  window.dispatchEvent(new window.Event('resize'))
+
+  const moreButton = toolbar.querySelector('button[data-format="more"]')
+  const overflowPanel = toolbar.querySelector('.tiptap-overflow-panel')
+  assert.ok(moreButton && overflowPanel)
+
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'false')
+  assert.equal(moreButton.classList.contains('has-active-overflow'), false)
+
+  moreButton.click()
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'true')
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-more-button\[aria-expanded="true"\] \.tiptap-icon,[\s\S]*color: var\(--highlightColor/)
+  assert.doesNotMatch(toolbarCss, /has-active-overflow/, 'folded active tools should not force the more button into an active state')
+  editor.destroy()
+})
+
+test('opening a main-toolbar color palette closes the more menu', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+  let hasOverflow = false
+
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => 616,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => {
+      hasOverflow = Boolean(toolbar.querySelector('.tiptap-overflow-panel'))
+      return hasOverflow ? 600 : 700
+    },
+  })
+  window.dispatchEvent(new window.Event('resize'))
+
+  const moreButton = toolbar.querySelector('button[data-format="more"]')
+  const foreButton = toolbar.querySelector('button[data-color-menu="foreColor"]')
+  const forePanel = toolbar.querySelector('[data-panel="foreColor"]')
+  assert.ok(moreButton && foreButton && forePanel)
+  assert.equal(foreButton.closest('.tiptap-overflow-panel'), null, 'color button should remain in the main toolbar')
+
+  moreButton.click()
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'true')
+
+  foreButton.click()
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'false', 'opening a main-toolbar color palette should close more')
+  assert.equal(forePanel.style.display, 'grid')
+  editor.destroy()
+})
+
+test('main-toolbar color palette is clamped into the editor viewport', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const menuButton = host.querySelector('button[data-color-menu="backColor"]')
+  const panel = host.querySelector('[data-panel="backColor"]')
+  const picker = menuButton?.closest('.tiptap-color-picker')
+  assert.ok(menuButton && panel && picker)
+
+  const originalInnerWidth = Object.getOwnPropertyDescriptor(window, 'innerWidth')
+  Object.defineProperty(window, 'innerWidth', { configurable: true, get: () => 230 })
+  const rect = (left, top, width, height) => ({
+    left,
+    top,
+    width,
+    height,
+    right: left + width,
+    bottom: top + height,
+    x: left,
+    y: top,
+    toJSON() { return this },
+  })
+  picker.getBoundingClientRect = () => rect(106, 9, 30, 30)
+
+  menuButton.click()
+  assert.equal(panel.style.position, 'absolute')
+  assert.equal(panel.style.left, '-35px', 'right-edge palettes must be moved back into the viewport')
+  assert.equal(panel.style.top, '34px')
+
+  if (originalInnerWidth) Object.defineProperty(window, 'innerWidth', originalInnerWidth)
+  editor.destroy()
+})
+
+test('color palettes remain usable when their controls are folded into the more menu', () => {
+  const { host, editor, window } = createEditorWithToolbar()
+  const toolbar = host.querySelector('[data-testid="format-toolbar"]')
+
+  Object.defineProperty(host, 'clientWidth', {
+    configurable: true,
+    get: () => 380,
+  })
+  Object.defineProperty(toolbar, 'scrollWidth', {
+    configurable: true,
+    get: () => 700,
+  })
+  window.dispatchEvent(new window.Event('resize'))
+
+  const moreButton = toolbar.querySelector('button[data-format="more"]')
+  const overflowPanel = toolbar.querySelector('.tiptap-overflow-panel')
+  assert.ok(moreButton, 'more button should be present for a folded toolbar')
+  assert.ok(overflowPanel, 'folded toolbar should render an overflow panel')
+
+  moreButton.click()
+  assert.equal(overflowPanel.classList.contains('is-open'), true)
+
+  const foreButton = overflowPanel.querySelector('button[data-color-menu="foreColor"]')
+  const backButton = overflowPanel.querySelector('button[data-color-menu="backColor"]')
+  const forePanel = overflowPanel.querySelector('[data-panel="foreColor"]')
+  const backPanel = overflowPanel.querySelector('[data-panel="backColor"]')
+  assert.ok(foreButton && backButton && forePanel && backPanel, 'color controls should move together into the more menu')
+
+  foreButton.click()
+  assert.equal(forePanel.style.display, 'grid')
+  assert.equal(backPanel.style.display, 'none')
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'true', 'more should stay open when its child color palette opens')
+
+  backButton.click()
+  assert.equal(backPanel.style.display, 'grid')
+  assert.equal(forePanel.style.display, 'none')
+  assert.equal(moreButton.getAttribute('aria-expanded'), 'true', 'more should stay open when switching child palettes')
+
+  // The overflow popover must not clip a palette positioned below its trigger.
+  assert.match(toolbarCss, /\.tiptap-overflow-panel \{[\s\S]*overflow: visible;/)
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 开关式格式：粗体 / 斜体 / 下划线 / 删除线 / 引用
+// ---------------------------------------------------------------------------
+
+for (const format of ['bold', 'italic', 'underline', 'strike', 'blockquote']) {
+  test(`${format}: apply and clear toggles editor state and aria-pressed`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    insertText(editor, 'hello')
+    selectText(editor)
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    assert.ok(btn)
+
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true')
+    assert.ok(editor.isActive(format), `${format} should be active after apply`)
+
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false')
+    assert.ok(!editor.isActive(format), `${format} should be cleared after toggle off`)
+    editor.destroy()
+  })
+}
+
+test('blockquote activation requires the whole selection to be quoted', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'blockquote', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'quoted' }] }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'plain' }] },
+    ],
+  })
+  const btn = host.querySelector('button[data-format="blockquote"]')
+
+  selectTextSpan(editor, 'quoted', 'plain')
+  assert.equal(btn.getAttribute('aria-pressed'), 'false')
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'quoted')).run()
+  assert.equal(btn.getAttribute('aria-pressed'), 'true')
+  editor.destroy()
+})
+
+for (const format of ['bold', 'italic', 'underline', 'strike']) {
+  test(`${format}: collapsed cursor can pre-activate formatting for new input`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    markEditorFocused(editor)
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    assert.ok(btn)
+
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true')
+    assert.ok(editor.isActive(format), `${format} should be active before typing`)
+
+    insertText(editor, 'typed')
+    assert.ok(textHasMark(editor, 'typed', format), `${format} should apply to newly typed text`)
+
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false')
+    assert.ok(!editor.isActive(format), `${format} should be cleared for following input`)
+    editor.destroy()
+  })
+
+  test(`${format}: plain selection ignores stale pending state and first click applies`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    insertText(editor, 'plain')
+    markEditorFocused(editor)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'plain')).run()
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true', 'precondition: pending input format is active')
+
+    // 只选中已有普通文本。它不是通过刚才的折叠光标输入产生的，因此按钮
+    // 必须立刻回到选区真实状态，不能继续显示待输入格式。
+    editor.chain().focus().setTextSelection(findTextRange(editor, 'plain')).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} must not leak pending state into a plain selection`)
+    assert.ok(!textHasMark(editor, 'plain', format), 'plain selected text should still be unformatted')
+
+    // 第一次点击必须应用格式；如果错误沿用待输入缓存，会在这里执行取消。
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true', `${format} first click should activate the selected text`)
+    assert.ok(editor.isActive(format))
+    assert.ok(textHasMark(editor, 'plain', format), `${format} should be applied to the selected text`)
+    editor.destroy()
+  })
+
+  test(`${format}: collapsed cursor follows actual text marks and resets pending format`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    editor.commands.setContent({
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'plain-before' }] },
+        { type: 'paragraph', content: [{ type: 'text', text: 'formatted', marks: [{ type: format }] }] },
+        { type: 'paragraph', content: [{ type: 'text', text: 'plain-after' }] },
+      ],
+    })
+    markEditorFocused(editor)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'plain-before')).run()
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} must be inactive inside plain text`)
+
+    // 折叠光标手动开启后，仅当前光标位置拥有待输入格式；一旦移动光标，
+    // 按钮必须重新读取新位置的真实文字格式。
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true')
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'plain-after')).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} pending state must not leak after moving the cursor`)
+
+    // 光标进入已有对应格式的文字时，按钮应自动激活。
+    const formattedRange = findTextRange(editor, 'formatted')
+    editor.chain().focus().setTextSelection(formattedRange.from + 1).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true', `${format} should activate inside already formatted text`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'plain-after')).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} should deactivate again in plain text`)
+    editor.destroy()
+  })
+
+  test(`${format}: selected-text activation does not leak to a later plain cursor`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    editor.commands.setContent({
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'first' }] },
+        { type: 'paragraph', content: [{ type: 'text', text: 'second' }] },
+      ],
+    })
+    markEditorFocused(editor)
+    editor.chain().focus().setTextSelection(findTextRange(editor, 'first')).run()
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    btn.click()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true')
+    assert.ok(textHasMark(editor, 'first', format), `${format} should apply to selected text`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'second')).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} must reflect the later plain cursor`)
+    insertText(editor, `-selected-${format}`)
+    assert.ok(!textHasMark(editor, `-selected-${format}`, format), `${format} must not leak into later plain input`)
+    editor.destroy()
+  })
+}
+
+for (const format of ['bold', 'italic', 'underline', 'strike']) {
+  test(`${format}: mixed selection is inactive until the whole range has the mark`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        content: [
+          { type: 'text', text: 'marked', marks: [{ type: format }] },
+          { type: 'text', text: 'plain' },
+        ],
+      }],
+    })
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+
+    selectTextSpan(editor, 'marked', 'plain')
+    assert.equal(btn.getAttribute('aria-pressed'), 'false', `${format} must be inactive for a mixed selection`)
+
+    editor.chain().focus().setTextSelection(findTextRange(editor, 'marked')).run()
+    assert.equal(btn.getAttribute('aria-pressed'), 'true', `${format} must activate when the whole selection has the mark`)
+    editor.destroy()
+  })
+}
+
+test('bold: heading and paragraph mixed selection reflects and toggles visual weight', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'title' }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'body' }] },
+    ],
+  })
+  const btn = host.querySelector('button[data-format="bold"]')
+
+  selectTextSpan(editor, 'title', 'body')
+  assert.equal(btn.getAttribute('aria-pressed'), 'false', 'heading-only boldness must not leak into the plain paragraph')
+
+  btn.click()
+  assert.equal(btn.getAttribute('aria-pressed'), 'true')
+  assert.ok(textHasMark(editor, 'title', 'bold'))
+  assert.ok(textHasMark(editor, 'body', 'bold'), 'the paragraph part must become bold as well')
+
+  btn.click()
+  assert.equal(btn.getAttribute('aria-pressed'), 'false')
+  assert.ok(!textHasMark(editor, 'body', 'bold'), 'paragraph text must lose bold')
+  assert.equal(textMarkAttrs(editor, 'title', 'fontWeight').fontWeight, 'normal', 'heading must keep its block style with a normal-weight override')
+  assert.equal(editor.getJSON().content[0].type, 'heading', 'turning bold off must not downgrade the heading')
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 标题下拉
+// ---------------------------------------------------------------------------
+
+test('heading dropdown applies and clears heading levels', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'title')
+  selectText(editor)
+
+  const select = host.querySelector('select[data-control="heading"]')
+  assert.ok(select)
+
+  select.value = '2'
+  select.dispatchEvent(new Event('change'))
+  assert.ok(editor.isActive('heading', { level: 2 }))
+
+  const sizeSelect = host.querySelector('select[data-control="fontSize"]')
+  const sizeLabel = host.querySelector('.tiptap-select-fontSize .tiptap-select-label')
+  assert.equal(sizeSelect?.value, '20', 'heading 2 should sync its effective size to the size dropdown')
+  assert.equal(sizeLabel?.textContent, '20')
+  assert.equal(editor.getAttributes('fontSize').fontSize, undefined, 'heading size should not be stored as an inline mark')
+
+  select.value = 'p'
+  select.dispatchEvent(new Event('change'))
+  assert.ok(!editor.isActive('heading'))
+  editor.destroy()
+})
+
+function listDocument(listType, texts = ['A', 'B', 'C']) {
+  return {
+    type: 'doc',
+    content: [{
+      type: listType,
+      attrs: listType === 'orderedList' ? { start: 1 } : {},
+      content: texts.map((text) => listItemForListType(listType, text)),
+    }],
+  }
+}
+
+function firstTextblockType(item) {
+  return item?.content?.[0]?.type || null
+}
+
+for (const listType of ['bulletList', 'orderedList', 'taskList']) {
+  test(`${listType}: heading levels keep all selected items inside the list`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    const content = listDocument(listType)
+    if (listType === 'taskList') content.content[0].content[1].attrs.checked = true
+    editor.commands.setContent({
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'before' }] },
+        ...content.content,
+        { type: 'paragraph', content: [{ type: 'text', text: 'after' }] },
+      ],
+    })
+
+    const headingSelect = host.querySelector('select[data-control="heading"]')
+    assert.ok(headingSelect)
+
+    for (const level of ['1', '2', '3', '4', '5']) {
+      selectTextSpan(editor, 'A', 'C')
+      const selection = {
+        from: editor.state.selection.from,
+        to: editor.state.selection.to,
+        text: editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, '|'),
+      }
+
+      headingSelect.value = level
+      headingSelect.dispatchEvent(new Event('change'))
+
+      const json = editor.getJSON()
+      assert.deepEqual(json.content.map((node) => node.type), ['paragraph', listType, 'paragraph'])
+      const list = json.content[1]
+      assert.equal(list.content.length, 3, `${listType} must retain all three items at heading ${level}`)
+      for (const item of list.content) {
+        assert.equal(firstTextblockType(item), 'heading', `${listType} item should keep its wrapper at heading ${level}`)
+        assert.equal(item.content[0].attrs.level, Number(level))
+      }
+      if (listType === 'taskList') {
+        assert.deepEqual(list.content.map((item) => item.attrs.checked), [false, true, false])
+      }
+
+      assert.deepEqual({
+        from: editor.state.selection.from,
+        to: editor.state.selection.to,
+        text: editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, '|'),
+      }, selection, `${listType} selection must remain on the same text after heading ${level}`)
+      assert.equal(validateEnvelope(createEnvelope(json)).ok, true)
+    }
+
+    selectTextSpan(editor, 'A', 'C')
+    headingSelect.value = 'p'
+    headingSelect.dispatchEvent(new Event('change'))
+    const json = editor.getJSON()
+    assert.deepEqual(json.content.map((node) => node.type), ['paragraph', listType, 'paragraph'])
+    assert.equal(json.content[1].content.length, 3, 'switching back to paragraph must not remove the list')
+    assert.ok(json.content[1].content.every((item) => firstTextblockType(item) === 'paragraph'))
+    assert.equal(validateEnvelope(createEnvelope(json)).ok, true)
+
+    const listSelector = listType === 'orderedList'
+      ? 'ol > li'
+      : listType === 'taskList'
+        ? 'ul[data-type="taskList"] > li'
+        : 'ul:not([data-type="taskList"]) > li'
+    const renderedItems = Array.from(editor.view.dom.querySelectorAll(listSelector))
+    assert.ok(renderedItems.length >= 3, `${listType} markers must still have list item DOM wrappers`)
+    editor.destroy()
+  })
+}
+
+test('task list checkbox uses the heading line box instead of the body text line box', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [{ type: 'text', text: '标题待办' }],
+    }],
+  })
+
+  const taskButton = host.querySelector('button[data-format="taskList"]')
+  taskButton.click()
+
+  const taskItem = editor.view.dom.querySelector('ul[data-type="taskList"] > li')
+  assert.ok(taskItem, 'heading should be converted into a task item')
+  assert.match(taskItem.getAttribute('style') || '', /--dvn-marker-line-height: 36px/)
+
+  const taskStyle = document.getElementById('dvn-tiptap-tasklist-style')?.textContent || ''
+  assert.match(
+    taskStyle,
+    /height: var\(--dvn-marker-line-height, calc\(1lh \* max\(1, var\(--dvn-marker-ratio, 1\)\)\)\)/,
+    'checkbox label height must prefer the heading line box variable',
+  )
+  editor.destroy()
+})
+
+test('heading conversion preserves nested mixed-list structure and selection', () => {
+  const { editor, host } = createEditorWithToolbar()
+  const paragraph = (text) => ({ type: 'paragraph', content: [{ type: 'text', text }] })
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      attrs: { start: 1 },
+      content: [
+        {
+          type: 'listItem',
+          attrs: { dvnIndentLevel: 0 },
+          content: [
+            paragraph('A'),
+            {
+              type: 'bulletList',
+              content: [{
+                type: 'listItem',
+                attrs: { dvnIndentLevel: 0 },
+                content: [paragraph('B')],
+              }],
+            },
+          ],
+        },
+        {
+          type: 'listItem',
+          attrs: { dvnIndentLevel: 0 },
+          content: [paragraph('C')],
+        },
+      ],
+    }],
+  })
+
+  selectTextSpan(editor, 'A', 'C')
+  const before = {
+    from: editor.state.selection.from,
+    to: editor.state.selection.to,
+    text: editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, '|'),
+  }
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  headingSelect.value = '2'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  const json = editor.getJSON()
+  assert.equal(json.content.length, 1)
+  assert.equal(json.content[0].type, 'orderedList')
+  assert.equal(json.content[0].content.length, 2)
+  const [parent, sibling] = json.content[0].content
+  assert.equal(parent.content[0].type, 'heading')
+  assert.equal(parent.content[0].attrs.level, 2)
+  assert.equal(parent.content[1].type, 'bulletList')
+  assert.equal(parent.content[1].content[0].content[0].type, 'heading')
+  assert.equal(parent.content[1].content[0].content[0].attrs.level, 2)
+  assert.equal(sibling.content[0].type, 'heading')
+  assert.equal(sibling.content[0].attrs.level, 2)
+  assert.deepEqual({
+    from: editor.state.selection.from,
+    to: editor.state.selection.to,
+    text: editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to, '|'),
+  }, before)
+  assert.equal(validateEnvelope(createEnvelope(json)).ok, true)
+  assert.ok(editor.view.dom.querySelector('ol > li > h2'), 'ordered marker host should remain an h2')
+  assert.ok(editor.view.dom.querySelector('ol > li > ul > li > h2'), 'nested bullet marker host should remain an h2')
+  editor.destroy()
+})
+
+test('list marker typography reads heading as the item textblock', () => {
+  const { editor } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      attrs: { start: 1 },
+      content: [{
+        type: 'listItem',
+        attrs: { dvnIndentLevel: 0 },
+        content: [{
+          type: 'heading',
+          attrs: { level: 1 },
+          content: [{ type: 'text', text: 'H', marks: [{ type: 'fontSize', attrs: { fontSize: '22px' } }] }],
+        }],
+      }],
+    }],
+  })
+  const item = editor.state.doc.firstChild.firstChild
+  assert.equal(listItemMarkerFontSize(item), 22)
+  assert.match(tiptapEditorHtml, /ol > li > h1:first-child::before/)
+  assert.match(tiptapEditorHtml, /ul:not\(\[data-type="taskList"\]\) > li > h6:first-child::before/)
+  editor.destroy()
+})
+
+test('applying a heading clears a uniform paragraph font size so the heading scale is visible', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'title')
+  selectText(editor)
+
+  const fontSizeSelect = host.querySelector('select[data-control="fontSize"]')
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(fontSizeSelect && headingSelect)
+
+  fontSizeSelect.value = '18'
+  fontSizeSelect.dispatchEvent(new Event('change'))
+  assert.ok(editor.isActive('fontSize', { fontSize: '18px' }))
+
+  headingSelect.value = '1'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('heading', { level: 1 }))
+  assert.ok(!textHasMark(editor, 'title', 'fontSize'), 'heading should not keep the paragraph-wide inline font size')
+  assert.equal(editor.view.dom.innerHTML, '<h1>title</h1>')
+  editor.destroy()
+})
+
+test('font size keeps select-all across resource blocks so a heading can still apply', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'paragraph', content: [{ type: 'text', text: 'one' }] },
+      { type: 'voiceBlock', attrs: { voiceId: 'v1', voicePath: 'a.mp3' } },
+    ],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().selectAll().run()
+  assert.equal(editor.state.selection.constructor.name, 'AllSelection')
+
+  const fontSizeSelect = host.querySelector('select[data-control="fontSize"]')
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(fontSizeSelect && headingSelect)
+
+  fontSizeSelect.value = '18'
+  fontSizeSelect.dispatchEvent(new Event('change'))
+
+  assert.equal(editor.state.selection.constructor.name, 'TextSelection')
+
+  headingSelect.value = '1'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('heading', { level: 1 }))
+  assert.equal(editor.getJSON().content?.[1]?.type, 'voiceBlock')
+  assert.ok(!textHasMark(editor, 'one', 'fontSize'))
+  editor.destroy()
+})
+
+test('select all keeps heading conversion after changing font size', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'paragraph', content: [{ type: 'text', text: 'first paragraph' }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'second paragraph' }] },
+    ],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().selectAll().run()
+  assert.equal(editor.state.selection.constructor.name, 'AllSelection')
+
+  const fontSizeSelect = host.querySelector('select[data-control="fontSize"]')
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(fontSizeSelect && headingSelect)
+
+  fontSizeSelect.value = '18'
+  fontSizeSelect.dispatchEvent(new Event('change'))
+  assert.equal(editor.state.selection.constructor.name, 'TextSelection')
+
+  headingSelect.value = '1'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  assert.deepEqual(editor.getJSON().content.map((node) => node.type), ['heading', 'heading'])
+  assert.ok(editor.getJSON().content.every((node) => node.attrs.level === 1))
+  assert.ok(editor.getJSON().content.every((node) => node.content.every((child) => !child.marks?.some((mark) => mark.type === 'fontSize'))))
+  assert.ok(editor.isActive('heading', { level: 1 }))
+  editor.destroy()
+})
+
+test('heading dropdown resets font family to the initFont default for every heading level', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Arial', 'Noto Sans CJK SC'], 'Arial')
+  markEditorFocused(editor)
+
+  const fontSelect = host.querySelector('select[data-control="fontFamily"]')
+  const fontLabel = host.querySelector('.tiptap-select-fontFamily .tiptap-select-label')
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(fontSelect && fontLabel && headingSelect)
+
+  for (const level of ['1', '2', '3', '4', '5']) {
+    editor.commands.setContent({
+      type: 'doc',
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text: 'first paragraph' }] },
+        { type: 'paragraph', content: [{ type: 'text', text: 'second paragraph' }] },
+      ],
+    })
+    editor.chain().focus().selectAll().run()
+    fontSelect.value = 'Noto Sans CJK SC'
+    fontSelect.dispatchEvent(new Event('change'))
+    headingSelect.value = level
+    headingSelect.dispatchEvent(new Event('change'))
+
+    const nodes = editor.getJSON().content
+    assert.deepEqual(nodes.map((node) => node.type), ['heading', 'heading'])
+    assert.ok(nodes.every((node) => node.attrs.level === Number(level)))
+    assert.ok(nodes.every((node) => node.content.every((child) => !child.marks?.some((mark) => mark.type === 'fontFamily'))))
+    assert.equal(fontSelect.value, '', `heading ${level} must clear the explicit font selection`)
+    assert.equal(fontLabel.textContent, 'Arial', `heading ${level} must fall back to the host initFont default`)
+  }
+  editor.destroy()
+})
+
+test('heading dropdown keeps the selected level when it is applied again', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [{ type: 'text', text: 'heading', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] }],
+    }],
+  })
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(headingSelect)
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'heading')).run()
+  headingSelect.value = '2'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  const heading = editor.getJSON().content[0]
+  assert.equal(heading.type, 'heading', 'reapplying the current level must not toggle the heading off')
+  assert.equal(heading.attrs.level, 2)
+  assert.ok(!heading.content[0].marks?.some((mark) => mark.type === 'fontFamily'))
+  editor.destroy()
+})
+
+test('heading dropdown clears font family across the whole affected block', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'before', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] },
+        { type: 'text', text: 'selected', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Helvetica' } }] },
+      ],
+    }],
+  })
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(headingSelect)
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'selected')).run()
+  headingSelect.value = '1'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  const heading = editor.getJSON().content[0]
+  assert.equal(heading.type, 'heading')
+  assert.equal(heading.content.map((child) => child.text).join(''), 'beforeselected')
+  assert.ok(
+    heading.content.every((child) => !child.marks?.some((mark) => mark.type === 'fontFamily')),
+    'block-level heading conversion must clear font family outside the selected text too',
+  )
+  editor.destroy()
+})
+
+test('heading dropdown clears pending font family before typing', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Arial', 'Noto Sans CJK SC'], 'Arial')
+  markEditorFocused(editor)
+
+  editor.commands.setMark('fontFamily', { fontFamily: 'Noto Sans CJK SC' })
+  assert.ok(editor.state.storedMarks?.some((mark) => mark.type.name === 'fontFamily'))
+
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(headingSelect)
+  headingSelect.value = '1'
+  headingSelect.dispatchEvent(new Event('change'))
+  editor.commands.insertContent('typed heading')
+
+  assert.ok(!textHasMark(editor, 'typed heading', 'fontFamily'), 'new heading text must inherit the host default font')
+  editor.destroy()
+})
+
+test('choosing paragraph from the heading dropdown also restores the default font family', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'heading',
+      attrs: { level: 2 },
+      content: [{ type: 'text', text: 'heading', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] }],
+    }],
+  })
+  const headingSelect = host.querySelector('select[data-control="heading"]')
+  assert.ok(headingSelect)
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'heading')).run()
+  headingSelect.value = 'p'
+  headingSelect.dispatchEvent(new Event('change'))
+
+  const paragraph = editor.getJSON().content[0]
+  assert.equal(paragraph.type, 'paragraph')
+  assert.ok(!paragraph.content[0].marks?.some((mark) => mark.type === 'fontFamily'))
+  editor.destroy()
+})
+
+test('heading dropdown reflects collapsed cursor heading context', () => {
+  const { editor, host } = createEditorWithToolbar()
+  markEditorFocused(editor)
+  const select = host.querySelector('select[data-control="heading"]')
+  const label = host.querySelector('.tiptap-select-heading .tiptap-select-label')
+  assert.ok(select && label)
+
+  select.value = '1'
+  select.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('heading', { level: 1 }))
+  assert.equal(select.value, '1')
+  assert.equal(label.textContent, '标题1')
+  assert.equal(
+    host.querySelector('.tiptap-select-heading .tiptap-select-option[data-value="1"]')?.getAttribute('aria-selected'),
+    'true',
+  )
+  assert.equal(
+    host.querySelector('.tiptap-select-heading .tiptap-select-option[data-value="p"]')?.getAttribute('aria-selected'),
+    'false',
+  )
+  editor.destroy()
+})
+
+test('heading dropdown leaves the label blank for a mixed selection', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'title' }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'body' }] },
+    ],
+  })
+  const select = host.querySelector('select[data-control="heading"]')
+  const label = host.querySelector('.tiptap-select-heading .tiptap-select-label')
+
+  selectTextSpan(editor, 'title', 'body')
+  assert.equal(label.textContent, '正文')
+  assert.equal(label.getAttribute('aria-hidden'), 'true')
+  assert.equal(
+    host.querySelector('.tiptap-select-heading .tiptap-select-option[aria-selected="true"]'),
+    null,
+    'mixed heading context must not select the first heading option',
+  )
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'title')).run()
+  assert.equal(select.value, '1')
+  assert.equal(label.textContent, '标题1')
+  editor.destroy()
+})
+
+test('heading default bold drives bold button and selected heading text can cancel it', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'title')
+  selectText(editor)
+
+  const select = host.querySelector('select[data-control="heading"]')
+  const boldButton = host.querySelector('button[data-format="bold"]')
+  assert.ok(select && boldButton)
+
+  boldButton.click()
+  boldButton.click()
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'false', 'precondition: manual bold state is off before heading selection')
+
+  select.value = '2'
+  select.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('heading', { level: 2 }))
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'true', 'heading default bold should activate the bold button')
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'title')).run()
+  boldButton.click()
+
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'false', 'normal-weight heading text should deactivate bold')
+  assert.ok(textHasMark(editor, 'title', 'fontWeight'), 'heading text should carry a normal font-weight override')
+  assert.equal(textMarkAttrs(editor, 'title', 'fontWeight').fontWeight, 'normal')
+  assert.ok(!textHasMark(editor, 'title', 'bold'), 'turning off heading bold should not leave a redundant bold mark')
+
+  select.value = '3'
+  select.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('heading', { level: 3 }), 'switching heading level should keep the text as heading')
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'true', 'switching heading level should restore heading default bold')
+  assert.ok(!textHasMark(editor, 'title', 'fontWeight'), 'heading level switch should clear normal-weight override')
+
+  boldButton.click()
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'false', 'heading default bold can still be cancelled after level switch')
+  assert.ok(textHasMark(editor, 'title', 'fontWeight'))
+
+  boldButton.click()
+
+  assert.equal(boldButton.getAttribute('aria-pressed'), 'true', 'removing the override should restore heading default bold')
+  assert.ok(!textHasMark(editor, 'title', 'fontWeight'), 'normal font-weight override should be cleared')
+  assert.ok(editor.isActive('heading', { level: 3 }), 'text should remain a heading after toggling bold')
+  editor.destroy()
+})
+
+test('empty heading keeps the body placeholder on the active heading line', () => {
+  const { editor, host, appElement } = createEditorWithToolbar()
+  const select = host.querySelector('select[data-control="heading"]')
+  assert.ok(select)
+
+  syncEmptyPlaceholderState(editor, appElement)
+  assert.equal(appElement.classList.contains('is-empty'), true)
+  assert.equal(appElement.dataset.emptyBlock, 'paragraph')
+  assert.equal(appElement.dataset.emptyHeadingLevel, '')
+
+  select.value = '1'
+  select.dispatchEvent(new Event('change'))
+  syncEmptyPlaceholderState(editor, appElement)
+
+  assert.equal(editor.view.dom.firstElementChild?.tagName, 'H1')
+  assert.equal(appElement.classList.contains('is-empty'), true)
+  assert.equal(appElement.dataset.emptyBlock, 'heading')
+  assert.equal(appElement.dataset.emptyHeadingLevel, '1')
+  assert.match(tiptapEditorHtml, /#app\.is-empty\[data-empty-heading-level="1"\] \.ProseMirror::before/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h1 \{ font-size: 24px; line-height: 1\.5; \}/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h2 \{ font-size: 20px; line-height: 1\.5; \}/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h3 \{ font-size: 18px; line-height: 1\.5; \}/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h4 \{ font-size: 16px; line-height: 1\.5; \}/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h5 \{ font-size: 14px; line-height: 1\.5714285714; \}/)
+  assert.match(tiptapEditorHtml, /Source Han Sans SC/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror h1, \.ProseMirror h2/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror::selection, \.ProseMirror ::selection \{ background: var\(--dvn-text-selection-bg/)
+  assert.match(tiptapEditorHtml, /color: var\(--dvn-selection-fg, #ffffff\)/)
+  assert.doesNotMatch(tiptapEditorHtml, /dvn-editor-empty-node/)
+
+  insertText(editor, 'hello')
+  syncEmptyPlaceholderState(editor, appElement)
+  assert.equal(appElement.classList.contains('is-empty'), false)
+  editor.destroy()
+})
+
+test('style dropdowns close each other and expose a scrollable custom menu', () => {
+  const { editor, host } = createEditorWithToolbar()
+  const heading = host.querySelector('.tiptap-select-heading')
+  const font = host.querySelector('.tiptap-select-fontFamily')
+  const size = host.querySelector('.tiptap-select-fontSize')
+  assert.ok(heading && font && size)
+
+  heading.querySelector('.tiptap-select-button').click()
+  assert.equal(heading.classList.contains('is-open'), true)
+  assert.equal(font.classList.contains('is-open'), false)
+
+  font.querySelector('.tiptap-select-button').click()
+  assert.equal(heading.classList.contains('is-open'), false)
+  assert.equal(font.classList.contains('is-open'), true)
+  assert.ok(font.querySelector('.tiptap-select-menu'))
+
+  size.querySelector('.tiptap-select-button').click()
+  assert.equal(font.classList.contains('is-open'), false)
+  assert.equal(size.classList.contains('is-open'), true)
+  editor.destroy()
+})
+
+test('heading dropdown follows the Sketch menu labels and type scale hooks', () => {
+  const { editor, host } = createEditorWithToolbar()
+  const heading = host.querySelector('.tiptap-select-heading')
+  assert.ok(heading)
+
+  const labels = Array.from(heading.querySelectorAll('.tiptap-select-option-label'))
+    .map((node) => node.textContent)
+  assert.deepEqual(labels, ['正文', '标题1', '标题2', '标题3', '标题4', '标题5'])
+
+  const selected = heading.querySelector('.tiptap-select-option[data-value="p"]')
+  assert.equal(selected?.getAttribute('aria-selected'), 'true')
+  assert.equal(heading.querySelector('.tiptap-select-label')?.textContent, '正文')
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-menu \{[\s\S]*width: 184px;/)
+  assert.match(toolbarCss, /\.tiptap-select-fontFamily \{[\s\S]*width: 74px;/)
+  assert.match(toolbarCss, /select\[data-control="fontFamily"\] \{[\s\S]*width: 74px;/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-select-button \{[\s\S]*gap: 4px;/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-select-button \{[\s\S]*font-size: 12px;/)
+  assert.match(toolbarCss, /\.tiptap-toolbar \.tiptap-select-button \.tiptap-select-arrow \{[\s\S]*width: 12px;/)
+  assert.match(toolbarCss, /\.tiptap-select-wrap\.is-layout-blank \.tiptap-select-button,[\s\S]*\.tiptap-select-wrap\.is-layout-blank \.tiptap-select-label \{[\s\S]*text-overflow: clip;/, 'blank mixed labels must not render ellipsis in QtWebEngine')
+  assert.match(toolbarCss, /\.tiptap-select-wrap\.is-layout-blank \.tiptap-select-label \{[\s\S]*visibility: hidden;/)
+  assert.doesNotMatch(toolbarCss, /data-layout-label|is-mixed\s+\.tiptap-select-label::before|is-layout-blank\s+\.tiptap-select-label::before/, 'blank mixed labels must not use pseudo-element placeholders that render as ellipsis')
+  assert.doesNotMatch(toolbarCss, /tiptap-select-button::after/, 'select arrow should use the shared SVG asset instead of a CSS triangle')
+  assert.doesNotMatch(toolbarCss, /dvn-heading-menu-bg/, 'heading dropdown must share the themed menu background with other dropdowns')
+  assert.doesNotMatch(toolbarCss, /dvn-heading-menu-border/, 'heading dropdown must share the themed menu border with other dropdowns')
+  assert.match(toolbarCss, /\.tiptap-select-menu \{[\s\S]*background: var\(--dvn-menu-bg, rgba\(247, 247, 247, 0\.92\)/)
+  assert.match(toolbarCss, /\.tiptap-select-menu \{[\s\S]*backdrop-filter: blur\(var\(--dvn-menu-backdrop-blur/)
+  assert.match(toolbarCss, /\.tiptap-select-menu \{[\s\S]*scrollbar-width: none;/, 'select menus should remain scrollable without a visible scrollbar gutter')
+  assert.match(toolbarCss, /\.tiptap-select-menu::-webkit-scrollbar \{[\s\S]*width: 0;/, 'select menus should hide webkit scrollbar width')
+  assert.match(toolbarCss, /\.tiptap-select-check \{[\s\S]*color: inherit;/, 'selected option check should follow the normal/hover text color')
+  assert.match(toolbarCss, /\.tiptap-select-option:hover,\n\.tiptap-select-option:focus-visible,\n\.tiptap-select-option\[aria-selected="true"\] \{[\s\S]*background-color: var\(--dvn-menu-selected-bg/, 'hover and selected dropdown rows should share the theme highlight background')
+  assert.match(toolbarCss, /\.tiptap-select-option\[aria-selected="true"\][\s\S]*color: var\(--dvn-menu-selected-fg/, 'selected dropdown rows should use the selection foreground color')
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-option\[data-value="1"\] \{[\s\S]*--dvn-heading-option-font-size: 24px;/)
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-option\[data-value="2"\] \{[\s\S]*--dvn-heading-option-font-size: 20px;/)
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-option\[data-value="3"\] \{[\s\S]*--dvn-heading-option-font-size: 18px;/)
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-option\[data-value="4"\] \{[\s\S]*--dvn-heading-option-font-size: 16px;/)
+  assert.match(toolbarCss, /\.tiptap-select-heading \.tiptap-select-option\[data-value="5"\] \{[\s\S]*--dvn-heading-option-font-size: 14px;/)
+  assert.equal(host.querySelector('.tiptap-select-option[data-value="6"]'), null, 'heading dropdown should not expose title 6')
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 文字颜色面板
+// ---------------------------------------------------------------------------
+
+test('foreColor panel matches Summernote light palette and applies text color', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'colored')
+  selectText(editor)
+
+  const panel = host.querySelector('[data-panel="foreColor"]')
+  assert.ok(panel)
+  const cells = Array.from(panel.querySelectorAll('button[data-color]'))
+  assert.deepEqual(cells.map((cell) => cell.getAttribute('data-color')), FORE_COLORS.flat())
+  assert.equal(panel.querySelector('button[data-action]'), null, 'Summernote palette has no extra clear row')
+  assert.match(toolbarCss, /\.tiptap-color-panel \{[\s\S]*grid-template-columns: repeat\(5, 22px\);/)
+  assert.match(toolbarCss, /\.tiptap-color-panel button\[data-color\] \{[\s\S]*border-radius: 8px;/)
+
+  const color = 'rgb(205, 35, 62)'
+  const cell = cells.find((node) => node.getAttribute('data-color') === color)
+  assert.ok(cell)
+
+  cell.click()
+  assert.ok(editor.isActive('color', { color }))
+  assert.equal(
+    host.querySelector('button[data-format="foreColor"]').style.getPropertyValue('--dvn-current-color'),
+    color,
+  )
+  editor.destroy()
+})
+
+test('note title wraps within editor width instead of horizontal clipping', () => {
+  assert.match(tiptapEditorHtml, /<textarea id="note-title-input"[^>]*maxlength="24"[^>]*rows="1"/)
+  assert.match(tiptapEditorHtml, /#note-title-input \{[\s\S]*resize: none;[\s\S]*overflow: hidden;[\s\S]*overflow-wrap: anywhere;/)
+  assert.match(tiptapEditorHtml, /#app \{[\s\S]*min-height: calc\(100% - var\(--dvn-title-host-height, 68px\)\)/)
+})
+
+test('note title selection uses text selection background and white foreground', () => {
+  assert.match(
+    tiptapEditorHtml,
+    /#note-title-input::selection \{[\s\S]*background: var\(--dvn-text-selection-bg, var\(--highlightColor, #0081ff\)\);[\s\S]*color: var\(--dvn-selection-fg, #ffffff\);/,
+  )
+})
+
+// ---------------------------------------------------------------------------
+// 背景色面板
+// ---------------------------------------------------------------------------
+
+test('backColor keeps the Summernote default transparent indicator', () => {
+  const { editor, host } = createEditorWithToolbar()
+  assert.equal(
+    host.querySelector('button[data-format="backColor"]').style.getPropertyValue('--dvn-current-color'),
+    'transparent',
+  )
+  editor.destroy()
+})
+
+test('backColor panel matches Summernote light palette and clears via transparent cell', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'highlighted')
+  selectText(editor)
+
+  const panel = host.querySelector('[data-panel="backColor"]')
+  assert.ok(panel)
+  const cells = Array.from(panel.querySelectorAll('button[data-color]'))
+  assert.deepEqual(cells.map((cell) => cell.getAttribute('data-color')), BACK_COLORS.flat())
+
+  const color = 'rgba(255, 215, 0, 0.2)'
+  const target = cells.find((cell) => cell.getAttribute('data-color') === color)
+  assert.ok(target)
+
+  target.click()
+  assert.ok(editor.isActive('highlight', { color }))
+  assert.equal(
+    host.querySelector('button[data-format="backColor"]').style.getPropertyValue('--dvn-current-color'),
+    color,
+  )
+
+  const transparent = panel.querySelector('button[data-color="transparent"]')
+  assert.ok(transparent)
+  transparent.click()
+  assert.ok(!editor.isActive('highlight'))
+  editor.destroy()
+})
+
+test('color panels share dropdown theme and switch palettes in dark mode', () => {
+  const { editor, host, window } = createEditorWithToolbar()
+  const forePanel = host.querySelector('[data-panel="foreColor"]')
+  const backPanel = host.querySelector('[data-panel="backColor"]')
+  assert.ok(forePanel && backPanel)
+
+  assert.match(toolbarCss, /\.tiptap-color-panel \{[\s\S]*background: var\(--dvn-menu-bg, rgba\(247, 247, 247, 0\.92\)/)
+  assert.match(toolbarCss, /\.tiptap-color-panel \{[\s\S]*border: 1px solid var\(--dvn-menu-border/)
+  assert.match(toolbarCss, /\.tiptap-color-panel \{[\s\S]*backdrop-filter: blur\(var\(--dvn-menu-backdrop-blur/)
+  assert.match(toolbarCss, /\.tiptap-overflow-panel \.tiptap-color-panel \{[\s\S]*background: var\(--dvn-menu-solid-bg/)
+  assert.match(toolbarCss, /\.tiptap-overflow-panel \.tiptap-color-panel \{[\s\S]*backdrop-filter: none;/)
+  assert.match(toolbarCss, /\.tiptap-color-panel button\[data-color\] \{[\s\S]*var\(--dvn-color-chip-border/)
+  assert.doesNotMatch(toolbarCss, /dvn-color-panel-bg/, 'color panels must not keep a light-only panel background token')
+
+  document.documentElement.dataset.dvnTheme = 'dark'
+  window.dispatchEvent(new window.CustomEvent('dvn-theme-applied', { detail: { theme: 'dark' } }))
+
+  assert.deepEqual(
+    Array.from(forePanel.querySelectorAll('button[data-color]')).map((cell) => cell.getAttribute('data-color')),
+    DARK_FORE_COLORS.flat(),
+  )
+  assert.deepEqual(
+    Array.from(backPanel.querySelectorAll('button[data-color]')).map((cell) => cell.getAttribute('data-color')),
+    DARK_BACK_COLORS.flat(),
+  )
+  editor.destroy()
+})
+
+test('color palettes select their first color by default', () => {
+  const { editor, host } = createEditorWithToolbar()
+  const forePanel = host.querySelector('[data-panel="foreColor"]')
+  const backPanel = host.querySelector('[data-panel="backColor"]')
+
+  assert.equal(forePanel.querySelector('button[data-color]:first-child').getAttribute('aria-pressed'), 'true')
+  assert.equal(backPanel.querySelector('button[data-color]:first-child').getAttribute('aria-pressed'), 'true')
+  assert.equal(forePanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 1)
+  assert.equal(backPanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 1)
+  editor.destroy()
+})
+
+test('foreColor reflects collapsed cursor color context', () => {
+  const { editor, host } = createEditorWithToolbar()
+  markEditorFocused(editor)
+
+  const color = 'rgb(1, 100, 255)'
+  const panel = host.querySelector('[data-panel="foreColor"]')
+  const cell = panel.querySelector(`button[data-color="${color}"]`)
+  assert.ok(cell)
+  cell.click()
+
+  assert.equal(host.querySelector('button[data-format="foreColor"]').style.getPropertyValue('--dvn-current-color'), color)
+  assert.equal(cell.getAttribute('aria-pressed'), 'true')
+  editor.destroy()
+})
+
+test('backColor reflects collapsed cursor highlight context', () => {
+  const { editor, host } = createEditorWithToolbar()
+  markEditorFocused(editor)
+
+  const color = 'rgba(130, 178, 255, 0.2)'
+  const panel = host.querySelector('[data-panel="backColor"]')
+  const cell = panel.querySelector(`button[data-color="${color}"]`)
+  assert.ok(cell)
+  cell.click()
+
+  assert.equal(host.querySelector('button[data-format="backColor"]').style.getPropertyValue('--dvn-current-color'), color)
+  assert.equal(cell.getAttribute('aria-pressed'), 'true')
+  editor.destroy()
+})
+
+test('color palettes show no selected swatch for mixed text and highlight colors', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'red', marks: [{ type: 'color', attrs: { color: 'rgb(205, 35, 62)' } }] },
+        { type: 'text', text: 'plain' },
+        { type: 'text', text: 'yellow', marks: [{ type: 'highlight', attrs: { color: 'rgba(255, 215, 0, 0.2)' } }] },
+      ],
+    }],
+  })
+  const forePanel = host.querySelector('[data-panel="foreColor"]')
+  const backPanel = host.querySelector('[data-panel="backColor"]')
+
+  selectTextSpan(editor, 'red', 'plain')
+  assert.equal(forePanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 0)
+
+  selectTextSpan(editor, 'plain', 'yellow')
+  assert.equal(backPanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 0)
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'red')).run()
+  assert.equal(forePanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 1)
+  assert.equal(
+    forePanel.querySelector('button[data-color="rgb(205, 35, 62)"]').getAttribute('aria-pressed'),
+    'true',
+  )
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'yellow')).run()
+  assert.equal(backPanel.querySelectorAll('button[data-color][aria-pressed="true"]').length, 1)
+  assert.equal(
+    backPanel.querySelector('button[data-color="rgba(255, 215, 0, 0.2)"]').getAttribute('aria-pressed'),
+    'true',
+  )
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 字体下拉
+// ---------------------------------------------------------------------------
+
+test('fontFamily dropdown applies and clears font family', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  insertText(editor, 'font')
+  selectText(editor)
+
+  // 字体下拉需先由宿主下发填充
+  toolbar.setFontList(['Arial', 'Noto Sans CJK SC'], 'Noto Sans CJK SC')
+  const select = host.querySelector('select[data-control="fontFamily"]')
+  assert.ok(select)
+
+  select.value = 'Noto Sans CJK SC'
+  select.dispatchEvent(new Event('change'))
+  assert.ok(editor.isActive('fontFamily', { fontFamily: 'Noto Sans CJK SC' }))
+
+  select.value = ''
+  select.dispatchEvent(new Event('change'))
+  assert.ok(!editor.isActive('fontFamily'))
+  editor.destroy()
+})
+
+test('fontFamily dropdown reflects collapsed cursor font context', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  markEditorFocused(editor)
+  toolbar.setFontList(['Arial', 'Noto Sans CJK SC'], 'Noto Sans CJK SC')
+  const select = host.querySelector('select[data-control="fontFamily"]')
+  const label = host.querySelector('.tiptap-select-fontFamily .tiptap-select-label')
+  assert.ok(select && label)
+
+  select.value = 'Arial'
+  select.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('fontFamily', { fontFamily: 'Arial' }))
+  assert.equal(select.value, 'Arial')
+  assert.equal(label.textContent, 'Arial')
+  editor.destroy()
+})
+
+test('fontFamily dropdown leaves the label blank for mixed fonts', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Arial', 'Helvetica'], 'Arial')
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'arial', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] },
+        { type: 'text', text: 'helvetica', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Helvetica' } }] },
+      ],
+    }],
+  })
+  const select = host.querySelector('select[data-control="fontFamily"]')
+  const label = host.querySelector('.tiptap-select-fontFamily .tiptap-select-label')
+
+  selectTextSpan(editor, 'arial', 'helvetica')
+  assert.equal(label.textContent, 'Arial')
+  assert.equal(label.getAttribute('aria-hidden'), 'true')
+  assert.equal(
+    host.querySelector('.tiptap-select-fontFamily .tiptap-select-option[aria-selected="true"]'),
+    null,
+    'mixed fonts must not keep the first font selected in the menu',
+  )
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'helvetica')).run()
+  assert.equal(select.value, 'Helvetica')
+  assert.equal(label.textContent, 'Helvetica')
+  editor.destroy()
+})
+
+test('fontFamily treats explicit default font and inherited default as the same context', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Arial', 'Helvetica'], 'Arial')
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'inherited' },
+        { type: 'text', text: 'explicit', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] },
+      ],
+    }],
+  })
+  const select = host.querySelector('select[data-control="fontFamily"]')
+  const label = host.querySelector('.tiptap-select-fontFamily .tiptap-select-label')
+
+  selectTextSpan(editor, 'inherited', 'explicit')
+  assert.equal(select.value, '')
+  assert.equal(label.textContent, 'Arial')
+  assert.equal(
+    host.querySelector('.tiptap-select-fontFamily .tiptap-select-option[data-value=""]')?.getAttribute('aria-selected'),
+    'true',
+  )
+  editor.destroy()
+})
+
+test('fontFamily displays an explicit font even when it is absent from the host font list', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Only Host Font'], 'Only Host Font')
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [{ type: 'text', text: 'pasted', marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Arial' } }] }],
+    }],
+  })
+  const select = host.querySelector('select[data-control="fontFamily"]')
+  const label = host.querySelector('.tiptap-select-fontFamily .tiptap-select-label')
+
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'pasted')).run()
+  assert.equal(host.querySelector('.tiptap-select-fontFamily').classList.contains('is-layout-blank'), false)
+  assert.equal(label.textContent, 'Arial', 'the button must not fall back to the first host font')
+  assert.equal(select.value, '')
+  assert.equal(
+    Array.from(host.querySelectorAll('.tiptap-select-fontFamily .tiptap-select-option'))
+      .filter((node) => node.getAttribute('aria-selected') === 'true').length,
+    0,
+    'an unknown explicit font should not falsely select a different host font',
+  )
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 字号下拉
+// ---------------------------------------------------------------------------
+
+test('fontSize dropdown applies and clears font size', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'size')
+  selectText(editor)
+
+  const select = host.querySelector('select[data-control="fontSize"]')
+  assert.ok(select)
+
+  select.value = '18'
+  select.dispatchEvent(new Event('change'))
+  assert.ok(editor.isActive('fontSize', { fontSize: '18px' }))
+
+  select.value = '14'
+  select.dispatchEvent(new Event('change'))
+  assert.ok(editor.isActive('fontSize', { fontSize: '14px' }))
+  editor.destroy()
+})
+
+test('fontSize dropdown reflects collapsed cursor size context without scaling menu items', () => {
+  const { editor, host } = createEditorWithToolbar()
+  markEditorFocused(editor)
+  const select = host.querySelector('select[data-control="fontSize"]')
+  const label = host.querySelector('.tiptap-select-fontSize .tiptap-select-label')
+  assert.ok(select && label)
+  assert.equal(select.value, '14', 'the paragraph default should select the numeric 14px option')
+
+  select.value = '24'
+  select.dispatchEvent(new Event('change'))
+
+  assert.ok(editor.isActive('fontSize', { fontSize: '24px' }))
+  assert.equal(select.value, '24')
+  assert.equal(label.textContent, '24')
+  assert.deepEqual(
+    Array.from(host.querySelectorAll('.tiptap-select-fontSize .tiptap-select-option-label'))
+      .map((node) => node.textContent),
+    ['8', '9', '10', '11', '12', '14', '16', '18', '20', '24', '36'],
+    'the font size menu should contain the numeric sizes in order',
+  )
+  assert.ok(host.querySelector('.tiptap-select-fontSize .tiptap-select-option[data-value="16"]'))
+  assert.ok(host.querySelector('.tiptap-select-fontSize .tiptap-select-option[data-value="20"]'))
+  for (const option of host.querySelectorAll('.tiptap-select-fontSize .tiptap-select-option')) {
+    assert.equal(option.style.fontSize, '', 'font size menu items should keep a uniform menu type scale')
+  }
+  editor.destroy()
+})
+
+test('fontSize dropdown leaves the label blank for mixed sizes and keeps uniform heading sizes', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          { type: 'text', text: 'small', marks: [{ type: 'fontSize', attrs: { fontSize: '18px' } }] },
+          { type: 'text', text: 'default' },
+        ],
+      },
+      { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'heading-two' }] },
+      { type: 'heading', attrs: { level: 1 }, content: [{ type: 'text', text: 'heading-one' }] },
+    ],
+  })
+  const select = host.querySelector('select[data-control="fontSize"]')
+  const label = host.querySelector('.tiptap-select-fontSize .tiptap-select-label')
+
+  selectTextSpan(editor, 'small', 'default')
+  assert.equal(label.textContent, '14')
+  assert.equal(label.getAttribute('aria-hidden'), 'true')
+  assert.equal(
+    host.querySelector('.tiptap-select-fontSize .tiptap-select-option[aria-selected="true"]'),
+    null,
+  )
+
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'heading-two')).run()
+  assert.equal(select.value, '20')
+  assert.equal(label.textContent, '20')
+
+  selectTextSpan(editor, 'heading-two', 'heading-one')
+  assert.equal(label.textContent, '14')
+  assert.equal(label.getAttribute('aria-hidden'), 'true')
+  assert.equal(
+    host.querySelector('.tiptap-select-fontSize .tiptap-select-option[aria-selected="true"]'),
+    null,
+  )
+  editor.destroy()
+})
+
+test('heading, fontFamily and fontSize labels are all blank for one mixed selection', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  toolbar.setFontList(['Arial', 'Helvetica'], 'Arial')
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      {
+        type: 'heading',
+        attrs: { level: 1 },
+        content: [{
+          type: 'text',
+          text: 'Title',
+          marks: [
+            { type: 'fontFamily', attrs: { fontFamily: 'Arial' } },
+            { type: 'fontSize', attrs: { fontSize: '18px' } },
+          ],
+        }],
+      },
+      {
+        type: 'paragraph',
+        content: [{
+          type: 'text',
+          text: 'Body',
+          marks: [{ type: 'fontFamily', attrs: { fontFamily: 'Helvetica' } }],
+        }],
+      },
+    ],
+  })
+
+  selectTextSpan(editor, 'Title', 'Body')
+
+  const layoutLabels = { heading: '正文', fontFamily: 'Arial', fontSize: '14' }
+  for (const control of ['heading', 'fontFamily', 'fontSize']) {
+    assert.ok(host.querySelector(`.tiptap-select-${control}`).classList.contains('is-mixed'))
+    assert.ok(host.querySelector(`.tiptap-select-${control}`).classList.contains('is-layout-blank'))
+    const label = host.querySelector(`.tiptap-select-${control} .tiptap-select-label`)
+    assert.equal(label.textContent, layoutLabels[control])
+    assert.equal(label.getAttribute('aria-hidden'), 'true')
+    assert.equal(host.querySelector(`select[data-control="${control}"]`).value, '')
+    assert.equal(
+      host.querySelectorAll(`.tiptap-select-${control} .tiptap-select-option[aria-selected="true"]`).length,
+      0,
+    )
+  }
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// setFontList 填充
+// ---------------------------------------------------------------------------
+
+test('setFontList populates the font family dropdown', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  const select = host.querySelector('select[data-control="fontFamily"]')
+
+  toolbar.setFontList(['Arial', 'Helvetica', 'Noto Sans CJK SC'], 'Helvetica')
+  const options = select.querySelectorAll('option')
+  assert.equal(options.length, 4, 'should keep a default display option + host fonts')
+  assert.equal(options[0].value, '')
+  assert.equal(options[0].textContent, 'Helvetica')
+  assert.equal(options[0].selected, true, 'no explicit font mark should display default font')
+  assert.equal(options[1].value, 'Arial')
+  assert.equal(options[2].value, 'Helvetica')
+  assert.equal(options[3].value, 'Noto Sans CJK SC')
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 激活态随显式选区同步
+// ---------------------------------------------------------------------------
+
+test('active state syncs when explicit selection moves into formatted text', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'bold', marks: [{ type: 'bold' }] },
+        { type: 'text', text: 'plain' },
+      ],
+    }],
+  })
+
+  const btn = host.querySelector('button[data-format="bold"]')
+
+  // 显式选中加粗文本：按钮高亮
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'bold')).run()
+  assert.equal(btn.getAttribute('aria-pressed'), 'true')
+
+  // 显式选中普通文本：按钮取消高亮
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'plain')).run()
+  assert.equal(btn.getAttribute('aria-pressed'), 'false')
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 资源插入区：图片按钮
+// ---------------------------------------------------------------------------
+
+test('toolbar mounts image insert button', () => {
+  const { editor, host } = createEditorWithToolbar()
+  const btn = host.querySelector('button[data-format="insertImage"]')
+  assert.ok(btn, 'image insert button should be mounted')
+  editor.destroy()
+})
+
+test('toolbar image button triggers injected pick callback', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  let picked = 0
+  toolbar.setOnPickImage(() => { picked++ })
+  const btn = host.querySelector('button[data-format="insertImage"]')
+  btn.click()
+  assert.equal(picked, 1, 'pick callback should fire on image button click')
+  editor.destroy()
+})
+
+test('resource buttons follow host enabled state', () => {
+  const { editor, host, toolbar } = createEditorWithToolbar()
+  const voiceBtn = host.querySelector('button[data-format="insertVoice"]')
+  const imageBtn = host.querySelector('button[data-format="insertImage"]')
+
+  toolbar.setResourceButtonsEnabled(false, false)
+  assert.equal(voiceBtn.disabled, true)
+  assert.equal(imageBtn.disabled, true)
+
+  toolbar.setResourceButtonsEnabled(true, false)
+  assert.equal(voiceBtn.disabled, false)
+  assert.equal(imageBtn.disabled, true)
+
+  toolbar.setResourceButtonsEnabled(true, true)
+  assert.equal(voiceBtn.disabled, false)
+  assert.equal(imageBtn.disabled, false)
+  editor.destroy()
+})
+
+// ---------------------------------------------------------------------------
+// 列表/待办区：挂载 / toggle / 互切换丢勾选 / 缩进反缩进 / 激活态同步 / 保存恢复
+// ---------------------------------------------------------------------------
+
+function collectTypes(node, acc = new Set()) {
+  if (!node || typeof node !== 'object') return acc
+  if (node.type) acc.add(node.type)
+  if (Array.isArray(node.content)) for (const child of node.content) collectTypes(child, acc)
+  return acc
+}
+
+function findNode(node, type) {
+  if (!node || typeof node !== 'object') return null
+  if (node.type === type) return node
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      const found = findNode(child, type)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+function collectTaskCheckedStates(node, acc = []) {
+  if (!node || typeof node !== 'object') return acc
+  if (node.type === 'taskItem') acc.push(Boolean(node.attrs?.checked))
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) collectTaskCheckedStates(child, acc)
+  }
+  return acc
+}
+
+function hasNestedList(node) {
+  function walk(n) {
+    if (!n || typeof n !== 'object') return false
+    if (n.type === 'listItem' || n.type === 'taskItem') {
+      if (Array.isArray(n.content)) {
+        for (const child of n.content) {
+          if (child && ['bulletList', 'orderedList', 'taskList'].includes(child.type)) return true
+        }
+      }
+    }
+    if (Array.isArray(n.content)) {
+      for (const child of n.content) {
+        if (walk(child)) return true
+      }
+    }
+    return false
+  }
+  return walk(node)
+}
+
+function maxListItemDepth(node, depth = 0) {
+  if (!node || typeof node !== 'object') return depth
+  const currentDepth = node.type === 'listItem' || node.type === 'taskItem' ? depth + 1 : depth
+  let maxDepth = currentDepth
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      maxDepth = Math.max(maxDepth, maxListItemDepth(child, currentDepth))
+    }
+  }
+  return maxDepth
+}
+
+function maxListItemVisualDepth(node, structuralDepth = 0) {
+  if (!node || typeof node !== 'object') return structuralDepth
+  const isListItem = node.type === 'listItem' || node.type === 'taskItem'
+  const currentStructuralDepth = isListItem ? structuralDepth + 1 : structuralDepth
+  const currentVisualDepth = isListItem
+    ? currentStructuralDepth + (Number(node.attrs?.dvnIndentLevel) || 0)
+    : currentStructuralDepth
+  let maxDepth = currentVisualDepth
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      maxDepth = Math.max(maxDepth, maxListItemVisualDepth(child, currentStructuralDepth))
+    }
+  }
+  return maxDepth
+}
+
+function listItemDepthForText(node, text, structuralDepth = 0, visualDepth = 0) {
+  if (!node || typeof node !== 'object') return null
+  const isListItem = node.type === 'listItem' || node.type === 'taskItem'
+  const currentStructuralDepth = isListItem ? structuralDepth + 1 : structuralDepth
+  const currentVisualDepth = isListItem
+    ? Math.min(3, currentStructuralDepth + (Number(node.attrs?.dvnIndentLevel) || 0))
+    : visualDepth
+  if (node.type === 'text' && node.text === text) return currentVisualDepth
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      const found = listItemDepthForText(child, text, currentStructuralDepth, currentVisualDepth)
+      if (found != null) return found
+    }
+  }
+  return null
+}
+
+function listTypeForText(node, text, currentListType = null) {
+  if (!node || typeof node !== 'object') return null
+  const nextListType = ['bulletList', 'orderedList', 'taskList'].includes(node.type)
+    ? node.type
+    : currentListType
+  if (node.type === 'text' && node.text === text) return nextListType
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      const found = listTypeForText(child, text, nextListType)
+      if (found != null) return found
+    }
+  }
+  return null
+}
+
+function listItemTypeForText(node, text, currentItemType = null) {
+  if (!node || typeof node !== 'object') return null
+  const nextItemType = node.type === 'listItem' || node.type === 'taskItem'
+    ? node.type
+    : currentItemType
+  if (node.type === 'text' && node.text === text) return nextItemType
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      const found = listItemTypeForText(child, text, nextItemType)
+      if (found != null) return found
+    }
+  }
+  return null
+}
+
+function textOrder(node, acc = []) {
+  if (!node || typeof node !== 'object') return acc
+  if (node.type === 'text') acc.push(node.text)
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) textOrder(child, acc)
+  }
+  return acc
+}
+
+function listItemForListType(listType, text, extra = []) {
+  const itemType = listType === 'taskList' ? 'taskItem' : 'listItem'
+  const attrs = itemType === 'taskItem' ? { checked: false } : undefined
+  return {
+    type: itemType,
+    ...(attrs ? { attrs } : {}),
+    content: [
+      { type: 'paragraph', content: [{ type: 'text', text }] },
+      ...extra,
+    ],
+  }
+}
+
+
+function textHasMark(editor, text, markName) {
+  let found = false
+  editor.state.doc.descendants((node) => {
+    if (node.isText && node.text?.includes(text)) {
+      found = node.marks.some((mark) => mark.type.name === markName)
+      return false
+    }
+    return true
+  })
+  if (!found) {
+    let exists = false
+    editor.state.doc.descendants((node) => {
+      if (node.isText && node.text?.includes(text)) {
+        exists = true
+        return false
+      }
+      return true
+    })
+    if (!exists) throw new Error(`text not found: ${text}`)
+  }
+  return found
+}
+
+function textMarkAttrs(editor, text, markName) {
+  let attrs = null
+  editor.state.doc.descendants((node) => {
+    if (node.isText && node.text?.includes(text)) {
+      const mark = node.marks.find((item) => item.type.name === markName)
+      attrs = mark?.attrs ?? null
+      return false
+    }
+    return true
+  })
+  if (attrs == null) throw new Error(`mark not found: ${markName} on ${text}`)
+  return attrs
+}
+
+function findTextEndPosition(editor, text) {
+  let found = null
+  editor.state.doc.descendants((node, pos) => {
+    if (node.isText && node.text === text) {
+      found = pos + node.nodeSize
+      return false
+    }
+    return true
+  })
+  if (found == null) throw new Error(`text not found: ${text}`)
+  return found
+}
+
+function findTextOffsetPosition(editor, text, offset) {
+  let found = null
+  editor.state.doc.descendants((node, pos) => {
+    if (node.isText && node.text === text) {
+      found = pos + Math.max(0, Math.min(node.text.length, offset))
+      return false
+    }
+    return true
+  })
+  if (found == null) throw new Error(`text not found: ${text}`)
+  return found
+}
+
+function findTextRange(editor, text) {
+  let found = null
+  editor.state.doc.descendants((node, pos) => {
+    if (node.isText && node.text === text) {
+      found = { from: pos, to: pos + node.nodeSize }
+      return false
+    }
+    return true
+  })
+  if (found == null) throw new Error(`text not found: ${text}`)
+  return found
+}
+
+function selectTextSpan(editor, firstText, lastText) {
+  const from = findTextRange(editor, firstText).from
+  const to = findTextRange(editor, lastText).to
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection({ from, to }).run()
+}
+
+function pressKey(editor, window, key, options = {}) {
+  const event = new window.KeyboardEvent('keydown', {
+    key,
+    bubbles: true,
+    cancelable: true,
+    ...options,
+  })
+  editor.view.dom.dispatchEvent(event)
+  return event
+}
+
+function pressTab(editor, window, shiftKey = false) {
+  return pressKey(editor, window, 'Tab', { shiftKey })
+}
+
+function pressEnter(editor, window) {
+  return pressKey(editor, window, 'Enter')
+}
+
+function threeLevelListDoc(itemType = 'listItem', listType = 'bulletList') {
+  const attrs = itemType === 'taskItem' ? { checked: false } : undefined
+  const item = (text, extra = []) => ({
+    type: itemType,
+    ...(attrs ? { attrs } : {}),
+    content: [
+      { type: 'paragraph', content: [{ type: 'text', text }] },
+      ...extra,
+    ],
+  })
+  return {
+    type: 'doc',
+    content: [{
+      type: listType,
+      content: [
+        item('root', [{
+          type: listType,
+          content: [item('child', [{
+            type: listType,
+            content: [item('three'), item('four')],
+          }])],
+        }]),
+      ],
+    }],
+  }
+}
+
+test('toolbar mounts list and indent buttons', () => {
+  const { editor, host } = createEditorWithToolbar()
+  for (const format of ['bulletList', 'orderedList', 'taskList', 'indentList', 'outdentList']) {
+    assert.ok(host.querySelector(`button[data-format="${format}"]`), `${format} button should be mounted`)
+  }
+  editor.destroy()
+})
+
+test('task list style keeps checkbox and text on the same row', () => {
+  const { editor } = createEditorWithToolbar()
+  const style = document.getElementById('dvn-tiptap-tasklist-style')
+  assert.ok(style, 'task list style should be injected')
+  assert.match(style.textContent, /ul\[data-type="taskList"\] \{ list-style: none; padding-left: 0;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] ul\[data-type="taskList"\] \{ padding-left: 20px;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li > div > ul\[data-type="taskList"\] \{ margin-left: -20px;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li > div > ul\[data-type="taskList"\] > li > div > ul\[data-type="taskList"\] > li > div > ul\[data-type="taskList"\] \{ padding-left: 0;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li\[data-dvn-indent-level="1"\] > div > ul\[data-type="taskList"\] \{ margin-left: -40px;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li\[data-dvn-indent-level="2"\] > div > ul\[data-type="taskList"\] \{ margin-left: -60px;/)
+  // 勾选框固定 13px，不跟随正文字号；label 与 • / 1. 用同一套“首行有效行盒”
+  // 跟踪规则，折行/多段时仍钉在首行，不会掉到整个列表项中间。
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li \{ display: flex; align-items: flex-start; gap: 0; \}/)
+  assert.equal(/ul\[data-type="taskList"\] > li \{[^}]*align-items: center/.test(style.textContent), false, 'task row must not center the checkbox over the whole item')
+  assert.equal(/ul\[data-type="taskList"\] > li \{[^}]*align-items: baseline/.test(style.textContent), false, 'task row must not align the checkbox to the text baseline')
+  assert.equal(/ul\[data-type="taskList"\] li \{ display: flex/.test(style.textContent), false, 'task list row style must not hide markers of nested bullet/ordered lists')
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li > label \{ display: inline-flex; align-items: center; justify-content: center; flex: 0 0 var\(--dvn-marker-gutter, 20px\); width: var\(--dvn-marker-gutter, 20px\); height: var\(--dvn-marker-line-height, calc\(1lh \* max\(1, var\(--dvn-marker-ratio, 1\)\)\)\); font-size: 14px; line-height: inherit; margin: 0; background: transparent; \}/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li > label > input\[type="checkbox"\] \{ margin: 0; width: 13px; height: 13px; accent-color: var\(--highlightColor, #007AFF\); \}/)
+  assert.equal(style.textContent.includes('calc(13px * var(--dvn-marker-ratio'), false, 'task checkbox must stay fixed at 13px')
+  assert.equal(/input\[type="checkbox"\] \{[^}]*top: \d+px/.test(style.textContent), false, 'task checkbox must not use a hard-coded pixel nudge')
+  assert.equal(/ul\[data-type="taskList"\] > li\[data-checked="true"\] > label/.test(style.textContent), false, 'checked task label must not paint a dark background around checkbox')
+  assert.equal(style.textContent.includes('background: var(--backgroundColor'), false, 'task checkbox wrapper must not reuse editor background in dark mode')
+  assert.match(tiptapEditorHtml, /\.ProseMirror li\[data-dvn-indent-level="1"\] \{ margin-left: 20px; \}/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror li\[data-dvn-indent-level="2"\] \{ margin-left: 40px; \}/)
+  assert.match(tiptapEditorHtml, /li\[data-dvn-indent-level="1"\] > ul,[\s\S]*margin-left: -20px;/)
+  assert.match(tiptapEditorHtml, /li\[data-dvn-indent-level="2"\] > ul,[\s\S]*margin-left: -40px;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li > div > p, ul\[data-type="taskList"\] > li > div > h1,[\s\S]*\{ margin: 0;/)
+  assert.match(style.textContent, /ul\[data-type="taskList"\] > li\[data-checked="true"\] > div > p:first-child, ul\[data-type="taskList"\] > li\[data-checked="true"\] > div > h1:first-child,[\s\S]*\{ opacity: 0\.55;/)
+  assert.equal(style.textContent.includes('text-decoration: line-through'), false, 'checked task text should not render a strikethrough')
+  assert.equal(style.textContent.includes('color: var(--color'), false, 'checked task text should not switch to theme color')
+  editor.destroy()
+})
+
+test('normal list markers stay on the first line for wrapped items', () => {
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li,[\s\S]*\.ProseMirror ol > li \{[\s\S]*display: grid;[\s\S]*grid-template-columns: var\(--dvn-marker-gutter, 20px\) minmax\(0, 1fr\);/,
+  )
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > p:first-child,[\s\S]*\.ProseMirror ol > li > h6:first-child \{[\s\S]*text-indent: calc\(-1 \* var\(--dvn-marker-gutter, 20px\)\);/,
+  )
+  // marker 字形固定 14px、槽位固定 20px；标题优先使用运行时下发的真实
+  // 标题行高，其他正文继续用 calc(1lh * max(1, ratio)) 跟踪首行有效行盒。
+  // 再用 vertical-align: top 对齐行盒顶部，不写逐字号补偿像素。
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > p:first-child::before,[\s\S]*\.ProseMirror ol > li > h6:first-child::before \{[\s\S]*display: inline-flex;[\s\S]*width: var\(--dvn-marker-gutter, 20px\);[\s\S]*font-size: 14px;[\s\S]*height: var\(--dvn-marker-line-height, calc\(1lh \* max\(1, var\(--dvn-marker-ratio, 1\)\)\)\);[\s\S]*line-height: inherit;[\s\S]*vertical-align: top;/,
+    'marker 必须固定字形大小，并用首行有效行盒居中',
+  )
+  assert.doesNotMatch(
+    tiptapEditorHtml,
+    /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > p:first-child::before,[\s\S]*?\.ProseMirror ol > li > h6:first-child::before \{[^}]*font-size: calc\(14px \* var\(--dvn-marker-ratio, 1\)\);/,
+    'marker 字形不得跟随字号放大',
+  )
+  assert.doesNotMatch(
+    tiptapEditorHtml,
+    /\.ProseMirror ol > li > h6:first-child::before \{[^}]*vertical-align: baseline\s*;/,
+    'marker 不得再退回文字基线对齐',
+  )
+  assert.match(tiptapEditorHtml, /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > h6:first-child::before \{[\s\S]*content: "•";/)
+  assert.match(tiptapEditorHtml, /\.ProseMirror ol > li > h6:first-child::before \{[\s\S]*content: var\(--dvn-list-number, counter\(dvn-ordered-list\)\) "\.";/)
+})
+
+test('multi-paragraph list items keep each block on its own grid row', () => {
+  // 行首 BackSpace 合并两个列表项、粘贴多段文本、导入旧笔记都会产生
+  // “一个 listItem 里多个 <p>” 的结构。旧实现把所有 li > p 都写成
+  // grid-row: 1，多段落会全部落进同一个网格单元叠在一起渲染
+  // （同一行文字画两遍、错位重叠）。这里锁定：
+  //   1) 通用段落规则不得固定 grid-row，第二段起必须走自动排版落到后续行；
+  //   2) 只有首段参与第一行（方案 A：编号始终贴列表项第一行，即使首行为空）；
+  //   3) 第二段起保留 marker 槽位的左内边距，正文左边界与首行一致。
+  const listTextblockRule = tiptapEditorHtml.match(/\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > p,[\s\S]*?\.ProseMirror ol > li > h6 \{([\s\S]*?)\}/)
+  assert.ok(listTextblockRule)
+  assert.doesNotMatch(listTextblockRule[1], /grid-row:/, '列表通用文本块规则不得固定 grid-row，否则多段列表项会重叠')
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ul:not\(\[data-type="taskList"\]\) > li > p:first-child,[\s\S]*\.ProseMirror ol > li > h6:first-child \{[\s\S]*grid-row: 1;/,
+    '只有首段参与第一行，marker 才始终贴列表项第一行',
+  )
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ol > li > h6 \{ padding-left: var\(--dvn-ordered-marker-gutter, 20px\); \}/,
+    '第二段起必须保留 marker 槽位左内边距，正文左边界才和首行一致',
+  )
+  assert.match(
+    tiptapEditorHtml,
+    /\.ProseMirror ol > li > h6:first-child \{ text-indent: calc\(-1 \* var\(--dvn-ordered-marker-gutter, 20px\)\); \}/,
+  )
+})
+
+test('list item keeps multiple paragraphs produced by merge or paste', () => {
+  // 上面那条 CSS 约束对应的数据结构：一个 listItem 内多个段落必须原样保留，
+  // 不能被 schema 折叠成单段（否则“多段列表项”这条渲染路径就没人覆盖了）。
+  const { editor } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      {
+        type: 'orderedList',
+        attrs: { start: 1 },
+        content: [
+          {
+            type: 'listItem',
+            content: [
+              { type: 'paragraph', content: [{ type: 'text', text: '第一段' }] },
+              { type: 'paragraph', content: [{ type: 'text', text: '第二段' }] },
+            ],
+          },
+        ],
+      },
+    ],
+  })
+  const json = editor.getJSON()
+  const item = json.content[0].content[0]
+  assert.equal(item.type, 'listItem')
+  assert.equal(item.content.length, 2)
+  assert.deepEqual(item.content.map((node) => node.type), ['paragraph', 'paragraph'])
+  assert.equal(item.content[1].content[0].text, '第二段')
+  editor.destroy()
+})
+
+test('toolbar buttons keep editor selection on pointerdown and mousedown', () => {
+  const { editor, host, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'paragraph', content: [{ type: 'text', text: 'one' }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'two' }] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'three' }] },
+    ],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection({ from: 1, to: 15 }).run()
+
+  const button = host.querySelector('button[data-format="bulletList"]')
+  const pointerEvent = new window.PointerEvent('pointerdown', { bubbles: true, cancelable: true })
+  button.dispatchEvent(pointerEvent)
+  assert.equal(pointerEvent.defaultPrevented, true)
+
+  const mouseEvent = new window.MouseEvent('mousedown', { bubbles: true, cancelable: true })
+  button.dispatchEvent(mouseEvent)
+  assert.equal(mouseEvent.defaultPrevented, true)
+
+  assert.deepEqual(
+    { from: editor.state.selection.from, to: editor.state.selection.to },
+    { from: 1, to: 15 },
+    'toolbar pointer/mouse down must not collapse the editor selection',
+  )
+  button.click()
+
+  const list = findNode(editor.getJSON(), 'bulletList')
+  assert.equal(list.content.length, 3)
+  assert.deepEqual(list.content.map(item => item.content[0].content[0].text), ['one', 'two', 'three'])
+  editor.destroy()
+})
+
+for (const format of ['bulletList', 'orderedList', 'taskList']) {
+  test(`${format}: toggle creates and clears list`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    insertText(editor, 'item')
+    selectText(editor)
+
+    const btn = host.querySelector(`button[data-format="${format}"]`)
+    btn.click()
+    assert.ok(editor.isActive(format), `${format} should be active after toggle on`)
+
+    btn.click()
+    assert.ok(!editor.isActive(format), `${format} should be cleared after toggle off`)
+    editor.destroy()
+  })
+}
+
+test('active level-one list button cancels only the current item', () => {
+  for (const { listType, name } of [
+    { listType: 'bulletList', name: 'bullet' },
+    { listType: 'orderedList', name: 'ordered' },
+    { listType: 'taskList', name: 'task' },
+  ]) {
+    const { editor, host } = createEditorWithToolbar()
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [
+          listItemForListType(listType, 'first'),
+          listItemForListType(listType, 'second'),
+        ],
+      }],
+    })
+    markEditorFocused(editor)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'second')).run()
+
+    host.querySelector(`button[data-format="${listType}"]`).click()
+    const json = editor.getJSON()
+    assert.equal(listTypeForText(json, 'first'), listType, `${name} sibling should remain a list item`)
+    assert.equal(listTypeForText(json, 'second'), null, `${name} active item should become plain text`)
+    assert.equal(listItemTypeForText(json, 'second'), null, `${name} active item should no longer be a list item`)
+    assert.deepEqual(textOrder(json), ['first', 'second'], `${name} cancellation must preserve text order`)
+    editor.destroy()
+  }
+})
+
+test('switching task list to bullet list drops checked, back to task list defaults unchecked', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: true },
+        content: [{ type: 'paragraph', content: [{ type: 'text', text: 'done' }] }],
+      }],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(editor.state.doc.content.size).run()
+
+  // 切换为无序列表：checked 属 taskItem 专有属性，转 listItem 时丢弃
+  host.querySelector('button[data-format="bulletList"]').click()
+  const afterBullet = collectTypes(editor.getJSON())
+  assert.ok(afterBullet.has('bulletList'), 'should contain bulletList after switch')
+  assert.ok(!afterBullet.has('taskItem'), 'taskItem must be gone after switching to bullet list')
+
+  // 切回待办：默认未勾选
+  host.querySelector('button[data-format="taskList"]').click()
+  const afterTask = collectTypes(editor.getJSON())
+  assert.ok(afterTask.has('taskItem'), 'taskItem should reappear after switching back')
+  const taskItem = findNode(editor.getJSON(), 'taskItem')
+  assert.equal(taskItem.attrs?.checked, false, 'checked should default to false after switching back')
+  editor.destroy()
+})
+
+
+for (const parentListType of ['bulletList', 'orderedList', 'taskList']) {
+  for (const targetListType of ['bulletList', 'orderedList', 'taskList']) {
+    if (parentListType === targetListType) continue
+
+    test(`nested ${parentListType} can be switched to nested ${targetListType} without leaving parent list`, () => {
+      const { editor, host } = createEditorWithToolbar()
+      editor.commands.setContent({
+        type: 'doc',
+        content: [{
+          type: parentListType,
+          content: [listItemForListType(parentListType, 'root', [{
+            type: parentListType,
+            content: [listItemForListType(parentListType, 'child')],
+          }])],
+        }],
+      })
+      markEditorFocused(editor)
+      editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'child')).run()
+
+      host.querySelector(`button[data-format="${targetListType}"]`).click()
+      const json = editor.getJSON()
+      assert.equal(listTypeForText(json, 'root'), parentListType, 'parent list type must be preserved')
+      assert.equal(listTypeForText(json, 'child'), targetListType, 'nested list type should switch in place')
+      assert.equal(listItemDepthForText(json, 'root'), 1)
+      assert.equal(listItemDepthForText(json, 'child'), 2)
+      assert.equal(
+        listItemTypeForText(json, 'child'),
+        targetListType === 'taskList' ? 'taskItem' : 'listItem',
+        'nested list item node should match the target list type',
+      )
+      assert.ok(maxListItemVisualDepth(json) <= 3, 'mixed nesting must still stay within three visual levels')
+      editor.destroy()
+    })
+  }
+}
+
+
+for (const { sourceListType, targetListType } of [
+  { sourceListType: 'orderedList', targetListType: 'taskList' },
+  { sourceListType: 'bulletList', targetListType: 'orderedList' },
+  { sourceListType: 'taskList', targetListType: 'bulletList' },
+]) {
+  test(`selected ${sourceListType} block converts every item to ${targetListType}`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: sourceListType,
+        content: [
+          listItemForListType(sourceListType, 'one'),
+          listItemForListType(sourceListType, 'two'),
+          listItemForListType(sourceListType, 'three'),
+        ],
+      }],
+    })
+    markEditorFocused(editor)
+    editor.chain().focus().setTextSelection({ from: 1, to: editor.state.doc.content.size - 1 }).run()
+
+    host.querySelector(`button[data-format="${targetListType}"]`).click()
+    const json = editor.getJSON()
+    for (const text of ['one', 'two', 'three']) {
+      assert.equal(listTypeForText(json, text), targetListType, `${text} should switch to ${targetListType}`)
+      assert.equal(
+        listItemTypeForText(json, text),
+        targetListType === 'taskList' ? 'taskItem' : 'listItem',
+        `${text} item node should match ${targetListType}`,
+      )
+      assert.equal(listItemDepthForText(json, text), 1, `${text} should stay first-level`)
+    }
+    editor.destroy()
+  })
+}
+
+test('selected nested list block converts recursively without flattening children', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'bulletList',
+      content: [
+        listItemForListType('bulletList', 'root', [{
+          type: 'bulletList',
+          content: [listItemForListType('bulletList', 'child')],
+        }]),
+        listItemForListType('bulletList', 'sibling'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection({ from: 1, to: editor.state.doc.content.size - 1 }).run()
+
+  host.querySelector('button[data-format="taskList"]').click()
+  const json = editor.getJSON()
+  assert.deepEqual(textOrder(json), ['root', 'child', 'sibling'], 'selected nested conversion must keep text order')
+  assert.equal(listTypeForText(json, 'root'), 'taskList')
+  assert.equal(listTypeForText(json, 'child'), 'taskList')
+  assert.equal(listTypeForText(json, 'sibling'), 'taskList')
+  assert.equal(listItemTypeForText(json, 'root'), 'taskItem')
+  assert.equal(listItemTypeForText(json, 'child'), 'taskItem')
+  assert.equal(listItemTypeForText(json, 'sibling'), 'taskItem')
+  assert.equal(listItemDepthForText(json, 'root'), 1)
+  assert.equal(listItemDepthForText(json, 'child'), 2, 'nested child should remain nested after conversion')
+  assert.equal(listItemDepthForText(json, 'sibling'), 1)
+  assert.ok(maxListItemVisualDepth(json) <= 3)
+  editor.destroy()
+})
+
+test('switching list type changes only the active sibling item', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        listItemForListType('taskList', 'first'),
+        listItemForListType('taskList', 'second'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'second')).run()
+
+  host.querySelector('button[data-format="bulletList"]').click()
+  const json = editor.getJSON()
+  assert.equal(listTypeForText(json, 'first'), 'taskList', 'previous sibling must stay task list')
+  assert.equal(listTypeForText(json, 'second'), 'bulletList', 'active sibling should switch to bullet list')
+  assert.equal(listItemTypeForText(json, 'first'), 'taskItem')
+  assert.equal(listItemTypeForText(json, 'second'), 'listItem')
+  assert.equal(listItemDepthForText(json, 'first'), 1)
+  assert.equal(listItemDepthForText(json, 'second'), 1)
+  editor.destroy()
+})
+
+
+test('switching current list item type preserves caret position', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        listItemForListType('taskList', 'first'),
+        listItemForListType('taskList', 'second'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextOffsetPosition(editor, 'second', 3)).run()
+
+  host.querySelector('button[data-format="bulletList"]').click()
+  editor.commands.insertContent('X')
+  const json = editor.getJSON()
+  assert.equal(listTypeForText(json, 'secXond'), 'bulletList')
+  assert.equal(listTypeForText(json, 'first'), 'taskList')
+  assert.match(editor.getText(), /first\s+secXond/, 'text should be inserted at the original caret offset')
+  editor.destroy()
+})
+
+test('Shift+Tab after switching nested task item to bullet keeps it as a first-level bullet item', () => {
+  const { editor, host, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [listItemForListType('taskList', 'DCSad', [{
+        type: 'taskList',
+        content: [listItemForListType('taskList', '打')],
+      }])],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, '打')).run()
+  host.querySelector('button[data-format="bulletList"]').click()
+  assert.equal(listTypeForText(editor.getJSON(), '打'), 'bulletList', 'child should become a nested bullet list item')
+  assert.equal(listItemDepthForText(editor.getJSON(), '打'), 2)
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, '打')).run()
+  pressTab(editor, window, true)
+  const json = editor.getJSON()
+  assert.equal(listTypeForText(json, 'DCSad'), 'taskList', 'parent should remain a task item')
+  assert.equal(listTypeForText(json, '打'), 'bulletList', 'outdented child should remain a bullet list item')
+  assert.equal(listItemDepthForText(json, 'DCSad'), 1)
+  assert.equal(listItemDepthForText(json, '打'), 1, 'outdented child should become first-level list item instead of plain text')
+  editor.destroy()
+})
+
+for (const parentListType of ['bulletList', 'orderedList', 'taskList']) {
+  for (const targetListType of ['bulletList', 'orderedList', 'taskList']) {
+    if (parentListType === targetListType) continue
+
+    test(`Shift+Tab after switching nested ${parentListType} item to ${targetListType} keeps the target list type`, () => {
+      const { editor, host, window } = createEditorWithToolbar()
+      editor.commands.setContent({
+        type: 'doc',
+        content: [{
+          type: parentListType,
+          content: [listItemForListType(parentListType, 'parent', [{
+            type: parentListType,
+            content: [listItemForListType(parentListType, 'child')],
+          }])],
+        }],
+      })
+      markEditorFocused(editor)
+      editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'child')).run()
+      host.querySelector(`button[data-format="${targetListType}"]`).click()
+      assert.equal(listTypeForText(editor.getJSON(), 'child'), targetListType, 'current child should switch in place before outdent')
+      assert.equal(listItemDepthForText(editor.getJSON(), 'child'), 2)
+
+      editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'child')).run()
+      pressTab(editor, window, true)
+      const json = editor.getJSON()
+      assert.deepEqual(textOrder(json), ['parent', 'child'], 'outdent must preserve document order')
+      assert.equal(listTypeForText(json, 'parent'), parentListType, 'parent should keep its original list type')
+      assert.equal(listTypeForText(json, 'child'), targetListType, 'outdented child should keep the switched list type')
+      assert.equal(listItemDepthForText(json, 'parent'), 1)
+      assert.equal(listItemDepthForText(json, 'child'), 1, 'outdented child should be a first-level list item, not plain text')
+      assert.equal(collectTypes(json).has(targetListType === 'taskList' ? 'taskItem' : 'listItem'), true)
+      editor.destroy()
+    })
+  }
+}
+
+test('Shift+Tab in a mixed nested list preserves order and keeps following siblings under the lifted item', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        listItemForListType('taskList', 'root', [{
+          type: 'bulletList',
+          content: [
+            listItemForListType('bulletList', 'before'),
+            listItemForListType('bulletList', 'active'),
+            listItemForListType('bulletList', 'after'),
+          ],
+        }]),
+        listItemForListType('taskList', 'next root'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'active')).run()
+  pressTab(editor, window, true)
+  const json = editor.getJSON()
+
+  assert.deepEqual(textOrder(json), ['root', 'before', 'active', 'after', 'next root'], 'outdent must not reorder the active item after its following sibling')
+  assert.equal(listTypeForText(json, 'root'), 'taskList')
+  assert.equal(listTypeForText(json, 'before'), 'bulletList')
+  assert.equal(listTypeForText(json, 'active'), 'bulletList')
+  assert.equal(listTypeForText(json, 'after'), 'bulletList')
+  assert.equal(listTypeForText(json, 'next root'), 'taskList')
+  assert.equal(listItemDepthForText(json, 'root'), 1)
+  assert.equal(listItemDepthForText(json, 'before'), 2)
+  assert.equal(listItemDepthForText(json, 'active'), 1)
+  assert.equal(listItemDepthForText(json, 'after'), 2, 'following sibling should remain one level below the lifted active item')
+  assert.equal(listItemDepthForText(json, 'next root'), 1)
+  editor.destroy()
+})
+
+test('Shift+Tab from the first of multiple mixed child lists must not jump behind later children', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      content: [
+        listItemForListType('orderedList', 'root', [
+          {
+            type: 'bulletList',
+            content: [listItemForListType('bulletList', 'active')],
+          },
+          {
+            type: 'orderedList',
+            content: [listItemForListType('orderedList', 'later-child')],
+          },
+        ]),
+        listItemForListType('orderedList', 'next-root'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'active')).run()
+  pressTab(editor, window, true)
+  const json = editor.getJSON()
+
+  assert.deepEqual(
+    textOrder(json),
+    ['root', 'active', 'later-child', 'next-root'],
+    'outdent must not jump the active item behind a later child list',
+  )
+  assert.equal(listTypeForText(json, 'root'), 'orderedList')
+  assert.equal(listTypeForText(json, 'active'), 'bulletList')
+  assert.equal(listTypeForText(json, 'later-child'), 'orderedList')
+  assert.equal(listItemDepthForText(json, 'active'), 1)
+  assert.equal(listItemDepthForText(json, 'later-child'), 2)
+  assert.equal(listItemDepthForText(json, 'next-root'), 1)
+  editor.destroy()
+})
+
+test('switching current list item type preserves Chinese caret position', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        listItemForListType('taskList', '第一行'),
+        listItemForListType('taskList', '你好世界'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextOffsetPosition(editor, '你好世界', 2)).run()
+
+  host.querySelector('button[data-format="orderedList"]').click()
+  editor.commands.insertContent('X')
+  const json = editor.getJSON()
+  assert.equal(listTypeForText(json, '你好X世界'), 'orderedList')
+  assert.equal(listTypeForText(json, '第一行'), 'taskList')
+  assert.match(editor.getText(), /第一行\s+你好X世界/, 'Chinese text should be inserted at the original caret offset')
+  editor.destroy()
+})
+
+test('indent/outdent buttons nest and unnest bullet list items', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'bulletList',
+      content: [
+        { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'one' }] }] },
+        { type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'two' }] }] },
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(editor.state.doc.content.size).run()
+
+  host.querySelector('button[data-format="indentList"]').click()
+  assert.ok(hasNestedList(editor.getJSON()), 'second item should nest under first after indent')
+
+  host.querySelector('button[data-format="outdentList"]').click()
+  assert.ok(!hasNestedList(editor.getJSON()), 'no nested list should remain after outdent')
+  editor.destroy()
+})
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  test(`indent button follows real sink capability for ${name}`, () => {
+    const { editor, host } = createEditorWithToolbar()
+    const item = (text) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [{ type: 'paragraph', content: [{ type: 'text', text }] }],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one'), item('two')],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'one')).run()
+    const indent = host.querySelector('button[data-format="indentList"]')
+    assert.equal(indent.disabled, true, `${name} first item cannot be indented`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    assert.equal(indent.disabled, false, `${name} item with a previous sibling can be indented`)
+    editor.destroy()
+  })
+}
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  test(`the second ${name} item can be indented twice with Tab`, () => {
+    const { editor, window } = createEditorWithToolbar()
+    const item = (text) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [{ type: 'paragraph', content: [{ type: 'text', text }] }],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one'), item('two')],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'two'), 2, `${name} second item should become second level`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'two'), 3, `${name} second item should become third level after another Tab`)
+
+    editor.commands.insertContent(' typed')
+    assert.equal(editor.getText().includes('two typed'), true, `${name} item should still accept text after second Tab`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two typed')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'two typed'), 3, `${name} second item should remain capped at third level`)
+    editor.destroy()
+  })
+}
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  test(`Enter keeps native sibling insertion and Tab still caps ${name} at three levels`, () => {
+    const { editor, window } = createEditorWithToolbar()
+    const item = (text) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [{ type: 'paragraph', content: [{ type: 'text', text }] }],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one'), item('two')],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    pressTab(editor, window)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'two'), 3)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'one')).run()
+    pressEnter(editor, window)
+    editor.commands.insertContent('new')
+    assert.match(editor.getText(), /one\s+new\s+two/, `${name} new item should stay directly after the first item`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'new')).run()
+    pressTab(editor, window)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'new')).run()
+    pressTab(editor, window)
+
+    assert.equal(listItemDepthForText(editor.getJSON(), 'new'), 3, `${name} new item should reach third level`)
+    assert.ok(maxListItemVisualDepth(editor.getJSON()) <= 3, `${name} must never render deeper than third level`)
+    editor.destroy()
+  })
+}
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  test(`Shift+Tab outdents only the active item in a four-item third-level ${name}`, () => {
+    const { editor, window } = createEditorWithToolbar()
+    const item = (text, extra = []) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text }] },
+        ...extra,
+      ],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one', [{
+          type: listType,
+          content: [item('two', [{
+            type: listType,
+            content: [item('a'), item('b'), item('c'), item('d')],
+          }])],
+        }])],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'c')).run()
+    pressTab(editor, window, true)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'a'), 3)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'b'), 3)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'c'), 2)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'd'), 3, `${name} following sibling should stay third level after one outdent`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'c')).run()
+    pressTab(editor, window, true)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'c'), 1)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'd'), 3, `${name} following sibling should not be pulled to second level`)
+    assert.ok(maxListItemVisualDepth(editor.getJSON()) <= 3, `${name} outdent should keep visual depth capped`)
+    editor.destroy()
+  })
+}
+
+test('Shift+Tab on a flat first-level ordered list item drops it to plain text', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      attrs: { start: 1 },
+      content: [
+        listItemForListType('orderedList', '第一步'),
+        listItemForListType('orderedList', '第二步'),
+        listItemForListType('orderedList', '第三步'),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, '第二步')).run()
+
+  pressTab(editor, window, true)
+
+  const json = editor.getJSON()
+  assert.equal(listTypeForText(json, '第一步'), 'orderedList', 'untouched previous item should stay in the list')
+  assert.equal(listTypeForText(json, '第二步'), null, 'active level-one item should leave the list')
+  assert.equal(listItemTypeForText(json, '第二步'), null, 'active level-one item should become a plain paragraph')
+  assert.equal(listItemDepthForText(json, '第二步'), 0, 'active level-one item should no longer be nested')
+  assert.equal(listTypeForText(json, '第三步'), 'orderedList', 'following item should still be a list item')
+  assert.deepEqual(textOrder(json), ['第一步', '第二步', '第三步'], 'cancelling the list must preserve text order')
+  editor.destroy()
+})
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  // 2026-10-15 产品确认：一级列表项按 Shift+Tab 应退出列表变成普通文本块，
+  // 而不是沿用旧规则“消费按键但什么都不做”。退出复用 liftListItem 的默认语义，
+  // 与“再次点击当前列表按钮取消列表”一致。
+  test(`level-one ${name} item exits the list via Shift+Tab`, () => {
+    const { editor, window } = createEditorWithToolbar()
+    const item = (text, extra = []) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [
+        { type: 'paragraph', content: [{ type: 'text', text }] },
+        ...extra,
+      ],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one', [{
+          type: listType,
+          content: [item('two', [{
+            type: listType,
+            content: [item('a'), item('b')],
+          }])],
+        }])],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'a')).run()
+    pressTab(editor, window, true)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'a'), 2, `${name} active item should move from third to second level`)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'b'), 3, `${name} following item should stay third level after first outdent`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'a')).run()
+    pressTab(editor, window, true)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'a'), 1, `${name} active item should move from second to first level`)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'b'), 3, `${name} following item should stay third level after second outdent`)
+
+    // 一级 → 退出列表：该项自身变成普通段落，不再属于任何列表。
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'a')).run()
+    pressTab(editor, window, true)
+    const json = editor.getJSON()
+    assert.equal(listItemDepthForText(json, 'a'), 0, `${name} level-one item should leave the list and become plain text`)
+    assert.equal(listTypeForText(json, 'a'), null, `${name} exited item should not belong to any list`)
+    assert.equal(listItemTypeForText(json, 'a'), null, `${name} exited item should not be a list item`)
+    assert.deepEqual(textOrder(json), ['one', 'two', 'a', 'b'], `${name} exiting the list must preserve document order`)
+    assert.ok(maxListItemVisualDepth(json) <= 3, `${name} exit must keep visual depth capped at three`)
+
+    // 未被操作的同列表兄弟被提升成独立列表块，但仍保持原来的列表类型与视觉层级。
+    // 2026-10-15：一级项退出列表时结构降 2 级，视觉只应降 1 级 —— 兄弟项用
+    // dvnIndentLevel 补偿，保持它原本的视觉层级（三级），不再整体上浮。
+    assert.equal(listTypeForText(json, 'b'), listType, `${name} untouched sibling should stay in a list`)
+    assert.equal(listItemDepthForText(json, 'b'), 3, `${name} untouched sibling should keep its visual level`)
+
+    // 被提升出来的兄弟项仍可继续缩进 / 反缩进。
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'b')).run()
+    pressTab(editor, window, true)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'b'), 2, `${name} promoted sibling should still outdent`)
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'b')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'b'), 3, `${name} promoted sibling should still indent back`)
+    assert.ok(maxListItemVisualDepth(editor.getJSON()) <= 3, `${name} promoted sibling must stay capped at three levels`)
+    editor.destroy()
+  })
+
+}
+
+test('一级有序项 Shift+Tab 后点击原列表按钮，应恢复原结构和后续序号', () => {
+  const { editor, host, window } = createEditorWithToolbar()
+  const item = (text, indent = 0) => ({
+    type: 'listItem',
+    attrs: { dvnIndentLevel: indent },
+    content: [{ type: 'paragraph', attrs: { dvnIndentLevel: 0 }, content: [{ type: 'text', text }] }],
+  })
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      attrs: { start: 1, type: null },
+      content: [
+        item('一级A'),
+        item('中间项'),
+        item('子项A', 1),
+        item('一级B'),
+        item('一级C'),
+        item('子项B', 1),
+        item('子项C', 1),
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  const before = editor.getJSON()
+
+  for (let round = 0; round < 3; round += 1) {
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, '中间项')).run()
+    assert.equal(pressTab(editor, window, true).defaultPrevented, true)
+    assert.deepEqual(editor.getJSON().content.map((node) => node.type), ['orderedList', 'paragraph', 'orderedList'])
+    if (round === 1) {
+      editor.chain().focus().setTextSelection(findTextRange(editor, '中间项').from + 1).run()
+    }
+
+    host.querySelector('button[data-format="orderedList"]').click()
+    assert.deepEqual(editor.getJSON(), before, `第 ${round + 1} 轮重新应用原列表后必须恢复为原来的单个列表`)
+    assert.equal(editor.state.selection.$from.parent.textContent, '中间项', `第 ${round + 1} 轮恢复后光标应仍在被反缩进的项内`)
+  }
+  assert.deepEqual(
+    Array.from(editor.view.dom.querySelectorAll('ol > li'))
+      .map((li) => Number(/--dvn-list-number: "(\d+)"/.exec(li.getAttribute('style'))?.[1])),
+    [1, 2, 1, 3, 4, 1, 2],
+    '恢复后根组应继续为 1~4，子组分别从 1 重新编号',
+  )
+  editor.destroy()
+})
+
+
+for (const { name, listType, itemType, attrs } of [
+  { name: 'bullet list', listType: 'bulletList', itemType: 'listItem' },
+  { name: 'ordered list', listType: 'orderedList', itemType: 'listItem' },
+  { name: 'task list', listType: 'taskList', itemType: 'taskItem', attrs: { checked: false } },
+]) {
+  test(`Tab creates up to three nesting levels for ${name}`, () => {
+    const { editor, window } = createEditorWithToolbar()
+    const item = (text) => ({
+      type: itemType,
+      ...(attrs ? { attrs } : {}),
+      content: [{ type: 'paragraph', content: [{ type: 'text', text }] }],
+    })
+    editor.commands.setContent({
+      type: 'doc',
+      content: [{
+        type: listType,
+        content: [item('one'), item('two'), item('three')],
+      }],
+    })
+    markEditorFocused(editor)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'two')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'two'), 2, `${name} Tab should create second level`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'three')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'three'), 2, `${name} first Tab on third item should keep second level`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'three')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'three'), 3, `${name} second Tab on third item should create third level`)
+
+    editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'three')).run()
+    pressTab(editor, window)
+    assert.equal(listItemDepthForText(editor.getJSON(), 'three'), 3, `${name} Tab must not create fourth level`)
+    editor.destroy()
+  })
+}
+
+test('indent/outdent buttons nest and unnest task list items', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'a' }] }] },
+        { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'b' }] }] },
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(editor.state.doc.content.size).run()
+
+  host.querySelector('button[data-format="indentList"]').click()
+  assert.ok(hasNestedList(editor.getJSON()), 'task item should nest after indent')
+
+  host.querySelector('button[data-format="outdentList"]').click()
+  assert.ok(!hasNestedList(editor.getJSON()), 'no nested task list should remain after outdent')
+  editor.destroy()
+})
+
+test('list indentation is capped at three levels for toolbar and Tab', () => {
+  const { editor, host, window } = createEditorWithToolbar()
+  editor.commands.setContent(threeLevelListDoc('listItem', 'bulletList'))
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'four')).run()
+
+  const indent = host.querySelector('button[data-format="indentList"]')
+  assert.equal(maxListItemDepth(editor.getJSON()), 3)
+  assert.equal(indent.disabled, true, 'indent disabled at the third list level')
+
+  indent.click()
+  assert.equal(maxListItemDepth(editor.getJSON()), 3, 'toolbar indent must not create fourth level')
+
+  pressTab(editor, window)
+  assert.equal(maxListItemDepth(editor.getJSON()), 3, 'Tab must not create fourth level')
+  editor.destroy()
+})
+
+test('ordered list indentation is capped at three levels', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent(threeLevelListDoc('listItem', 'orderedList'))
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'four')).run()
+
+  const indent = host.querySelector('button[data-format="indentList"]')
+  assert.equal(maxListItemDepth(editor.getJSON()), 3)
+  assert.equal(indent.disabled, true, 'indent disabled at the third ordered list level')
+
+  indent.click()
+  assert.equal(maxListItemDepth(editor.getJSON()), 3, 'ordered list indent must not create fourth level')
+  editor.destroy()
+})
+
+test('task list indentation is capped at three levels', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent(threeLevelListDoc('taskItem', 'taskList'))
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'four')).run()
+
+  const indent = host.querySelector('button[data-format="indentList"]')
+  assert.equal(maxListItemDepth(editor.getJSON()), 3)
+  assert.equal(indent.disabled, true, 'indent disabled at the third task level')
+
+  indent.click()
+  assert.equal(maxListItemDepth(editor.getJSON()), 3, 'task indent must not create fourth level')
+  editor.destroy()
+})
+
+test('task parent checkbox cascades checked state to nested children', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: false },
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: 'parent' }] },
+          {
+            type: 'taskList',
+            content: [
+              { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child one' }] }] },
+              { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child two' }] }] },
+            ],
+          },
+        ],
+      }],
+    }],
+  })
+
+  const parentCheckbox = editor.view.dom.querySelector('input[type="checkbox"]')
+  parentCheckbox.checked = true
+  parentCheckbox.dispatchEvent(new window.Event('change', { bubbles: true }))
+
+  const afterChecked = collectTaskCheckedStates(editor.getJSON())
+  assert.deepEqual(afterChecked, [true, true, true], 'checking parent should check all nested children')
+
+  parentCheckbox.checked = false
+  parentCheckbox.dispatchEvent(new window.Event('change', { bubbles: true }))
+
+  const afterUnchecked = collectTaskCheckedStates(editor.getJSON())
+  assert.deepEqual(afterUnchecked, [false, false, false], 'unchecking parent should uncheck all nested children')
+  editor.destroy()
+})
+
+test('task children update parent only when all children are checked', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: false },
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: 'parent' }] },
+          {
+            type: 'taskList',
+            content: [
+              { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child one' }] }] },
+              { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child two' }] }] },
+            ],
+          },
+        ],
+      }],
+    }],
+  })
+
+  const checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[1].checked = true
+  checkboxes[1].dispatchEvent(new window.Event('change', { bubbles: true }))
+
+  assert.deepEqual(collectTaskCheckedStates(editor.getJSON()), [false, true, false], 'partial children should keep parent unchecked')
+  assert.equal(checkboxes[0].indeterminate, false, 'parent should not render an indeterminate state')
+  assert.equal(checkboxes[0].closest('li').dataset.indeterminate, undefined, 'parent should not expose mixed DOM state')
+
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+
+  assert.deepEqual(collectTaskCheckedStates(editor.getJSON()), [true, true, true], 'all checked children should check parent automatically')
+  assert.equal(checkboxes[0].indeterminate, false, 'full checked parent should not use indeterminate state')
+  assert.equal(checkboxes[0].closest('li').dataset.indeterminate, undefined, 'full checked parent should not expose mixed DOM state')
+  editor.destroy()
+})
+
+test('visual-indented task children update their Shift+Tab-created parent when all are checked', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: false, dvnIndentLevel: 0 },
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: 'top' }] },
+          {
+            type: 'taskList',
+            content: [
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 0 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'parent' }] }] },
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 1 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child one' }] }] },
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 1 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'child two' }] }] },
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 0 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'sibling' }] }] },
+            ],
+          },
+        ],
+      }],
+    }],
+  })
+
+  let checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [false, false, true, false, false],
+    'checking only one visual-indented child should keep the visual parent unchecked',
+  )
+
+  checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[3].checked = true
+  checkboxes[3].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [false, true, true, true, false],
+    'checking every visual-indented child should check the Shift+Tab-created visual parent only',
+  )
+  editor.destroy()
+})
+
+test('一级待办只有三级视觉子项时，子项全部勾选也要回写父项', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 0 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: '萨达' }] }] },
+        { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 2 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: '打' }] }] },
+        { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 2 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: '大萨达' }] }] },
+      ],
+    }],
+  })
+
+  let checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[1].checked = true
+  checkboxes[1].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [false, true, false],
+    '只勾选一个三级子项时父项应保持未完成',
+  )
+
+  checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [true, true, true],
+    '一级父项没有二级节点时，应把最近的三级节点视为直接子项并完成父项',
+  )
+  editor.destroy()
+})
+
+test('一级待办的嵌套三级视觉子项全部勾选后也回写父项', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: false, dvnIndentLevel: 0 },
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: '萨达' }] },
+          {
+            type: 'taskList',
+            content: [
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 1 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: '打' }] }] },
+              { type: 'taskItem', attrs: { checked: false, dvnIndentLevel: 1 }, content: [{ type: 'paragraph', content: [{ type: 'text', text: '大萨达' }] }] },
+            ],
+          },
+        ],
+      }],
+    }],
+  })
+
+  let checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[1].checked = true
+  checkboxes[1].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(collectTaskCheckedStates(editor.getJSON()), [false, true, false])
+
+  checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [true, true, true],
+    '嵌套三级子项全部完成后，一级父项也必须完成',
+  )
+  editor.destroy()
+})
+
+test('user-created third-level task siblings cascade to the second-level parent after Shift+Tab', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [
+        { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'top' }] }] },
+        { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'parent' }] }] },
+      ],
+    }],
+  })
+  markEditorFocused(editor)
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'parent')).run()
+  pressTab(editor, window)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'parent')).run()
+  pressTab(editor, window)
+  assert.equal(listItemDepthForText(editor.getJSON(), 'parent'), 3)
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'parent')).run()
+  pressEnter(editor, window)
+  editor.commands.insertContent('child one')
+  assert.equal(listItemDepthForText(editor.getJSON(), 'child one'), 3)
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'parent')).run()
+  pressTab(editor, window, true)
+  assert.equal(listItemDepthForText(editor.getJSON(), 'parent'), 2, 'Shift+Tab should make the previous third-level task a second-level visual parent')
+  assert.equal(listItemDepthForText(editor.getJSON(), 'child one'), 3, 'existing following task should remain third-level under the new visual parent')
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'child one')).run()
+  pressEnter(editor, window)
+  editor.commands.insertContent('child two')
+  assert.equal(listItemDepthForText(editor.getJSON(), 'child two'), 3)
+
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'child two')).run()
+  pressEnter(editor, window)
+  editor.commands.insertContent('sibling')
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'sibling')).run()
+  pressTab(editor, window, true)
+  assert.equal(listItemDepthForText(editor.getJSON(), 'sibling'), 2, 'following second-level sibling keeps the top task unchecked')
+
+  let checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+  checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[3].checked = true
+  checkboxes[3].dispatchEvent(new window.Event('change', { bubbles: true }))
+
+  assert.deepEqual(
+    collectTaskCheckedStates(editor.getJSON()),
+    [false, true, true, true, false],
+    'the second-level parent should be checked after all of its generated third-level children are checked',
+  )
+  editor.destroy()
+})
+
+test('task completion bubbles upward only after every child level is complete', () => {
+  const { editor, window } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'taskList',
+      content: [{
+        type: 'taskItem',
+        attrs: { checked: false },
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: 'parent' }] },
+          {
+            type: 'taskList',
+            content: [{
+              type: 'taskItem',
+              attrs: { checked: false },
+              content: [
+                { type: 'paragraph', content: [{ type: 'text', text: 'child' }] },
+                {
+                  type: 'taskList',
+                  content: [
+                    { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'grandchild one' }] }] },
+                    { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'grandchild two' }] }] },
+                  ],
+                },
+              ],
+            }],
+          },
+        ],
+      }],
+    }],
+  })
+
+  const checkboxes = editor.view.dom.querySelectorAll('input[type="checkbox"]')
+  checkboxes[2].checked = true
+  checkboxes[2].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(collectTaskCheckedStates(editor.getJSON()), [false, false, true, false], 'one completed grandchild should not complete child or parent')
+
+  checkboxes[3].checked = true
+  checkboxes[3].dispatchEvent(new window.Event('change', { bubbles: true }))
+  assert.deepEqual(collectTaskCheckedStates(editor.getJSON()), [true, true, true, true], 'parent should complete only after the whole child subtree is complete')
+  editor.destroy()
+})
+
+test('indent button follows real sink capability inside lists', () => {
+  const { editor, host } = createEditorWithToolbar()
+  insertText(editor, 'plain')
+  selectText(editor)
+
+  const indent = host.querySelector('button[data-format="indentList"]')
+  const outdent = host.querySelector('button[data-format="outdentList"]')
+  assert.equal(indent.disabled, true, 'indent disabled in paragraph')
+  assert.equal(outdent.disabled, true, 'outdent disabled in paragraph')
+
+  host.querySelector('button[data-format="bulletList"]').click()
+  assert.equal(indent.disabled, true, 'single list item has no previous sibling to indent under')
+  assert.equal(outdent.disabled, true, 'outdent disabled at first list level because Shift+Tab no longer exits lists')
+  editor.destroy()
+})
+
+test('list toggle buttons are not active before editor receives focus', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'x' }] }] }],
+    }],
+  })
+
+  assert.equal(host.querySelector('button[data-format="bulletList"]').getAttribute('aria-pressed'), 'false')
+  assert.equal(host.querySelector('button[data-format="orderedList"]').getAttribute('aria-pressed'), 'false')
+  assert.equal(host.querySelector('button[data-format="taskList"]').getAttribute('aria-pressed'), 'false')
+  editor.destroy()
+})
+
+test('list toggle buttons show active state for a collapsed cursor inside a list', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'orderedList',
+      content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'x' }] }] }],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextEndPosition(editor, 'x')).run()
+
+  assert.equal(host.querySelector('button[data-format="bulletList"]').getAttribute('aria-pressed'), 'false')
+  assert.equal(host.querySelector('button[data-format="orderedList"]').getAttribute('aria-pressed'), 'true')
+  assert.equal(host.querySelector('button[data-format="taskList"]').getAttribute('aria-pressed'), 'false')
+  editor.destroy()
+})
+
+test('clicking a list toggle immediately shows its active state', () => {
+  for (const format of ['bulletList', 'orderedList', 'taskList']) {
+    const { editor, host } = createEditorWithToolbar()
+    markEditorFocused(editor)
+
+    host.querySelector(`button[data-format="${format}"]`).click()
+
+    assert.equal(host.querySelector(`button[data-format="${format}"]`).getAttribute('aria-pressed'), 'true')
+    for (const other of ['bulletList', 'orderedList', 'taskList'].filter((item) => item !== format)) {
+      assert.equal(host.querySelector(`button[data-format="${other}"]`).getAttribute('aria-pressed'), 'false')
+    }
+    editor.destroy()
+  }
+})
+
+test('clicking a list toggle twice on an empty paragraph applies then cancels without stale state', () => {
+  for (const format of ['bulletList', 'orderedList', 'taskList']) {
+    const { editor, host } = createEditorWithToolbar()
+    markEditorFocused(editor)
+    const button = host.querySelector(`button[data-format="${format}"]`)
+
+    button.click()
+    assert.equal(button.getAttribute('aria-pressed'), 'true')
+    assert.equal(editor.state.doc.firstChild.type.name, format)
+
+    button.click()
+    assert.equal(button.getAttribute('aria-pressed'), 'false')
+    assert.equal(editor.state.doc.firstChild.type.name, 'paragraph')
+    editor.destroy()
+  }
+})
+
+test('list toggle buttons reflect active state as selection moves', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'bulletList',
+      content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'x' }] }] }],
+    }],
+  })
+  markEditorFocused(editor)
+  editor.chain().focus().setTextSelection(findTextRange(editor, 'x')).run()
+
+  assert.equal(host.querySelector('button[data-format="bulletList"]').getAttribute('aria-pressed'), 'true')
+  assert.equal(host.querySelector('button[data-format="orderedList"]').getAttribute('aria-pressed'), 'false')
+  assert.equal(host.querySelector('button[data-format="taskList"]').getAttribute('aria-pressed'), 'false')
+  editor.destroy()
+})
+
+test('list toggle buttons require the whole selection to share one list type', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      { type: 'bulletList', content: [listItemForListType('bulletList', 'bullet')] },
+      { type: 'orderedList', content: [listItemForListType('orderedList', 'ordered')] },
+      { type: 'paragraph', content: [{ type: 'text', text: 'plain' }] },
+    ],
+  })
+
+  const pressed = () => ['bulletList', 'orderedList', 'taskList']
+    .filter((format) => host.querySelector(`button[data-format="${format}"]`).getAttribute('aria-pressed') === 'true')
+
+  selectTextSpan(editor, 'bullet', 'ordered')
+  assert.deepEqual(pressed(), [], 'different list types must not activate any one list button')
+
+  selectTextSpan(editor, 'ordered', 'plain')
+  assert.deepEqual(pressed(), [], 'list plus plain text must not be reported as a list selection')
+
+  selectTextSpan(editor, 'bullet', 'bullet')
+  assert.deepEqual(pressed(), ['bulletList'])
+
+  selectTextSpan(editor, 'ordered', 'ordered')
+  assert.deepEqual(pressed(), ['orderedList'])
+  editor.destroy()
+})
+
+test('list toggle buttons report mixed nesting types as inactive', () => {
+  const { editor, host } = createEditorWithToolbar()
+  editor.commands.setContent({
+    type: 'doc',
+    content: [{
+      type: 'bulletList',
+      content: [{
+        type: 'listItem',
+        content: [
+          { type: 'paragraph', content: [{ type: 'text', text: 'parent' }] },
+          {
+            type: 'orderedList',
+            content: [listItemForListType('orderedList', 'child')],
+          },
+        ],
+      }],
+    }],
+  })
+
+  selectTextSpan(editor, 'parent', 'child')
+  for (const format of ['bulletList', 'orderedList', 'taskList']) {
+    assert.equal(host.querySelector(`button[data-format="${format}"]`).getAttribute('aria-pressed'), 'false')
+  }
+  editor.destroy()
+})
+
+test('save and reload preserves list type, nesting, start and checked', () => {
+  const { editor } = createEditorWithToolbar()
+  const doc = {
+    type: 'doc',
+    content: [
+      {
+        type: 'bulletList',
+        content: [
+          {
+            type: 'listItem',
+            content: [
+              { type: 'paragraph', content: [{ type: 'text', text: 'top' }] },
+              {
+                type: 'orderedList',
+                attrs: { start: 3 },
+                content: [{ type: 'listItem', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'nested' }] }] }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'taskList',
+        content: [
+          { type: 'taskItem', attrs: { checked: true }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'done' }] }] },
+          { type: 'taskItem', attrs: { checked: false }, content: [{ type: 'paragraph', content: [{ type: 'text', text: 'todo' }] }] },
+        ],
+      },
+    ],
+  }
+  editor.commands.setContent(doc)
+  const json1 = editor.getJSON()
+
+  const result = validateEnvelope(createEnvelope(json1))
+  assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2))
+
+  const { editor: editor2 } = createEditorWithToolbar()
+  editor2.commands.setContent(json1)
+  const json2 = editor2.getJSON()
+  assert.deepEqual(json2, json1, 'reload should preserve type/level/start/checked')
+  editor.destroy()
+  editor2.destroy()
+})
+test('font size wraps underline and strike marks so text decoration follows large text in paragraphs and lists', () => {
+  const { editor } = createEditorWithToolbar()
+  const largeStrikeText = (text) => ({
+    type: 'text',
+    text,
+    marks: [
+      { type: 'fontSize', attrs: { fontSize: '36px' } },
+      { type: 'strike' },
+    ],
+  })
+  const largeUnderlineText = (text) => ({
+    type: 'text',
+    text,
+    marks: [
+      { type: 'fontSize', attrs: { fontSize: '36px' } },
+      { type: 'underline' },
+    ],
+  })
+  const listItem = (text) => ({
+    type: 'listItem',
+    content: [{ type: 'paragraph', content: [largeStrikeText(text)] }],
+  })
+
+  editor.commands.setContent({
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [
+          largeStrikeText('paragraphStrike'),
+          { type: 'text', text: ' ' },
+          largeUnderlineText('paragraphUnderline'),
+        ],
+      },
+      {
+        type: 'bulletList',
+        content: [listItem('bulletStrike')],
+      },
+      {
+        type: 'orderedList',
+        attrs: { start: 1, type: null },
+        content: [listItem('orderedStrike')],
+      },
+      {
+        type: 'taskList',
+        content: [{
+          type: 'taskItem',
+          attrs: { checked: false },
+          content: [{ type: 'paragraph', content: [largeStrikeText('taskStrike')] }],
+        }],
+      },
+    ],
+  })
+
+  const html = editor.getHTML()
+  assert.match(html, /<span style="font-size: 36px;"><s>paragraphStrike<\/s><\/span>/)
+  assert.match(html, /<span style="font-size: 36px;"><u>paragraphUnderline<\/u><\/span>/)
+  assert.match(html, /<ul><li><p><span style="font-size: 36px;"><s>bulletStrike<\/s><\/span><\/p><\/li><\/ul>/)
+  assert.match(html, /<ol><li><p><span style="font-size: 36px;"><s>orderedStrike<\/s><\/span><\/p><\/li><\/ol>/)
+  assert.match(html, /<ul data-type="taskList"><li data-checked="false" data-type="taskItem"><label><input type="checkbox"><span><\/span><\/label><div><p><span style="font-size: 36px;"><s>taskStrike<\/s><\/span><\/p><\/div><\/li><\/ul>/)
+  editor.destroy()
+})

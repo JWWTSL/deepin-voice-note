@@ -29,8 +29,12 @@ FocusScope {
     visible: false
 
     onVisibleChanged: {
-        curves.startRecording();
-        pauseBtn.forceActiveFocus();
+        if (visible) {
+            curves.startRecording();
+            pauseBtn.forceActiveFocus();
+        } else {
+            curves.stopRecording();
+        }
     }
 
     Rectangle {
@@ -72,13 +76,16 @@ FocusScope {
         spacing: 10
 
         VNoteComponents.VNoteToolButton {
+            Accessible.name: "PauseButton"
+            Accessible.ignored: false
+            Accessible.role: Accessible.Button
             id: pauseBtn
 
             icon.height: iconSize
             icon.name: isRecording ? "recording_pause" : "recording_start"
             icon.width: iconSize
-            height: btnSize
-            width: btnSize
+            implicitHeight: btnSize
+            implicitWidth: btnSize
             KeyNavigation.tab: stopBtn
             KeyNavigation.backtab: stopBtn
 
@@ -106,13 +113,16 @@ FocusScope {
         }
 
         VNoteComponents.VNoteToolButton {
+            Accessible.name: "StopButton"
+            Accessible.ignored: false
+            Accessible.role: Accessible.Button
             id: stopBtn
 
             icon.height: iconSize
             icon.name: "recording_stop"
             icon.width: iconSize
-            height: btnSize
-            width: btnSize
+            implicitHeight: btnSize
+            implicitWidth: btnSize
             KeyNavigation.tab: pauseBtn
             KeyNavigation.backtab: pauseBtn
 
@@ -144,7 +154,7 @@ FocusScope {
     Connections {
         target: VoiceRecoderHandler
 
-        onUpdateWave: {
+        onUpdateWave: function(max) {
             curves.updateVolume(max);
         }
     }
