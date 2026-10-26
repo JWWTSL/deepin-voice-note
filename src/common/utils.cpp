@@ -1,4 +1,4 @@
-// Copyright (C) 2019 ~ 2020 Uniontech Software Technology Co.,Ltd.
+// Copyright (C) 2019 ~ 2026 Uniontech Software Technology Co.,Ltd.
 // SPDX-FileCopyrightText: 2023 UnionTech Software Technology Co., Ltd.
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
@@ -267,7 +267,8 @@ void Utils::documentToBlock(VNoteBlock *block, const QTextDocument *doc)
         block->blockText = "";
     }
 
-    if (doc != nullptr) {
+    // block 为空时后续无法写入 blockText，直接跳过，避免空指针崩溃
+    if (block != nullptr && doc != nullptr) {
         qInfo() << "Doc is not nullptr";
         QTextBlock currentBlock = doc->begin();
         QTextBlock::iterator it;
@@ -434,10 +435,27 @@ bool Utils::isWayland()
 
 QString Utils::createRichText(const QString &title, const QString &key)
 {
-    QString highLightText = "<span style=\"color: #0058de;\">" + key + "</span>";
-    QString editTitle(title);
-    QString newText = editTitle.replace(key, highLightText);
-    return newText;
+    if (key.isEmpty()) {
+        return title.toHtmlEscaped();
+    }
+
+    const DPalette palette = DGuiApplicationHelper::instance()->applicationPalette();
+    const QString highlightColor = palette.color(DPalette::Active, DPalette::Highlight).name();
+    const QString highlightOpen = QStringLiteral("<span style=\"color: %1;\">").arg(highlightColor);
+
+    QString html;
+    int pos = 0;
+    int match = title.indexOf(key, pos, Qt::CaseInsensitive);
+    while (match >= 0) {
+        html += title.mid(pos, match - pos).toHtmlEscaped();
+        html += highlightOpen
+            + title.mid(match, key.size()).toHtmlEscaped()
+            + QStringLiteral("</span>");
+        pos = match + key.size();
+        match = title.indexOf(key, pos, Qt::CaseInsensitive);
+    }
+    html += title.mid(pos).toHtmlEscaped();
+    return html;
 }
 
 QString Utils::stripHtmlTags(const QString &htmlText)

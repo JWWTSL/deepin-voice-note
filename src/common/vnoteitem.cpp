@@ -5,6 +5,9 @@
 
 #include "vnoteitem.h"
 #include "common/utils.h"
+#include "search/searchdocumentextractor.h"
+#include "search/searchtextnormalizer.h"
+#include "tiptapdocumentexporter.h"
 
 #include <DLog>
 #include <DGuiApplicationHelper>
@@ -101,35 +104,21 @@ void VNoteItem::delNoteData()
 bool VNoteItem::search(const QString &keyword)
 {
     qDebug() << "Searching for keyword:" << keyword << "in note ID:" << noteId;
-    bool fContainKeyword = false;
+    const QString normalizedKeyword = SearchTextNormalizer::normalize(keyword);
+    if (normalizedKeyword.isEmpty()) {
+        return false;
+    }
 
-    //If title contain keyword,don't
-    //need search data anymore.
-    if (noteTitle.contains(keyword, Qt::CaseInsensitive)) {
-        qDebug() << "Keyword found in note title";
-        fContainKeyword = true;
-    } else {
-        if (!htmlCode.isEmpty()) { //富文本内容查找
-            qDebug() << "Searching in rich text content";
-            QTextDocument doc;
-            doc.setHtml(htmlCode);
-            fContainKeyword = doc.toPlainText().contains(keyword, Qt::CaseInsensitive);
-            qDebug() << "Rich text search result:" << fContainKeyword;
-        } else {
-            qDebug() << "Searching in data blocks";
-            //Need search data blocks in note
-            for (auto it : datas.datas) {
-                if (it->blockText.contains(keyword, Qt::CaseInsensitive)) {
-                    qDebug() << "Keyword found in block type:" << it->getType();
-                    fContainKeyword = true;
-                    break;
-                }
-            }
+    const SearchDocument document = SearchDocumentExtractor::extract(this);
+    for (const SearchSegment &segment : document.segments) {
+        if (SearchTextNormalizer::normalize(segment.text).contains(normalizedKeyword)) {
+            qInfo() << "Search finished, result: true";
+            return true;
         }
     }
 
-    qInfo() << "Search finished, result:" << fContainKeyword;
-    return fContainKeyword;
+    qInfo() << "Search finished, result: false";
+    return false;
 }
 
 //bool VNoteItem::makeMetaData()
@@ -272,6 +261,13 @@ void VNoteItem::delBlock(VNoteBlock *block)
 bool VNoteItem::haveVoice() const
 {
     qDebug() << "Checking for voice content in note ID:" << noteId;
+    const QString meta = metaDataConstRef().toString();
+    if (TiptapDocumentExporter::isTiptapEnvelope(meta)) {
+        const bool hasVoice = TiptapDocumentExporter::hasVoice(meta);
+        qInfo() << "Tiptap voice content check finished, result:" << hasVoice;
+        return hasVoice;
+    }
+
     if (htmlCode.isEmpty()) {
         bool hasVoice = datas.voiceBlocks.size() > 0;
         qInfo() << "Voice content check finished, result:" << hasVoice;
@@ -292,6 +288,13 @@ bool VNoteItem::haveVoice() const
 bool VNoteItem::haveText() const
 {
     qDebug() << "Checking for text content in note ID:" << noteId;
+    const QString meta = metaDataConstRef().toString();
+    if (TiptapDocumentExporter::isTiptapEnvelope(meta)) {
+        const bool hasText = TiptapDocumentExporter::hasText(meta);
+        qDebug() << "Tiptap format - Has text/exportable content:" << hasText;
+        return hasText;
+    }
+
     if (!htmlCode.isEmpty()) { //富文本文本内容判断
         bool hasText = (htmlCode != "<p><br></p>");
         qDebug() << "Rich text format - Has text:" << hasText;
@@ -316,6 +319,13 @@ bool VNoteItem::haveText() const
 qint32 VNoteItem::voiceCount() const
 {
     qDebug() << "Getting voice count for note ID:" << noteId;
+    const QString meta = metaDataConstRef().toString();
+    if (TiptapDocumentExporter::isTiptapEnvelope(meta)) {
+        const qint32 count = TiptapDocumentExporter::voiceJsons(meta).size();
+        qInfo() << "Tiptap voice count retrieval finished, count:" << count;
+        return count;
+    }
+
     //老版本
     if (htmlCode.isEmpty()) {
         qint32 count = datas.voiceBlocks.size();
@@ -336,6 +346,13 @@ qint32 VNoteItem::voiceCount() const
 QStringList VNoteItem::getVoiceJsons() const
 {
     qDebug() << "Getting voice JSONs for note ID:" << noteId;
+    const QString meta = metaDataConstRef().toString();
+    if (TiptapDocumentExporter::isTiptapEnvelope(meta)) {
+        const QStringList list = TiptapDocumentExporter::voiceJsons(meta);
+        qDebug() << "Found" << list.size() << "Tiptap voice JSONs";
+        return list;
+    }
+
     QRegularExpression rx("<div.+jsonkey.+>");
     QRegularExpression rxJson("\\{.*\\}");
     QStringList list;
@@ -360,6 +377,11 @@ QStringList VNoteItem::getVoiceJsons() const
 QString VNoteItem::getFullHtml() const
 {
     qDebug() << "Generating full HTML for note ID:" << noteId;
+    const QString meta = metaDataConstRef().toString();
+    if (TiptapDocumentExporter::isTiptapEnvelope(meta)) {
+        return TiptapDocumentExporter::toHtml(meta);
+    }
+
     //html字符串
     QString html = htmlHead;
 
@@ -450,7 +472,7 @@ VNoteBlock::~VNoteBlock()
  * @brief VNoteBlock::getType
  * @return 数据类型
  */
-qint32 VNoteBlock::getType()
+qint32 VNoteBlock::getType() const
 {
     // qInfo() << "Getting block type:" << blockType;
     return blockType;

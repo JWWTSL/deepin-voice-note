@@ -10,6 +10,8 @@
 #include "vnoteforlder.h"
 #include "vnoteitemoper.h"
 #include "vnoteitem.h"
+#include <QCoreApplication>
+#include <QRegularExpression>
 #include <stub.h>
 
 static bool stub_true()
@@ -54,6 +56,15 @@ TEST_F(UT_VNoteItemOper, UT_VNoteItemOper_loadAllVNotes_001)
     VNOTE_ALL_NOTES_MAP *notes = m_vnoteitemoper->loadAllVNotes();
     EXPECT_FALSE(nullptr == notes);
     delete notes;
+}
+
+TEST_F(UT_VNoteItemOper, UT_VNoteItemOper_getDefaultNoteName_usesTranslatedPrefix)
+{
+    ASSERT_NE(nullptr, m_note);
+    const QString prefix = QCoreApplication::translate("DefaultName", "Text");
+    const QString title = m_vnoteitemoper->getDefaultNoteName(m_note->folderId);
+    const QRegularExpression generated(QStringLiteral("^%1\\d+$").arg(QRegularExpression::escape(prefix)));
+    EXPECT_TRUE(generated.match(title).hasMatch()) << title.toStdString();
 }
 
 TEST_F(UT_VNoteItemOper, UT_VNoteItemOper_modifyNoteTitle_001)
@@ -194,4 +205,46 @@ TEST_F(UT_VNoteItemOper, UT_VNoteItemOper_updateFolderId_002)
 TEST_F(UT_VNoteItemOper, UT_VNoteItemOper_getNote_001)
 {
     EXPECT_TRUE(m_vnoteitemoper->getNote(m_note->folderId, m_note->noteId));
+}
+
+// ============================================================================
+// PMS 补强回归用例（qt-autotest-generator Mode 7 → Mode 2 补强）
+// ============================================================================
+
+// BUG 335623: updateNoteTiptapEnvelope 健壮性（befc63df）：空笔记安全返回
+// false；DB 更新失败时元数据与修改时间必须回滚；成功时元数据落位。
+// PMS: https://pms.uniontech.com/bug-view-335623.html  commit: befc63df
+TEST_F(UT_VNoteItemOper, BUG335623_updateNoteTiptapEnvelopeRobustness)
+{
+    // 1) 空笔记：安全返回 false（修复前可能解引用空指针）
+    {
+        VNoteItemOper oper(nullptr);
+        EXPECT_FALSE(oper.updateNoteTiptapEnvelope(QStringLiteral("{}")));
+    }
+
+    // 2) DB 更新失败：元数据与修改时间回滚
+    {
+        VNoteItem note;
+        note.noteTitle = QStringLiteral("ut-335623");
+        const QVariant oldMeta = note.metaDataConstRef();
+        const QDateTime oldTime = note.modifyTime;
+        VNoteItemOper oper(&note);
+        Stub stub;
+        stub.set(ADDR(VNoteDbManager, updateData), stub_false);
+        EXPECT_FALSE(oper.updateNoteTiptapEnvelope(
+            QStringLiteral("{\"format\":\"tiptap\",\"schemaVersion\":1}")));
+        EXPECT_EQ(oldMeta, note.metaDataConstRef());   // 回滚元数据
+        EXPECT_EQ(oldTime, note.modifyTime);           // 回滚修改时间
+    }
+
+    // 3) DB 更新成功：返回 true，envelope 元数据写入
+    {
+        VNoteItem note;
+        VNoteItemOper oper(&note);
+        Stub stub;
+        stub.set(ADDR(VNoteDbManager, updateData), stub_true);
+        const QString envelope = QStringLiteral("{\"format\":\"tiptap\",\"schemaVersion\":1}");
+        EXPECT_TRUE(oper.updateNoteTiptapEnvelope(envelope));
+        EXPECT_EQ(envelope, note.metaDataConstRef().toString());
+    }
 }

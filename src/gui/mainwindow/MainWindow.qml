@@ -12,85 +12,97 @@ import "../" as VNoteComponents
 import "../dialog"
 import org.deepin.dtk 1.0
 
-ApplicationWindow {
+Item {
     id: rootWindow
+    Accessible.name: "VoiceNoteMainWindow"
+    Accessible.role: Accessible.Pane
 
+    anchors.fill: parent
+
+    property bool active: Window.window ? Window.window.active : false
     property int createFolderBtnHeight: 30
     property bool isRecording: webEngineView.isRecording
     property bool isRecordingAudio: false
+    property bool layoutInitialized: false
     property bool isVoiceToText: false
     property int leftAreaMaxWidth: 300
-    property int leftAreaMinWidth: 125
+    property int leftAreaMinWidth: 100
     property int leftViewWidth: 220
-    property int middleAreaMinWidth: 175
+    property int middleAreaMinWidth: 195
     property int middleViewWidth: 260
     property bool needHideSearch: false
-    property int rightAreaMinWidth: 380
+    property int rightAreaMinWidth: 390
     property int tmpLeftAreaWidth: 220
     property int tmpWebViewWidth: 0
     property int tmprightDragX: 0
     property int windowMiniHeight: 300
-    property int windowMiniWidth: 685
+    property int windowMiniWidth: 690
+
+    function collapsedSearchOffset() {
+        // offect 是 ColumnLayout 内的 leftMargin，需要减去 ColumnLayout 本身的 leftMargin
+        return twoColumnModeBtn.x + twoColumnModeBtn.width + 8 - middleColumnLayout.anchors.leftMargin;
+    }
+
+    function createNoteFromWorkspace() {
+        if (initRect.visible) {
+            console.warn("Cannot create note on initial page");
+            return;
+        }
+        if (isRecordingAudio || folderListView.isPlay || webEngineView.titleBar.isPlaying) {
+            console.log("Cannot create note while recording or playing audio");
+            return;
+        }
+        if (isVoiceToText) {
+            console.log("Cannot create note while voice to text is in progress");
+            return;
+        }
+        VNoteMainManager.createNote();
+    }
 
     function toggleTwoColumnMode() {
-        if (leftBgArea.visible === false) {
+        if (hideLeftArea.running) {
+            hideLeftArea.stop();
             leftBgArea.visible = true;
             leftDragHandle.visible = true;
+            showLeftArea.start();
+        } else if (showLeftArea.running) {
+            showLeftArea.stop();
+            hideLeftArea.start();
+        } else if (leftBgArea.visible === false) {
             showLeftArea.start();
         } else {
             hideLeftArea.start();
         }
     }
 
-    DWindow.alphaBufferSize: 8
-    DWindow.enabled: true
-    color: "transparent"
-    flags: Qt.Window | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    height: 681
-    minimumHeight: windowMiniHeight
-    minimumWidth: windowMiniWidth
-    visible: true
-    width: 1096
+    function stopAndClose() {
+        webEngineView.stopAndClose();
+    }
 
     Component.onCompleted: {
-        x = Screen.width / 2 - width / 2;
-        y = Screen.height / 2 - height / 2;
-        checkAndCreateDataPath();
+        Qt.callLater(function() {
+            layoutInitialized = true;
+        });
     }
-    onClosing: function(close) {
-        close.accepted = false;
-        if (isRecording) {
-            close.accepted = false;
-            messageDialogLoader.showDialog(VNoteMessageDialogHandler.AbortRecord, ret => {
-                if (ret) {
-                    webEngineView.stopAndClose();
-                    VNoteMainManager.forceExit(true);
-                }
-            });
-        } else {
-            if (VNoteMainManager.isVoiceToText()) {
-                messageDialogLoader.showDialog(VNoteMessageDialogHandler.AborteAsr, ret => {
-                    if (ret) {
-                        VNoteMainManager.forceExit();
-                    }
-                });
-            } else
-                VNoteMainManager.forceExit();
-        }
-    }
+
     onWidthChanged: {
+        if (!layoutInitialized)
+            return;
         if (rightBgArea.width < rightAreaMinWidth) {
             var reduce = rightAreaMinWidth - rightBgArea.width;
-            if (middleBgArea.width > middleAreaMinWidth) {
-                middleBgArea.Layout.preferredWidth = middleBgArea.width - reduce;
-            } else {
-                leftBgArea.Layout.preferredWidth = leftBgArea.width - reduce;
+            if (middleBgArea.width - reduce >= middleAreaMinWidth - rightDragHandle.width) {
+                middleBgArea.width -= reduce;
+            } else if (leftBgArea.visible) {
+                leftBgArea.width -= reduce;
+                tmpLeftAreaWidth = leftBgArea.width;
             }
-            rightBgArea.width = rightAreaMinWidth;
         }
     }
 
     Shortcuts {
+        Accessible.name: "MainShortcuts"
+        Accessible.role: Accessible.Pane
+
         id: shortcuts
 
         enabled: rootWindow.active && !itemListView.isDragging && !folderListView.isDragging
@@ -99,15 +111,21 @@ ApplicationWindow {
             var shouldBlock = (isRecordingAudio || webEngineView.titleBar.isPlaying || itemListView.isSearch || itemListView.isSearching || webEngineView.titleBar.isSearching || isVoiceToText);
             return shouldBlock;
         }
-        // 与右上录音按钮同条件：按钮不可用或正在播放时禁用 Ctrl+R
-        blockRecordingKey: isRecordingAudio
-                           || webEngineView.titleBar.isPlaying
-                           || !webEngineView.titleBar.recordBtnEnabled
+        // 与工具栏录音入口同条件：录音不可用或正在播放时禁用 Ctrl+R
+        blockRecordingKey: !webEngineView.recordingAvailable
         initialOnlyCreateFolder: initRect.visible
         isDragging: itemListView.isDragging || folderListView.isDragging
 
         onCopy: {
             webEngineView.copy();
+        }
+        onSelectAll: {
+            // 焦点已被 QML 控件（笔记列表、工具栏等）抢走时，Ctrl+A 到不了 Web 编辑器，
+            // 这里把它交回正文；焦点本来就在 Web 侧（含页内标题输入框）时交给 Web 自己
+            // 处理，避免把标题里的全选抢成全选正文。
+            if (!webEngineView.editorOwnsKeyboardFocus) {
+                webEngineView.selectAll();
+            }
         }
         onCreateFolder: {
             // 录音或播放时不允许创建记事本
@@ -123,22 +141,7 @@ ApplicationWindow {
             VNoteMainManager.vNoteCreateFolder();
         }
         onCreateNote: {
-            // 初始页面可见时，屏蔽 Ctrl+B
-            if (initRect.visible) {
-                console.warn("Cannot create note on initial page");
-                return;
-            }
-            // 录音时不允许创建笔记
-            if (isRecordingAudio || folderListView.isPlay) {
-                console.log("Cannot create note while recording or playing audio");
-                return;
-            }
-            // 语音转文字时不允许创建笔记，避免转文字结果丢失
-            if (isVoiceToText) {
-                console.log("Cannot create note while voice to text is in progress");
-                return;
-            }
-            VNoteMainManager.createNote();
+            createNoteFromWorkspace();
         }
 
         onRenameFolder: {
@@ -163,15 +166,16 @@ ApplicationWindow {
             itemListView.renameCurrentItem();
         }
         onShowShortCutView: {
-            VNoteMainManager.preViewShortcut(Qt.point(rootWindow.x + rootWindow.width / 2, rootWindow.y + rootWindow.height / 2));
+            VNoteMainManager.preViewShortcut(Qt.point((Window.window ? Window.window.x : 0) + rootWindow.width / 2, (Window.window ? Window.window.y : 0) + rootWindow.height / 2));
         }
         onStartRecording: {
             if (initRect.visible) {
                 console.log("No notes available, cannot start recording");
                 return;
             }
-            webEngineView.startRecording();
-            VoiceRecoderHandler.startRecoder();
+            if (webEngineView.startRecording()) {
+                VoiceRecoderHandler.startRecoder();
+            }
         }
         onSaveNote: {
             // 检查是否有笔记可以保存
@@ -248,6 +252,9 @@ ApplicationWindow {
     }
 
     VNoteMessageDialogLoader {
+        Accessible.name: "MainMessageDialog"
+        Accessible.role: Accessible.Dialog
+
         id: messageDialogLoader
 
     }
@@ -255,6 +262,22 @@ ApplicationWindow {
     Loader {
         id: settingDlgLoader
 
+    }
+
+    Connections {
+        target: MigrationViewController
+
+        function onAppEntered() {
+            folderListView.model.clear();
+            itemListView.model.clear();
+            itemListView.selectedNoteItem = [];
+            itemListView.selectSize = 0;
+            itemListView.changeCurrentIndex(-1);
+            label.text = "";
+            initRect.visible = false;
+            webEngineView.webVisible = false;
+            VNoteMainManager.reloadAfterMigration();
+        }
     }
 
     Connections {
@@ -315,6 +338,14 @@ ApplicationWindow {
         }
 
         function handleaddNote(noteData) {
+            var noteFolderId = Number(noteData.folderId);
+            var currentFolder = folderListView.getCurrentFolder();
+            var isCurrentFolder = currentFolder && Number(currentFolder.folderId) === noteFolderId;
+            if (!isCurrentFolder) {
+                adjustFolderCountById(noteFolderId, 1);
+                return;
+            }
+
             var topSize = 0;
             for (var j = 0; j < itemListView.model.count; j++) {
                 var note = itemListView.model.get(j);
@@ -345,6 +376,39 @@ ApplicationWindow {
             });
         }
 
+
+        function updateFolderCountsById(folderIdToCount) {
+            for (var i = 0; i < folderListView.model.count; i++) {
+                var folder = folderListView.model.get(i);
+                var fidStr = folder.folderId.toString();
+                var newCount = folderIdToCount[fidStr];
+                if (newCount !== undefined) {
+                    folder.count = Number(newCount).toString();
+                }
+            }
+        }
+
+        function folderCountById(folderId) {
+            for (var i = 0; i < folderListView.model.count; i++) {
+                var folder = folderListView.model.get(i);
+                if (Number(folder.folderId) === Number(folderId))
+                    return Number(folder.count);
+            }
+            return 0;
+        }
+
+
+        function adjustFolderCountById(folderId, delta) {
+            for (var i = 0; i < folderListView.model.count; i++) {
+                var folder = folderListView.model.get(i);
+                if (Number(folder.folderId) === Number(folderId)) {
+                    folder.count = (Number(folder.count) + Number(delta)).toString();
+                    return true;
+                }
+            }
+            return false;
+        }
+
         target: VNoteMainManager
 
         onAddFolderFinished: {
@@ -370,24 +434,35 @@ ApplicationWindow {
             }
         }
         onFinishedFolderLoad: {
-            if (foldersData.length > 0) {
-                initRect.visible = false;
+            var hasFolders = foldersData.length > 0;
+            initRect.visible = !hasFolders;
+            initiaInterface.loadFinished(hasFolders);
+
+            if (hasFolders) {
+                handleFinishedFolderLoad(foldersData);
+                itemListView.selectedNoteItem = [0];
+                itemListView.selectSize = 1;
+                return;
             }
-            initiaInterface.loadFinished(foldersData.length > 0);
-            handleFinishedFolderLoad(foldersData);
-            itemListView.selectedNoteItem = [0];
-            itemListView.selectSize = 1;
+
+            folderListView.model.clear();
+            folderListView.currentFolderIndex = -1;
+            itemListView.model.clear();
+            itemListView.selectedNoteItem = [];
+            itemListView.selectSize = 0;
+            itemListView.changeCurrentIndex(-1);
+            label.text = "";
+            webEngineView.webVisible = false;
         }
-        onMoveFinished: function(index, srcFolderIndex, dstFolderIndex) {
-            folderListView.model.get(srcFolderIndex).count = (Number(folderListView.model.get(srcFolderIndex).count) - index.length).toString();
-            folderListView.model.get(dstFolderIndex).count = (Number(folderListView.model.get(dstFolderIndex).count) + index.length).toString();
+        onMoveFinishedByFolderId: function(noteIds, srcFolderId, dstFolderId, folderIdToCount) {
+            updateFolderCountsById(folderIdToCount);
             var sortedArray = sortDescending(itemListView.selectedNoteItem);
             var minIndex = sortedArray[sortedArray.length - 1];
             for (var i = 0; i < sortedArray.length; i++) {
                 itemListView.model.remove(sortedArray[i]);
             }
             itemListView.selectedNoteItem = [];
-            if (Number(folderListView.model.get(srcFolderIndex).count) === 0) {
+            if (folderCountById(srcFolderId) === 0) {
                 webEngineView.webVisible = false;
             } else {
                 webEngineView.webVisible = true;
@@ -412,14 +487,12 @@ ApplicationWindow {
             VNoteMainManager.vNoteChanged(modelItem.noteId);
         }
         onNoSearchResult: {
-            label.visible = false;
             webEngineView.webVisible = false;
             webEngineView.noSearchResult = true;
             webEngineView.titleBar.isSearching = true;
             itemListView.isSearching = true;
         }
         onSearchFinished: {
-            label.visible = false;
             webEngineView.webVisible = true;
             webEngineView.noSearchResult = false;
             webEngineView.titleBar.isSearching = true;
@@ -432,6 +505,13 @@ ApplicationWindow {
         }
         onUpdateNotes: {
             handleUpdateNoteList(notesData);
+            if (notesData.length === 0 || selectIndex < 0) {
+                itemListView.selectedNoteItem = [];
+                itemListView.selectSize = 0;
+                itemListView.changeCurrentIndex(-1);
+                webEngineView.webVisible = false;
+                return;
+            }
             itemListView.selectedNoteItem = [selectIndex];
             itemListView.selectSize = 1;
             itemListView.changeCurrentIndex(selectIndex);
@@ -473,6 +553,10 @@ ApplicationWindow {
     }
 
     VNoteComponents.VNoteToolButton {
+        Accessible.name: "TwoColumnModeButton"
+        Accessible.ignored: false
+        Accessible.role: Accessible.Button
+
         id: twoColumnModeBtn
 
         anchors {
@@ -496,23 +580,26 @@ ApplicationWindow {
 
     // 全窗级毛玻璃：左侧文件夹栏 + 笔记列表区域透明可见，列表项保持实色卡片
     VNoteComponents.SidebarBlurBackground {
+        Accessible.name: "SidebarBlurBackground"
+        Accessible.role: Accessible.Pane
+
         anchors.fill: parent
-        windowControl: rootWindow
+        windowControl: Window.window
         z: 0
     }
 
-    RowLayout {
+    Item {
         id: rowLayout
 
         z: 1
         anchors.fill: parent
-        spacing: 0
 
         Rectangle {
             id: leftBgArea
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: leftViewWidth - leftDragHandle.width
+            height: parent.height
+            width: leftViewWidth - 5
+            clip: true
             color: "transparent"
 
             ColumnLayout {
@@ -525,6 +612,9 @@ ApplicationWindow {
                 anchors.topMargin: 50
 
                 FolderListView {
+                    Accessible.name: "FolderListView"
+                    Accessible.role: Accessible.List
+
                     id: folderListView
 
                     Layout.fillHeight: true
@@ -532,7 +622,7 @@ ApplicationWindow {
                     enabled: !rootWindow.isVoiceToText && !itemListView.isSearching && !webEngineView.titleBar.isSearching
                     opacity: enabled ? 1.0 : 0.4
                     scrollBarParent: scrollBarOverlay
-                    scrollBarRightOffset: 10
+                    scrollBarRightAnchor: leftDragHandle.x + leftDragHandle.width - 3
                     webVisible: initRect.visible
                     isRecordingAudio: rootWindow.isRecordingAudio  // 传递录音状态
                     isVoiceToText: rootWindow.isVoiceToText  // 传递语音转文字状态
@@ -543,12 +633,21 @@ ApplicationWindow {
                     onFolderEmpty: {
                         initRect.visible = true;
                         initiaInterface.loadFinished(false);
+                        label.text = "";
+                        itemListView.model.clear();
+                        itemListView.selectedNoteItem = [];
+                        itemListView.selectSize = 0;
+                        itemListView.changeCurrentIndex(-1);
+                        webEngineView.webVisible = false;
                     }
                     onItemChanged: {
                         label.text = name;
                         itemListView.selectedNoteItem = [0];
                         itemListView.selectSize = 1;
-                        VNoteMainManager.vNoteFloderChanged(index);
+                        if (index >= 0 && index < folderListView.model.count) {
+                            var folderId = folderListView.model.get(index).folderId;
+                            VNoteMainManager.vNoteFloderChangedById(folderId);
+                        }
                     }
                     onUpdateFolderName: {
                         label.text = name;
@@ -572,6 +671,9 @@ ApplicationWindow {
                 }
 
                 VNoteComponents.VNoteButton {
+                    Accessible.name: "CreateFolderButton"
+                    Accessible.role: Accessible.Button
+
                     id: createFolderButton
 
                     Layout.fillWidth: true
@@ -629,8 +731,9 @@ ApplicationWindow {
         Rectangle {
             id: leftDragHandle
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: 5
+            x: leftBgArea.width
+            height: parent.height
+            width: 5
             color: "transparent"
 
             Rectangle {
@@ -641,30 +744,33 @@ ApplicationWindow {
             }
 
             MouseArea {
+                property real pressGlobalX: 0
+
                 anchors.fill: parent
                 cursorShape: Qt.SizeHorCursor
-                drag.axis: Drag.XAxis
-                drag.maximumX: rootWindow.width > (leftAreaMaxWidth + middleAreaMinWidth + rightAreaMinWidth - leftDragHandle.width) ? leftAreaMaxWidth : rootWindow.width - (middleAreaMinWidth + rightAreaMinWidth)
-                drag.minimumX: leftAreaMinWidth
-                drag.target: leftDragHandle
 
-                onPositionChanged: {
-                    if (drag.active) {
-                        var newWidth = leftDragHandle.x;
-                        if (newWidth >= leftBgArea.width) {
-                            var shrinkWidth = newWidth - leftBgArea.width;
-                            if ((middleBgArea.width + rightDragHandle.width) > middleAreaMinWidth) {
-                                middleBgArea.Layout.preferredWidth = middleBgArea.width - shrinkWidth;
-                            } else {
-                                rightBgArea.Layout.preferredWidth = rightBgArea.width - shrinkWidth;
-                            }
-                        } else {
-                            var middleShrinkWidth = leftBgArea.width - newWidth;
-                            middleBgArea.Layout.preferredWidth = middleBgArea.width + middleShrinkWidth;
+                onPressed: function(mouse) {
+                    pressGlobalX = mapToItem(null, mouse.x, 0).x;
+                }
+                onPositionChanged: function(mouse) {
+                    if (!pressed) return;
+                    var globalX = mapToItem(null, mouse.x, 0).x;
+                    var delta = globalX - pressGlobalX;
+                    pressGlobalX = globalX;
+
+                    var maxX = rootWindow.width > (leftAreaMaxWidth + middleAreaMinWidth + rightAreaMinWidth - leftDragHandle.width) ? leftAreaMaxWidth : rootWindow.width - (middleAreaMinWidth + rightAreaMinWidth);
+                    var newWidth = Math.max(leftAreaMinWidth, Math.min(maxX, leftBgArea.width + delta));
+                    var actualDelta = newWidth - leftBgArea.width;
+
+                    if (actualDelta > 0) {
+                        if ((middleBgArea.width + rightDragHandle.width) > middleAreaMinWidth) {
+                            middleBgArea.width -= actualDelta;
                         }
-                        leftBgArea.Layout.preferredWidth = newWidth;
-                        tmpLeftAreaWidth = newWidth;
+                    } else if (actualDelta < 0) {
+                        middleBgArea.width -= actualDelta;
                     }
+                    leftBgArea.width = newWidth;
+                    tmpLeftAreaWidth = newWidth;
                 }
             }
         }
@@ -672,8 +778,10 @@ ApplicationWindow {
         Rectangle {
             id: middleBgArea
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: middleViewWidth - rightDragHandle.width
+            x: leftBgArea.width + leftDragHandle.width
+            height: parent.height
+            width: middleViewWidth - 5
+            clip: true
             color: DTK.themeType === ApplicationHelper.LightType ? Qt.rgba(248 / 255, 248 / 255, 248 / 255, 0.95)
                                                                    : Qt.rgba(24 / 255, 24 / 255, 24 / 255, 0.95)
 
@@ -682,7 +790,7 @@ ApplicationWindow {
                     if (width >= 240) {
                         search.visible = true;
                         needHideSearch = false;
-                        search.offect = 85;
+                        search.offect = collapsedSearchOffset();
                     } else {
                         search.visible = false;
                         needHideSearch = true;
@@ -692,18 +800,26 @@ ApplicationWindow {
             }
 
             ColumnLayout {
-                Layout.topMargin: 7
+                id: middleColumnLayout
+
                 anchors.fill: parent
                 anchors.leftMargin: 10
                 anchors.rightMargin: 5
                 spacing: 10
 
                 VNoteComponents.VNoteToolButton {
+                    Accessible.name: "ToolBarMoreButton"
+                    Accessible.ignored: false
+                    Accessible.role: Accessible.Button
+
                     Layout.alignment: Text.AlignRight
+                    Layout.preferredHeight: 30
+                    Layout.preferredWidth: 30
                     Layout.rightMargin: 10
                     Layout.topMargin: 10
+                    display: AbstractButton.IconOnly
                     icon.height: 16
-                    icon.name: "search"
+                    icon.name: "action_search"
                     icon.width: 16
                     height: 30
                     width: 30
@@ -711,7 +827,7 @@ ApplicationWindow {
 
                     onClicked: {
                         search.visible = true;
-                        search.offect = 50;
+                        search.offect = leftBgArea.visible ? 50 : collapsedSearchOffset();
                         search.forceActiveFocus();
                     }
                 }
@@ -728,7 +844,6 @@ ApplicationWindow {
                             itemListView.searchLoader.item.visible = false;
                         }
                         itemListView.view.visible = true;
-                        label.visible = true;
                         itemListView.isSearch = false;
                         itemListView.isSearching = false;
                         // 退出搜索时，只有当前记事本有笔记时才显示富文本编辑器
@@ -783,7 +898,6 @@ ApplicationWindow {
                                 itemListView.searchLoader.item.visible = false;
                             }
                             itemListView.view.visible = true;
-                            label.visible = true;
                             itemListView.isSearch = false;
                             itemListView.isSearching = false;
                             // 清空搜索文本时，只有当前记事本有笔记时才显示富文本编辑器
@@ -803,24 +917,77 @@ ApplicationWindow {
                     }
                 }
 
-                Label {
-                    id: label
+                RowLayout {
+                    id: noteListHeader
 
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 18
+                    Layout.preferredHeight: 30
                     Layout.topMargin: 5
-                    color: DTK.themeType === ApplicationHelper.LightType ? "#BB000000" : "#BBFFFFFF"
-                    font.pixelSize: 16
-                    text: ""
+                    spacing: 0
+                    visible: !initRect.visible
+                             && !webEngineView.noSearchResult
+                             && !itemListView.isSearch
+                             && !itemListView.isSearching
+                             && !webEngineView.titleBar.isSearching
+
+                    Label {
+                        id: label
+
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 18
+                        color: DTK.themeType === ApplicationHelper.LightType ? "#BB000000" : "#BBFFFFFF"
+                        font.pixelSize: 16
+                        text: ""
+                    }
+
+                    VNoteComponents.VNoteToolButton {
+                        Accessible.name: "NewNoteButton"
+                        Accessible.ignored: false
+                        Accessible.role: Accessible.Button
+
+                        id: newNoteBtn
+
+                        Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                        Layout.preferredHeight: 30
+                        Layout.preferredWidth: 30
+                        Layout.rightMargin: 10
+                        enabled: !rootWindow.isRecordingAudio
+                                  && !folderListView.isPlay
+                                  && !webEngineView.titleBar.isPlaying
+                                  && !webEngineView.titleBar.isSearching
+                                  && !rootWindow.isVoiceToText
+                        icon.height: 16
+                        icon.name: "new_note"
+                        icon.width: 16
+                        height: 30
+                        width: 30
+
+                        onClicked: {
+                            rootWindow.createNoteFromWorkspace();
+                        }
+
+                        ToolTip {
+                            // 与标题栏的“新建笔记”复用同一翻译 key。当前 QML
+                            // 文件没有 MainWindow 上下文的 Create Note 翻译，
+                            // 直接 qsTr() 会回退为英文。
+                            text: qsTranslate("WindowTitleBar", "Create Note")
+                            visible: newNoteBtn.hovered
+                        }
+                    }
                 }
 
                 ItemListView {
+                    Accessible.name: "NoteItemListView"
+                    Accessible.role: Accessible.List
+
                     id: itemListView
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     enabled: !rootWindow.isVoiceToText
                     opacity: enabled ? 1.0 : 0.4
+                    scrollBarParent: itemScrollBarOverlay
+                    scrollBarRightAnchor: rightDragHandle.x + rightDragHandle.width - 2
                     sourceFolderModel: folderListView.model
                     currentFolderIndex: folderListView.currentFolderIndex
                     webVisible: initRect.visible
@@ -846,8 +1013,9 @@ ApplicationWindow {
         Rectangle {
             id: rightDragHandle
 
-            Layout.fillHeight: true
-            Layout.preferredWidth: 5
+            x: middleBgArea.x + middleBgArea.width
+            height: parent.height
+            width: 5
             color: middleBgArea.color
 
             Component.onCompleted: {
@@ -857,30 +1025,38 @@ ApplicationWindow {
             MouseArea {
                 id: rightMouseArea
 
+                property real pressGlobalX: 0
+
                 anchors.fill: parent
                 cursorShape: Qt.SizeHorCursor
-                drag.axis: Drag.XAxis
-                drag.maximumX: leftBgArea.visible ? ((rootWindow.width - leftBgArea.width) > (middleAreaMinWidth + rightAreaMinWidth) ? rootWindow.width - rightAreaMinWidth : (rootWindow.width - rightAreaMinWidth)) : (rootWindow.width - rightAreaMinWidth)
-                drag.minimumX: leftBgArea.visible ? (leftAreaMinWidth + middleAreaMinWidth + leftDragHandle.width) : (middleAreaMinWidth - rightDragHandle.width)
-                drag.target: rightDragHandle
 
-                onPositionChanged: {
-                    if (drag.active) {
-                        tmprightDragX = rightDragHandle.x;
-                        var newWidth = rightDragHandle.x - middleBgArea.x;
-                        if (newWidth < (middleAreaMinWidth - rightDragHandle.width)) {
-                            middleBgArea.Layout.preferredWidth = middleAreaMinWidth - rightDragHandle.width;
-                            var shrinkWidth = middleAreaMinWidth - newWidth - rightDragHandle.width;
-                            leftBgArea.Layout.preferredWidth = leftBgArea.width - shrinkWidth - leftDragHandle.width;
-                            tmpLeftAreaWidth = leftBgArea.width;
-                        } else {
-                            middleBgArea.Layout.preferredWidth = newWidth;
-                        }
-                        rightBgArea.Layout.preferredWidth = rowLayout.width - middleBgArea.width - rightDragHandle.width;
-                        tmpWebViewWidth = rightBgArea.width;
-                        if (search.activeFocus) {
-                            middleBgArea.forceActiveFocus();
-                        }
+                onPressed: function(mouse) {
+                    pressGlobalX = mapToItem(null, mouse.x, 0).x;
+                }
+                onPositionChanged: function(mouse) {
+                    if (!pressed) return;
+                    var globalX = mapToItem(null, mouse.x, 0).x;
+                    var delta = globalX - pressGlobalX;
+                    pressGlobalX = globalX;
+
+                    var maxX = rootWindow.width - rightAreaMinWidth;
+                    var minX = leftBgArea.visible ? (leftAreaMinWidth + middleAreaMinWidth + leftDragHandle.width) : (middleAreaMinWidth - rightDragHandle.width);
+                    var targetHandleX = rightDragHandle.x + delta;
+                    targetHandleX = Math.max(minX, Math.min(maxX, targetHandleX));
+
+                    var newMiddleWidth = targetHandleX - middleBgArea.x;
+                    if (newMiddleWidth < (middleAreaMinWidth - rightDragHandle.width)) {
+                        var shrinkWidth = middleAreaMinWidth - newMiddleWidth - rightDragHandle.width;
+                        middleBgArea.width = middleAreaMinWidth - rightDragHandle.width;
+                        leftBgArea.width = leftBgArea.width - shrinkWidth;
+                        tmpLeftAreaWidth = leftBgArea.width;
+                    } else {
+                        middleBgArea.width = newMiddleWidth;
+                    }
+                    tmprightDragX = middleBgArea.width;
+                    tmpWebViewWidth = rightBgArea.width;
+                    if (search.activeFocus) {
+                        middleBgArea.forceActiveFocus();
                     }
                 }
             }
@@ -889,9 +1065,13 @@ ApplicationWindow {
         Rectangle {
             id: rightBgArea
 
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            color: Qt.rgba(0, 0, 0, 0.01)
+            x: rightDragHandle.x + rightDragHandle.width
+            height: parent.height
+            width: parent.width - x
+            // 删除当前记事本的最后一条笔记后，Tiptap Loader 会整体隐藏，
+            // 避免残留上一条笔记。这里必须继续铺满编辑器画布色；若保持
+            // 半透明，会把主窗口灰底直接暴露出来，和正常空白编辑器不一致。
+            color: DTK.themeType === ApplicationHelper.LightType ? "#FFFFFF" : "#242424"
 
             BoxShadow {
                 anchors.fill: rightBgArea
@@ -908,6 +1088,9 @@ ApplicationWindow {
                 anchors.fill: parent
 
                 WebEngineView {
+                    Accessible.name: "NoteContentWebView"
+                    Accessible.role: Accessible.Pane
+
                     id: webEngineView
 
                     Layout.fillHeight: true
@@ -989,15 +1172,81 @@ ApplicationWindow {
         }
     }
 
+    Item {
+        id: itemScrollBarOverlay
+
+        function updateGeometry() {
+            y = itemListView.mapToItem(parent, 0, 0).y;
+        }
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        clip: true
+        height: itemListView.height
+        visible: middleBgArea.visible
+        z: 50
+
+        Component.onCompleted: Qt.callLater(updateGeometry)
+        onHeightChanged: Qt.callLater(updateGeometry)
+        onVisibleChanged: Qt.callLater(updateGeometry)
+
+        Connections {
+            target: itemListView
+
+            function onHeightChanged() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+            function onYChanged() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+        }
+
+        Connections {
+            target: middleBgArea
+
+            function onYChanged() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+        }
+
+        Connections {
+            target: middleColumnLayout
+
+            function onYChanged() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+        }
+
+        Connections {
+            target: hideLeftArea
+
+            function onFinished() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+        }
+
+        Connections {
+            target: showLeftArea
+
+            function onFinished() {
+                Qt.callLater(itemScrollBarOverlay.updateGeometry);
+            }
+        }
+    }
+
     Rectangle {
         id: initRect
 
         anchors.fill: parent
+        z: 200
 
         ColumnLayout {
             anchors.fill: parent
 
             InitialInterface {
+                Accessible.name: "InitialInterface"
+                Accessible.role: Accessible.Pane
+
                 id: initiaInterface
 
                 Layout.fillHeight: true
@@ -1025,22 +1274,23 @@ ApplicationWindow {
     ParallelAnimation {
         id: hideLeftArea
 
-        onFinished: {
-            leftBgArea.visible = false;
-            tmprightDragX = middleBgArea.width;
-        }
         onStarted: {
             needHideSearch = false;
             if (middleBgArea.width < 240) {
                 needHideSearch = true;
                 search.visible = false;
             }
-            leftDragHandle.visible = false;
             tmpWebViewWidth = rightBgArea.width;
+        }
+        onFinished: {
+            leftBgArea.visible = false;
+            leftDragHandle.visible = false;
+            tmprightDragX = middleBgArea.width;
         }
 
         NumberAnimation {
-            duration: 200
+            duration: 300
+            easing.type: Easing.OutCubic
             from: leftBgArea.width
             property: "width"
             target: leftBgArea
@@ -1048,106 +1298,80 @@ ApplicationWindow {
         }
 
         NumberAnimation {
-            duration: 200
-            from: leftBgArea.width + leftDragHandle.width
-            property: "x"
-            target: middleBgArea
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: leftDragHandle.width
+            property: "width"
+            target: leftDragHandle
             to: 0
         }
 
         NumberAnimation {
-            duration: 200
-            from: rightBgArea.x
-            property: "x"
-            target: rightBgArea
-            to: rightBgArea.x - tmpLeftAreaWidth - rightDragHandle.width
-        }
-
-        NumberAnimation {
-            duration: 200
-            from: tmpWebViewWidth
-            property: "width"
-            target: webEngineView
-            to: tmpLeftAreaWidth + rightDragHandle.width + tmpWebViewWidth
-        }
-
-        NumberAnimation {
-            duration: 200
-            easing.type: Easing.InOutQuad
-            from: 0
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: search.offect
             property: "offect"
             target: search
-            to: 85
+            to: collapsedSearchOffset()
         }
     }
 
     ParallelAnimation {
         id: showLeftArea
 
-        property int currentMiddleWidth: 0
-        property int currentRightX: 0
-        property int tmpOffect: 0
+        property int targetMiddleWidth: 0
 
+        onStarted: {
+            leftBgArea.visible = true;
+            leftDragHandle.visible = true;
+
+            var totalNeeded = tmpLeftAreaWidth + 5 + middleBgArea.width + rightDragHandle.width;
+            var rightAvailable = rowLayout.width - totalNeeded;
+            if (rightAvailable < rightAreaMinWidth) {
+                var deficit = rightAreaMinWidth - rightAvailable;
+                targetMiddleWidth = Math.max(middleAreaMinWidth - rightDragHandle.width,
+                                             middleBgArea.width - deficit);
+            } else {
+                targetMiddleWidth = middleBgArea.width;
+            }
+        }
         onFinished: {
             search.visible = true;
-            leftDragHandle.x = leftBgArea.width;
-            rightDragHandle.x = middleBgArea.x + middleBgArea.width;
+            search.offect = 0;
             tmpWebViewWidth = rightBgArea.width;
-        }
-        onStarted: {
-            currentRightX = rightBgArea.x;
-            currentMiddleWidth = middleBgArea.width;
-            if (rightBgArea.width > (rightAreaMinWidth + tmpLeftAreaWidth)) {
-                showLeftArea.tmpOffect = middleBgArea.width + rightDragHandle.width;
-            } else {
-                showLeftArea.tmpOffect = middleBgArea.width - (rightAreaMinWidth + tmpLeftAreaWidth - rightBgArea.width);
-            }
         }
 
         NumberAnimation {
-            duration: 200
-            from: 0
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: leftBgArea.width
             property: "width"
             target: leftBgArea
             to: tmpLeftAreaWidth
         }
 
         NumberAnimation {
-            duration: 200
-            from: 0
-            property: "x"
-            target: middleBgArea
-            to: tmpLeftAreaWidth + rightDragHandle.width
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: leftDragHandle.width
+            property: "width"
+            target: leftDragHandle
+            to: 5
         }
 
         NumberAnimation {
-            duration: 200
-            from: currentMiddleWidth
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: middleBgArea.width
             property: "width"
             target: middleBgArea
-            to: showLeftArea.tmpOffect
+            to: showLeftArea.targetMiddleWidth
         }
 
         NumberAnimation {
-            duration: 200
-            from: showLeftArea.currentRightX
-            property: "x"
-            target: rightBgArea
-            to: showLeftArea.tmpOffect + tmpLeftAreaWidth + rightDragHandle.width
-        }
-
-        NumberAnimation {
-            duration: 200
-            from: rightBgArea.width
-            property: "width"
-            target: rightBgArea
-            to: tmpWebViewWidth
-        }
-
-        NumberAnimation {
-            duration: 200
-            easing.type: Easing.InOutQuad
-            from: 85
+            duration: 300
+            easing.type: Easing.OutCubic
+            from: search.offect
             property: "offect"
             target: search
             to: 0

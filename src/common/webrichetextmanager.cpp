@@ -5,9 +5,17 @@
 #include "jscontent.h"
 #include "db/vnoteitemoper.h"
 #include "metadataparser.h"
+#include "migrationhtmlconverter.h"
+#include "migrationjsonbuilder.h"
+#include "migrationnotedataconverter.h"
 #include "common/utils.h"
 #include "handler/voice_to_text_task_manager.h"
+#include "tiptapchannelbridge.h"
+#include "legacyformatdetector.h"
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QTimer>
 #include <QEventLoop>
 #include <QDebug>
@@ -15,6 +23,80 @@
 #include <QDir>
 #include <QUrl>
 #include <QUuid>
+
+namespace {
+
+QString emptyTiptapEnvelopeJson()
+{
+    return MigrationJsonBuilder::toCompactJson(MigrationJsonBuilder::makeEnvelope());
+}
+
+QString legacyHtmlFromPayload(const QString &payload, const QString &parsedHtml)
+{
+    if (!parsedHtml.isEmpty()) {
+        return parsedHtml;
+    }
+
+    const QJsonDocument document = QJsonDocument::fromJson(payload.toUtf8());
+    if (document.isObject()) {
+        return document.object().value(QStringLiteral("htmlCode")).toString();
+    }
+    return payload;
+}
+
+QString envelopeForNote(const VNoteItem &data)
+{
+    const QString payload = data.metaDataConstRef().toString();
+    const LegacyFormat format = LegacyFormatDetector::detect(payload);
+
+    switch (format) {
+    case LegacyFormat::TiptapEnvelope:
+        return payload;
+    case LegacyFormat::LegacyHtmlCode: {
+        const MigrationHtmlConversionResult converted =
+            MigrationHtmlConverter::convert(legacyHtmlFromPayload(payload, data.htmlCode));
+        if (converted.ok()) {
+            return MigrationJsonBuilder::toCompactJson(converted.envelope);
+        }
+        qWarning() << "Failed to convert legacy HTML note to Tiptap envelope:" << converted.errors.size();
+        break;
+    }
+    case LegacyFormat::LegacyNoteDatas: {
+        const MigrationNoteDataConversionResult converted =
+            MigrationNoteDataConverter::convertBlocks(payload);
+        if (converted.ok()) {
+            return MigrationJsonBuilder::toCompactJson(converted.envelope);
+        }
+        qWarning() << "Failed to convert legacy note data to Tiptap envelope:" << converted.errors.size();
+        break;
+    }
+    case LegacyFormat::ProseMirrorDoc: {
+        const QJsonDocument document = QJsonDocument::fromJson(payload.toUtf8());
+        if (document.isObject()) {
+            return MigrationJsonBuilder::toCompactJson(
+                MigrationJsonBuilder::makeEnvelope(document.object()));
+        }
+        break;
+    }
+    case LegacyFormat::PlainText: {
+        QJsonArray paragraphContent;
+        if (!payload.isEmpty()) {
+            paragraphContent.append(MigrationJsonBuilder::makeText(payload));
+        }
+        return MigrationJsonBuilder::toCompactJson(
+            MigrationJsonBuilder::makeEnvelope(
+                MigrationJsonBuilder::makeDoc(
+                    QJsonArray{MigrationJsonBuilder::makeParagraph(paragraphContent)})));
+    }
+    case LegacyFormat::Invalid:
+        break;
+    }
+
+    // A note switch must never leave the previous note's document visible.
+    return emptyTiptapEnvelopeJson();
+}
+
+} // namespace
 
 
 WebRichTextManager::WebRichTextManager(QObject *parent)
@@ -36,6 +118,11 @@ void WebRichTextManager::initData(VNoteItem *data, const QString reg, bool focus
     if (!data) {
         qWarning() << "initData called with null data, clearing JS content";
         m_noteData = nullptr;
+        m_textChange = false;
+        m_textChangeNoteId = -1;
+        m_updateInProgress = false;
+        m_updateRequestNoteId = -1;
+        m_updateRequestSerial = 0;
         if (m_updateTimer) m_updateTimer->stop();
         clearJSContent();
         return;
@@ -68,6 +155,16 @@ void WebRichTextManager::initConnect()
         emit scrollChange(isTop);
     });
     connect(JsContent::instance(), &JsContent::setDataFinsh, this, &WebRichTextManager::onSetDataFinsh);
+
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::contentChanged, this, [=](){
+        m_textChange = true;
+        m_textChangeNoteId = m_noteData ? m_noteData->noteId : -1;
+        ++m_textChangeSerial;
+        emit noteTextChanged();
+    });
+    connect(TiptapChannelBridge::instance(), &TiptapChannelBridge::contentSaved,
+            this, &WebRichTextManager::onTiptapContentSaved);
+
     qInfo() << "Connections initialized";
 }
 
@@ -80,6 +177,14 @@ void WebRichTextManager::setData(VNoteItem *data, const QString reg)
     }
     m_noteData = data;
     m_updateTimer->stop();
+
+    if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+        TiptapChannelBridge::instance()->loadEnvelope(envelopeForNote(*data));
+        m_updateTimer->start();
+        emit updateSearch();
+        return;
+    }
+
     //设置富文本内容
     if (data->htmlCode.isEmpty()) {
         qDebug() << "Initializing with metadata";
@@ -196,6 +301,34 @@ void WebRichTextManager::onUpdateNoteWithResult(VNoteItem *data, const QString &
     qInfo() << "Note update with result finished";
 }
 
+void WebRichTextManager::onTiptapContentSaved(const QString &envelopeJson)
+{
+    qDebug() << "Saving Tiptap envelope content";
+    if (!m_noteData) {
+        qWarning() << "onTiptapContentSaved: null note data, skip";
+        m_updateInProgress = false;
+        m_updateRequestNoteId = -1;
+        m_updateRequestSerial = 0;
+        emit finishedUpdateNote();
+        return;
+    }
+    bool updateOk = VNoteItemOper(m_noteData).updateNoteTiptapEnvelope(envelopeJson);
+    if (!updateOk) {
+        qWarning() << "Failed to save Tiptap note";
+    } else {
+        qDebug() << "Tiptap note saved successfully";
+    }
+    if (updateOk && m_noteData->noteId == m_textChangeNoteId && m_updateRequestSerial == m_textChangeSerial) {
+        m_textChange = false;
+        m_textChangeNoteId = -1;
+    }
+    m_updateInProgress = false;
+    m_updateRequestNoteId = -1;
+    m_updateRequestSerial = 0;
+    emit finishedUpdateNote();
+    qInfo() << "Tiptap content saved finished";
+}
+
 void WebRichTextManager::insertVoiceItem(const QString &voicePath, qint64 voiceSize)
 {
     qDebug() << "Inserting voice item, path:" << voicePath << "size:" << voiceSize;
@@ -212,7 +345,14 @@ void WebRichTextManager::insertVoiceItem(const QString &voicePath, qint64 voiceS
     QVariant value;
     parse.makeMetaData(&data, value);
 
-    emit JsContent::instance()->callJsInsertVoice(value.toString());
+    const QString voiceInfoJson = value.toString();
+    if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+        TiptapChannelBridge::instance()->sendInsertVoiceBlock(voiceInfoJson);
+        qDebug() << "Tiptap voice block insert requested successfully, voiceId:" << data.ptrVoice->voiceId;
+        return;
+    }
+
+    emit JsContent::instance()->callJsInsertVoice(voiceInfoJson);
     qDebug() << "Voice item inserted successfully, voiceId:" << data.ptrVoice->voiceId;
 }
 
@@ -225,7 +365,10 @@ void WebRichTextManager::onLoadFinsh()
     qDebug() << "Web communication established";
     //再次设置笔记内容
     if (m_noteData && !m_loadFinshSign) {
-        if (m_noteData->htmlCode.isEmpty()) {
+        if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+            qDebug() << "Reloading Tiptap envelope after load";
+            TiptapChannelBridge::instance()->loadEnvelope(envelopeForNote(*m_noteData));
+        } else if (m_noteData->htmlCode.isEmpty()) {
             qDebug() << "Initializing with metadata after load";
             emit JsContent::instance()->callJsInitData(m_noteData->metaDataRef().toString());
         } else {
@@ -240,6 +383,9 @@ void WebRichTextManager::onLoadFinsh()
 void WebRichTextManager::clearJSContent()
 {
     qDebug() << "Clearing JS content";
+    if (TiptapChannelBridge::instance()->tiptapEnabled()) {
+        TiptapChannelBridge::instance()->loadEnvelope(emptyTiptapEnvelopeJson());
+    }
     emit JsContent::instance()->callJsSetHtml("");
 
     // 开启100ms事件循环，保证js页面内容被刷新

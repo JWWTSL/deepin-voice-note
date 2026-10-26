@@ -29,6 +29,9 @@ public:
     Q_ENUM(SaveAsType)
 
     static VNoteMainManager* instance();
+    static bool hasExistingFolders();
+    Q_INVOKABLE void prepareWorkspace();
+    Q_INVOKABLE void start();
     void initNote();
     void initQMLRegister();
 
@@ -39,18 +42,24 @@ public:
     VNoteItem* getNoteById(const int &id);
 
     Q_INVOKABLE void vNoteFloderChanged(const int &index);
+    Q_INVOKABLE void vNoteFloderChangedById(const int &folderId);
     Q_INVOKABLE void vNoteChanged(const int &index);
     void vNoteChangedWithUIUpdate(const int &noteId);
     Q_INVOKABLE void vNoteCreateFolder();
     Q_INVOKABLE bool vNoteDeleteFolder(const int &index);
+    Q_INVOKABLE bool vNoteDeleteFolderById(const int &folderId);
     Q_INVOKABLE void createNote();
+    Q_INVOKABLE void createNoteInFolderId(const int &folderId);
     Q_INVOKABLE bool deleteNote(const QList<int> &index);
     Q_INVOKABLE void moveNotes(const QVariantList &index, const int &folderIndex);
+    Q_INVOKABLE void moveNotesToFolderId(const QVariantList &noteIds, const int &folderId);
     Q_INVOKABLE void saveAs(const QVariantList &index, const QString &path, const SaveAsType type = Note);
     Q_INVOKABLE void updateTop(const int &id, const bool &top);
     Q_INVOKABLE bool getTop();
     Q_INVOKABLE void updateSort(const int &src, const int &dst);
+    Q_INVOKABLE void updateSortByFolderIds(const QVariantList &folderIds);
     Q_INVOKABLE void renameFolder(const int &index, const QString &name);
+    Q_INVOKABLE void renameFolderById(const int &folderId, const QString &name);
     Q_INVOKABLE void renameNote(const int &index, const QString &newName);
     Q_INVOKABLE QString getNotePlainTitle(const int &noteId);
     Q_INVOKABLE void vNoteSearch(const QString &text);
@@ -73,6 +82,8 @@ public:
     Q_INVOKABLE QString getSavedTextPath();
     Q_INVOKABLE QString getSavedVoicePath();
     Q_INVOKABLE void saveUserSelectedPath(const QString &path, const SaveAsType type);
+    Q_INVOKABLE void reloadAfterMigration();
+    Q_INVOKABLE bool openUosAiInAppStore();
 
     /**
      * @brief 获取当前笔记 ID
@@ -93,8 +104,11 @@ public:
      * @param text 转换结果文本
      */
     void insertVoiceTextToNote(int noteId, const QString &voiceId, const QString &text);
+    void insertVoiceTextToTiptapNote(int noteId, const QString &voiceId, const QString &text);
+    bool updateVoiceBlockText(QJsonObject &node, const QString &voiceId, const QString &text);
 
 signals:
+    void initialDataReady();
     void finishedFolderLoad(const QList<QVariantMap> &foldersData);
     void updateNotes(const QList<QVariantMap> &notesData, const int &selectIndex);
     void selectNoteByIndex(const int &selectIndex);
@@ -104,11 +118,13 @@ signals:
     void noSearchResult();
     void searchFinished(const QList<QVariantMap> &notesData, const QString &key);
     void moveFinished(const QVariantList &index, const int &srcFolderIndex, const int &dstFolderIndex);
+    void moveFinishedByFolderId(const QVariantList &noteIds, const int &srcFolderId, const int &dstFolderId, const QVariantMap &folderIdToCount);
     void needUpdateNote(int noteId);
     void updateRichTextSearch(const QString &key);
     void scrollChange(const bool &isTop);
     void updateEditNote(const int &noteId, const QString &time);
     void noteTitleChanged(const int &noteId, const QString &newTitle);
+    void currentNoteChanged(const int &noteId, const QString &title);
     void saveVoiceStateChanged(bool enabled);
     void voiceToTextStateChanged(bool isConverting);
     /**
@@ -141,7 +157,7 @@ private:
     bool hasActiveVoiceToTextTaskInFolder(qint64 folderId) const;
     bool saveCurrentNoteBeforeAction(PendingAction action, int noteId = -1);
     void doSwitchNote(int noteId);
-    void doCreateNote();
+    void doCreateNote(int folderId);
 
     VNoteItem* deleteNoteById(const int &id);
 
@@ -153,10 +169,13 @@ private:
     QStringList m_folderSort;
     WebRichTextManager *m_richTextManager {nullptr};
     VoiceNoteDBusService *m_dbusService {nullptr};
+    bool m_initialized {false};
+    bool m_webEngineInitialized {false};
     QString m_searchText;
     QEventLoop m_eventloop;
     PendingAction m_pendingAction {PendingAction::None};
     int m_pendingNoteId {-1};
+    QList<int> m_pendingCreateFolderIds;
 };
 
 #endif // VNOTEMAINMANAGER_H

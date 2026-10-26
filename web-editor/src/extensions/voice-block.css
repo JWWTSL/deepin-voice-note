@@ -1,0 +1,424 @@
+/* SPDX-FileCopyrightText: 2026 UnionTech Software Technology Co., Ltd.
+   SPDX-License-Identifier: GPL-3.0-or-later */
+
+.voiceBox {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    -webkit-user-modify: read-only;
+    outline: none;
+}
+
+/*
+ * 普通无序/有序列表项本身是两列 grid：第一列是 marker 槽位，第二列是正文。
+ * voiceBox 是 block，放在 li 下会被 grid 自动排到第一列（20px），导致音频
+ * 卡片被裁成槽位宽度。待办项多一层 content div，不受影响；这里显式放到
+ * 正文列，与待办项的音频卡片保持同一条左边界。min-width:0 避免长标题的
+ * intrinsic min-content 宽度把内容列撑出列表范围。
+ */
+.ProseMirror ul:not([data-type="taskList"]) > li > .voiceBox,
+.ProseMirror ol > li > .voiceBox {
+    grid-column: 2;
+    min-width: 0;
+}
+
+.voiceBox.dvn-voice-drag-ghost {
+    /* The native drag preview is a snapshot of this temporary node. Keep the
+       clipping boundary on the snapshot root so transparent square corners do
+       not appear while dragging the voice block. */
+    margin: 0 !important;
+    border-radius: 12px;
+    overflow: hidden;
+    clip-path: inset(0 round 12px);
+    -webkit-clip-path: inset(0 round 12px);
+}
+
+
+.voiceBox.ProseMirror-selectednode .voiceInfoBox,
+.voiceBox.active .voiceInfoBox,
+.voiceBox.dvn-range-selected .voiceInfoBox {
+    background: var(--dvn-text-selection-bg, var(--highlightColor, #0081ff));
+    color: var(--dvn-selection-fg, #ffffff);
+}
+
+.voiceBox.ProseMirror-selectednode .voicePlayback .title,
+.voiceBox.ProseMirror-selectednode .voicePlayback .createTime,
+.voiceBox.ProseMirror-selectednode .voicePlayback .timeField,
+.voiceBox.ProseMirror-selectednode .translateHeader .translateLabel,
+.voiceBox.ProseMirror-selectednode .translateText,
+.voiceBox.active .voicePlayback .title,
+.voiceBox.active .voicePlayback .createTime,
+.voiceBox.active .voicePlayback .timeField,
+.voiceBox.active .translateHeader .translateLabel,
+.voiceBox.active .translateText,
+.voiceBox.dvn-range-selected .voicePlayback .title,
+.voiceBox.dvn-range-selected .voicePlayback .createTime,
+.voiceBox.dvn-range-selected .voicePlayback .timeField,
+.voiceBox.dvn-range-selected .translateHeader .translateLabel,
+.voiceBox.dvn-range-selected .translateText {
+    color: var(--dvn-selection-fg, #ffffff);
+}
+
+.voiceBox.ProseMirror-selectednode .voicePlayback.play .voiceBtn,
+.voiceBox.ProseMirror-selectednode .voicePlayback.pause .voiceBtn,
+.voiceBox.ProseMirror-selectednode .voiceToTextLabel .voiceToTextIcon,
+.voiceBox.ProseMirror-selectednode .translateHeader .translateIcon,
+.voiceBox.ProseMirror-selectednode .translateHeader .foldBtn,
+.voiceBox.active .voicePlayback.play .voiceBtn,
+.voiceBox.active .voicePlayback.pause .voiceBtn,
+.voiceBox.active .voiceToTextLabel .voiceToTextIcon,
+.voiceBox.active .translateHeader .translateIcon,
+.voiceBox.active .translateHeader .foldBtn,
+.voiceBox.dvn-range-selected .voicePlayback.play .voiceBtn,
+.voiceBox.dvn-range-selected .voicePlayback.pause .voiceBtn,
+.voiceBox.dvn-range-selected .voiceToTextLabel .voiceToTextIcon,
+.voiceBox.dvn-range-selected .translateHeader .translateIcon,
+.voiceBox.dvn-range-selected .translateHeader .foldBtn {
+    background-color: var(--dvn-selection-fg, #ffffff);
+}
+
+/* 转文字进行中如果语音块处于选中/激活态，卡片会使用主题高亮色。
+   转圈图标已经切到 selection foreground，但“正在转为文字”仍保留
+   highlightColor，会与背景同色而看起来完全消失。这里同步前景色。 */
+.voiceBox.ProseMirror-selectednode .voiceToTextLabel .translatingLabel,
+.voiceBox.active .voiceToTextLabel .translatingLabel,
+.voiceBox.dvn-range-selected .voiceToTextLabel .translatingLabel {
+    color: var(--dvn-selection-fg, #ffffff);
+}
+
+.voiceBox.ProseMirror-selectednode .voiceInfoBox.containText .translate,
+.voiceBox.active .voiceInfoBox.containText .translate,
+.voiceBox.dvn-range-selected .voiceInfoBox.containText .translate {
+    border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+.voiceBox.ProseMirror-selectednode .translateText::selection,
+.voiceBox.active .translateText::selection,
+.voiceBox.dvn-range-selected .translateText::selection {
+    background: var(--dvn-text-selection-bg, var(--highlightColor, #0081ff)) !important;
+    color: var(--dvn-selection-fg, #ffffff);
+}
+
+.voiceInfoBox {
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none;
+    background: var(--dvn-voice-bg, rgba(0, 0, 0, 0.05));
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: normal !important;
+    font-style: normal !important;
+    text-decoration: none !important;
+}
+
+.voicePlayback {
+    height: 42px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-radius: 12px;
+}
+
+.voicePlayback .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 10px;
+    min-width: 160px;
+    min-height: 24px;
+}
+
+.voicePlayback .voiceBtn {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-image: var(--dvn-voice-play-normal-icon);
+}
+
+.voicePlayback .voiceBtn:hover {
+    background-image: var(--dvn-voice-play-hover-icon);
+}
+
+.voicePlayback .voiceBtn:active {
+    background-image: var(--dvn-voice-play-pressed-icon);
+}
+
+/* Use the project playback assets and switch them with the document theme. */
+:root {
+    --dvn-voice-play-normal-icon: url("__PLAY_NORMAL_LIGHT_ICON__");
+    --dvn-voice-play-hover-icon: url("__PLAY_HOVER_LIGHT_ICON__");
+    --dvn-voice-play-pressed-icon: url("__PLAY_PRESSED_LIGHT_ICON__");
+}
+
+:root[data-dvn-theme="dark"] {
+    --dvn-voice-play-normal-icon: url("__PLAY_NORMAL_DARK_ICON__");
+    --dvn-voice-play-hover-icon: url("__PLAY_HOVER_DARK_ICON__");
+    --dvn-voice-play-pressed-icon: url("__PLAY_PRESSED_DARK_ICON__");
+}
+
+.voicePlayback.play .voiceBtn,
+.voicePlayback.pause .voiceBtn {
+    background-image: none;
+    background-color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+}
+
+.voicePlayback.play .voiceBtn {
+    -webkit-mask: url("__PLAYING_PAUSE_ICON__") no-repeat center/cover;
+    mask: url("__PLAYING_PAUSE_ICON__") no-repeat center/cover;
+}
+
+.voicePlayback.pause .voiceBtn {
+    -webkit-mask: url("__PLAYING_PLAY_ICON__") no-repeat center/cover;
+    mask: url("__PLAYING_PLAY_ICON__") no-repeat center/cover;
+}
+
+.voicePlayback.unplayable .voiceBtn {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.voicePlayback .title {
+    color: var(--dvn-voice-title, rgba(0, 26, 46, 1));
+    font-size: 14px !important;
+    line-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.voicePlayback .createTime {
+    color: var(--dvn-voice-subtitle, rgba(138, 161, 180, 1));
+    font-size: 12px !important;
+    line-height: 12px;
+    margin-right: 20px;
+    white-space: nowrap;
+}
+
+.voicePlayback .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 10px;
+    min-width: 100px;
+    user-select: none;
+}
+
+.voicePlayback .timeField {
+    display: flex;
+    color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+    font-size: 12px !important;
+    line-height: 12px;
+    white-space: nowrap;
+}
+
+.voicePlayback input[type="range"] {
+    display: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 50%;
+    height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background: repeating-linear-gradient(to right, #BFC0C0, #BFC0C0 2px, transparent 2px, transparent 3px);
+    background-repeat: no-repeat;
+    background-size: 100% 2px;
+    background-position: center;
+    --progressValue: 0%;
+    --voice-progress-color: var(--highlightColor, #007aff);
+}
+
+.voicePlayback input[type="range"]::-webkit-slider-runnable-track {
+    width: 100px;
+    height: 2px;
+    background: repeating-linear-gradient(to right, var(--voice-progress-color), var(--voice-progress-color) 2px, transparent 2px, transparent 3px);
+    background-repeat: no-repeat;
+    background-size: var(--progressValue);
+    border: none;
+    border-radius: 0;
+}
+
+/* 选中/激活时语音卡片背景本身就是 highlightColor，已播放进度如果继续
+   使用 highlightColor 会与背景完全重合。这里只改变 input 上的颜色变量，
+   避免 QtWebEngine 对动态变化的伪元素选择器不重新计算 track 样式。 */
+.voiceBox.ProseMirror-selectednode .voicePlayback input[type="range"],
+.voiceBox.active .voicePlayback input[type="range"],
+.voiceBox.dvn-range-selected .voicePlayback input[type="range"] {
+    --voice-progress-color: var(--dvn-selection-fg, #ffffff);
+}
+
+.voicePlayback input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: rgb(77, 77, 77);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.2) inset;
+    border-radius: 4px;
+    transform: translateY(-7px);
+    cursor: pointer;
+}
+
+.voicePlayback input[type="range"]:focus { outline: none; }
+
+.voiceToTextLabel {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.voiceToTextLabel .voiceToTextIcon {
+    width: 18px;
+    height: 18px;
+    background-color: var(--highlightColor, #0081ff);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(1.107167,1.107167)'%3E%3Ccircle opacity='.01' transform='translate(4.397642,14.642833) rotate(240) translate(-4.397642,-14.642833)' cx='4.397642' cy='14.642833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(3.845138,13.457984) rotate(250) translate(-3.845138,-13.457984)' cx='3.845138' cy='13.457984' r='3'/%3E%3Ccircle opacity='.03' transform='translate(3.506775,12.195194) rotate(260) translate(-3.506775,-12.195194)' cx='3.506775' cy='12.195194' r='3'/%3E%3Ccircle opacity='.04' transform='translate(3.392833,10.892833) rotate(270) translate(-3.392833,-10.892833)' cx='3.392833' cy='10.892833' r='3'/%3E%3Ccircle opacity='.05' transform='translate(3.506775,9.590472) rotate(280) translate(-3.506775,-9.590472)' cx='3.506775' cy='9.590472' r='3'/%3E%3Ccircle opacity='.1' transform='translate(3.845138,8.327682) rotate(290) translate(-3.845138,-8.327682)' cx='3.845138' cy='8.327682' r='3'/%3E%3Ccircle opacity='.15' transform='translate(4.397642,7.142833) rotate(300) translate(-4.397642,-7.142833)' cx='4.397642' cy='7.142833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(5.1475,6.071926) rotate(310) translate(-5.1475,-6.071926)' cx='5.1475' cy='6.071926' r='3'/%3E%3Ccircle transform='translate(6.071926,5.1475) rotate(320) translate(-6.071926,-5.1475)' cx='6.071926' cy='5.1475' r='3'/%3E%3Ccircle opacity='.01' cx='10.892833' cy='3.392833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(12.195194,3.506775) rotate(10) translate(-12.195194,-3.506775)' cx='12.195194' cy='3.506775' r='3'/%3E%3Ccircle opacity='.03' transform='translate(13.457984,3.845138) rotate(20) translate(-13.457984,-3.845138)' cx='13.457984' cy='3.845138' r='3'/%3E%3Ccircle opacity='.04' transform='translate(14.642833,4.397642) rotate(30) translate(-14.642833,-4.397642)' cx='14.642833' cy='4.397642' r='3'/%3E%3Ccircle opacity='.05' transform='translate(15.71374,5.1475) rotate(40) translate(-15.71374,-5.1475)' cx='15.71374' cy='5.1475' r='3'/%3E%3Ccircle opacity='.1' transform='translate(16.638166,6.071926) rotate(50) translate(-16.638166,-6.071926)' cx='16.638166' cy='6.071926' r='3'/%3E%3Ccircle opacity='.15' transform='translate(17.388023,7.142833) rotate(60) translate(-17.388023,-7.142833)' cx='17.388023' cy='7.142833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(17.940528,8.327682) rotate(70) translate(-17.940528,-8.327682)' cx='17.940528' cy='8.327682' r='3'/%3E%3Ccircle transform='translate(18.278891,9.590472) rotate(80) translate(-18.278891,-9.590472)' cx='18.278891' cy='9.590472' r='3'/%3E%3Ccircle opacity='.01' transform='translate(17.388023,14.642833) rotate(120) translate(-17.388023,-14.642833)' cx='17.388023' cy='14.642833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(16.638166,15.71374) rotate(130) translate(-16.638166,-15.71374)' cx='16.638166' cy='15.71374' r='3'/%3E%3Ccircle opacity='.03' transform='translate(15.71374,16.638166) rotate(140) translate(-15.71374,-16.638166)' cx='15.71374' cy='16.638166' r='3'/%3E%3Ccircle opacity='.04' transform='translate(14.642833,17.388023) rotate(150) translate(-14.642833,-17.388023)' cx='14.642833' cy='17.388023' r='3'/%3E%3Ccircle opacity='.05' transform='translate(13.457984,17.940528) rotate(160) translate(-13.457984,-17.940528)' cx='13.457984' cy='17.940528' r='3'/%3E%3Ccircle opacity='.1' transform='translate(12.195194,18.278891) rotate(170) translate(-12.195194,-18.278891)' cx='12.195194' cy='18.278891' r='3'/%3E%3Ccircle opacity='.15' transform='translate(10.892833,18.392833) rotate(180) translate(-10.892833,-18.392833)' cx='10.892833' cy='18.392833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(9.590472,18.278891) rotate(190) translate(-9.590472,-18.278891)' cx='9.590472' cy='18.278891' r='3'/%3E%3Ccircle transform='translate(8.327682,17.940528) rotate(200) translate(-8.327682,-17.940528)' cx='8.327682' cy='17.940528' r='3'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/contain;
+    mask: url("data:image/svg+xml,%3Csvg width='24px' height='24px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(1.107167,1.107167)'%3E%3Ccircle opacity='.01' transform='translate(4.397642,14.642833) rotate(240) translate(-4.397642,-14.642833)' cx='4.397642' cy='14.642833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(3.845138,13.457984) rotate(250) translate(-3.845138,-13.457984)' cx='3.845138' cy='13.457984' r='3'/%3E%3Ccircle opacity='.03' transform='translate(3.506775,12.195194) rotate(260) translate(-3.506775,-12.195194)' cx='3.506775' cy='12.195194' r='3'/%3E%3Ccircle opacity='.04' transform='translate(3.392833,10.892833) rotate(270) translate(-3.392833,-10.892833)' cx='3.392833' cy='10.892833' r='3'/%3E%3Ccircle opacity='.05' transform='translate(3.506775,9.590472) rotate(280) translate(-3.506775,-9.590472)' cx='3.506775' cy='9.590472' r='3'/%3E%3Ccircle opacity='.1' transform='translate(3.845138,8.327682) rotate(290) translate(-3.845138,-8.327682)' cx='3.845138' cy='8.327682' r='3'/%3E%3Ccircle opacity='.15' transform='translate(4.397642,7.142833) rotate(300) translate(-4.397642,-7.142833)' cx='4.397642' cy='7.142833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(5.1475,6.071926) rotate(310) translate(-5.1475,-6.071926)' cx='5.1475' cy='6.071926' r='3'/%3E%3Ccircle transform='translate(6.071926,5.1475) rotate(320) translate(-6.071926,-5.1475)' cx='6.071926' cy='5.1475' r='3'/%3E%3Ccircle opacity='.01' cx='10.892833' cy='3.392833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(12.195194,3.506775) rotate(10) translate(-12.195194,-3.506775)' cx='12.195194' cy='3.506775' r='3'/%3E%3Ccircle opacity='.03' transform='translate(13.457984,3.845138) rotate(20) translate(-13.457984,-3.845138)' cx='13.457984' cy='3.845138' r='3'/%3E%3Ccircle opacity='.04' transform='translate(14.642833,4.397642) rotate(30) translate(-14.642833,-4.397642)' cx='14.642833' cy='4.397642' r='3'/%3E%3Ccircle opacity='.05' transform='translate(15.71374,5.1475) rotate(40) translate(-15.71374,-5.1475)' cx='15.71374' cy='5.1475' r='3'/%3E%3Ccircle opacity='.1' transform='translate(16.638166,6.071926) rotate(50) translate(-16.638166,-6.071926)' cx='16.638166' cy='6.071926' r='3'/%3E%3Ccircle opacity='.15' transform='translate(17.388023,7.142833) rotate(60) translate(-17.388023,-7.142833)' cx='17.388023' cy='7.142833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(17.940528,8.327682) rotate(70) translate(-17.940528,-8.327682)' cx='17.940528' cy='8.327682' r='3'/%3E%3Ccircle transform='translate(18.278891,9.590472) rotate(80) translate(-18.278891,-9.590472)' cx='18.278891' cy='9.590472' r='3'/%3E%3Ccircle opacity='.01' transform='translate(17.388023,14.642833) rotate(120) translate(-17.388023,-14.642833)' cx='17.388023' cy='14.642833' r='3'/%3E%3Ccircle opacity='.02' transform='translate(16.638166,15.71374) rotate(130) translate(-16.638166,-15.71374)' cx='16.638166' cy='15.71374' r='3'/%3E%3Ccircle opacity='.03' transform='translate(15.71374,16.638166) rotate(140) translate(-15.71374,-16.638166)' cx='15.71374' cy='16.638166' r='3'/%3E%3Ccircle opacity='.04' transform='translate(14.642833,17.388023) rotate(150) translate(-14.642833,-17.388023)' cx='14.642833' cy='17.388023' r='3'/%3E%3Ccircle opacity='.05' transform='translate(13.457984,17.940528) rotate(160) translate(-13.457984,-17.940528)' cx='13.457984' cy='17.940528' r='3'/%3E%3Ccircle opacity='.1' transform='translate(12.195194,18.278891) rotate(170) translate(-12.195194,-18.278891)' cx='12.195194' cy='18.278891' r='3'/%3E%3Ccircle opacity='.15' transform='translate(10.892833,18.392833) rotate(180) translate(-10.892833,-18.392833)' cx='10.892833' cy='18.392833' r='3'/%3E%3Ccircle opacity='.3' transform='translate(9.590472,18.278891) rotate(190) translate(-9.590472,-18.278891)' cx='9.590472' cy='18.278891' r='3'/%3E%3Ccircle transform='translate(8.327682,17.940528) rotate(200) translate(-8.327682,-17.940528)' cx='8.327682' cy='17.940528' r='3'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/contain;
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.voiceToTextLabel .translatingLabel {
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--highlightColor, #0081ff);
+}
+
+.voicePlayback .voiceToTextTrigger { display: none !important; }
+
+.voicePlayback .closePlaybackBarBtn {
+    display: none;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    cursor: pointer;
+    /* The source SVG is the light-theme black icon. Use it as a mask so the
+       close control follows the current theme foreground color. */
+    background-image: none;
+    background-color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+    -webkit-mask: url("__CLOSE_PLAYBACK_ICON__") no-repeat center/contain;
+    mask: url("__CLOSE_PLAYBACK_ICON__") no-repeat center/contain;
+}
+
+.voicePlayback .progressBar,
+.voicePlayback .timePassed,
+.voicePlayback .voiceToTextLabel {
+    display: none;
+}
+
+.voicePlayback.play .progressBar,
+.voicePlayback.play .timePassed,
+.voicePlayback.pause .progressBar,
+.voicePlayback.pause .timePassed {
+    display: flex;
+}
+
+.voicePlayback.voiceToText .timeField,
+.voicePlayback.unplayable .timeField {
+    display: none;
+}
+
+.voicePlayback.voiceToText .voiceToTextLabel {
+    display: flex;
+}
+
+.voicePlayback.play .closePlaybackBarBtn,
+.voicePlayback.pause .closePlaybackBarBtn {
+    display: block;
+}
+
+.voiceInfoBox .translate {
+    display: none;
+}
+
+.voiceInfoBox.containText .voicePlayback {
+    border-radius: 12px 12px 0 0;
+}
+
+.voiceInfoBox.containText .translate {
+    display: flex;
+    flex-direction: column;
+    line-height: 20px;
+    font-size: 12px;
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid var(--backgroundColor, var(--dvn-voice-divider, rgba(0, 0, 0, 0.08)));
+}
+
+.translateHeader {
+    width: calc(100% - 32px);
+    height: 30px;
+    margin-left: 16px;
+    margin-right: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.translateHeader .translateIcon {
+    width: 14px;
+    height: 14px;
+    background-color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+    -webkit-mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(1,1)'%3E%3Cpath d='M1,9 L1,11.001 C1,12.1055695 1.8954305,13.001 3,13.001 L5,13 L5,14 L3,14.001 C1.34314575,14.001 0,12.6578542 0,11.001 L0,9 L1,9 Z M10.5001265,6 C10.8223513,6 11.1128819,6.19206146 11.2290941,6.4865557 L13.9680048,13.3854033 C14.0868582,13.6824584 13.8597161,14 13.5322089,14 C13.3367611,14 13.1624428,13.8822023 13.0937719,13.7029449 L12.3463161,12.0005546 L8.64337223,12.0005546 L7.89591637,13.7080666 C7.82724551,13.8822023 7.65556837,14 7.46276175,14 C7.13789577,14 6.9133949,13.6850192 7.03224829,13.390525 C7.0296071,13.3930858 9.77115897,6.4865557 9.77115899,6.4865557 C9.8873712,6.19462227 10.1779018,6 10.5001265,6 Z M10.5318208,6.98591549 L10.4869206,6.98591549 L8.93654396,11.0017676 L12.0584267,11.0017676 L10.5318208,6.98591549 Z M4.5,0 C4.77614237,0 5,0.223857625 5,0.5 L5,5.5 C5,5.77614237 4.77614237,6 4.5,6 C4.22385763,6 4,5.77614237 4,5.5 L4,0.5 C4,0.223857625 4.22385763,0 4.5,0 Z M11,0.001 C12.6568542,0.001 14,1.34414575 14,3.001 L14,5 L13,5 L13,3.001 C13,1.8964305 12.1045695,1.001 11,1.001 L9,1 L9,0 L11,0.001 Z M2.5,1 C2.77614237,1 3,1.22385763 3,1.5 L3,4.5 C3,4.77614237 2.77614237,5 2.5,5 C2.22385763,5 2,4.77614237 2,4.5 L2,1.5 C2,1.22385763 2.22385763,1 2.5,1 Z M6.5,1 C6.77614237,1 7,1.22385763 7,1.5 L7,4.5 C7,4.77614237 6.77614237,5 6.5,5 C6.22385763,5 6,4.77614237 6,4.5 L6,1.5 C6,1.22385763 6.22385763,1 6.5,1 Z M0.5,2 C0.776142375,2 1,2.22385763 1,2.5 L1,3.5 C1,3.77614237 0.776142375,4 0.5,4 C0.223857625,4 0,3.77614237 0,3.5 L0,2.5 C0,2.22385763 0.223857625,2 0.5,2 Z M8.5,2 C8.77614237,2 9,2.22385763 9,2.5 L9,3.5 C9,3.77614237 8.77614237,4 8.5,4 C8.22385763,4 8,3.77614237 8,3.5 L8,2.5 C8,2.22385763 8.22385763,2 8.5,2 Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+    mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(1,1)'%3E%3Cpath d='M1,9 L1,11.001 C1,12.1055695 1.8954305,13.001 3,13.001 L5,13 L5,14 L3,14.001 C1.34314575,14.001 0,12.6578542 0,11.001 L0,9 L1,9 Z M10.5001265,6 C10.8223513,6 11.1128819,6.19206146 11.2290941,6.4865557 L13.9680048,13.3854033 C14.0868582,13.6824584 13.8597161,14 13.5322089,14 C13.3367611,14 13.1624428,13.8822023 13.0937719,13.7029449 L12.3463161,12.0005546 L8.64337223,12.0005546 L7.89591637,13.7080666 C7.82724551,13.8822023 7.65556837,14 7.46276175,14 C7.13789577,14 6.9133949,13.6850192 7.03224829,13.390525 C7.0296071,13.3930858 9.77115897,6.4865557 9.77115899,6.4865557 C9.8873712,6.19462227 10.1779018,6 10.5001265,6 Z M10.5318208,6.98591549 L10.4869206,6.98591549 L8.93654396,11.0017676 L12.0584267,11.0017676 L10.5318208,6.98591549 Z M4.5,0 C4.77614237,0 5,0.223857625 5,0.5 L5,5.5 C5,5.77614237 4.77614237,6 4.5,6 C4.22385763,6 4,5.77614237 4,5.5 L4,0.5 C4,0.223857625 4.22385763,0 4.5,0 Z M11,0.001 C12.6568542,0.001 14,1.34414575 14,3.001 L14,5 L13,5 L13,3.001 C13,1.8964305 12.1045695,1.001 11,1.001 L9,1 L9,0 L11,0.001 Z M2.5,1 C2.77614237,1 3,1.22385763 3,1.5 L3,4.5 C3,4.77614237 2.77614237,5 2.5,5 C2.22385763,5 2,4.77614237 2,4.5 L2,1.5 C2,1.22385763 2.22385763,1 2.5,1 Z M6.5,1 C6.77614237,1 7,1.22385763 7,1.5 L7,4.5 C7,4.77614237 6.77614237,5 6.5,5 C6.22385763,5 6,4.77614237 6,4.5 L6,1.5 C6,1.22385763 6.22385763,1 6.5,1 Z M0.5,2 C0.776142375,2 1,2.22385763 1,2.5 L1,3.5 C1,3.77614237 0.776142375,4 0.5,4 C0.223857625,4 0,3.77614237 0,3.5 L0,2.5 C0,2.22385763 0.223857625,2 0.5,2 Z M8.5,2 C8.77614237,2 9,2.22385763 9,2.5 L9,3.5 C9,3.77614237 8.77614237,4 8.5,4 C8.22385763,4 8,3.77614237 8,3.5 L8,2.5 C8,2.22385763 8.22385763,2 8.5,2 Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+}
+
+.translateHeader .translateLabel {
+    margin-left: 13px;
+    font-size: 12px;
+    color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+    user-select: none;
+}
+
+.translateHeader .foldBtn {
+    margin-left: auto;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background-color: var(--dvn-voice-text, rgba(65, 77, 104, 1));
+    -webkit-mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(7.9467,8.4074) scale(1,-1) translate(-7.9467,-8.4074) translate(2.4267,5.2474)'%3E%3Cg transform='translate(5.52,3.16) scale(1,-1) rotate(-270) translate(-5.52,-3.16) translate(2.36,-2.36)'%3E%3Cpath d='M0.234314575,0.234314575 C0.512020738,-0.043391588 0.94309978,-0.0742478283 1.2548888,0.141745854 L1.36568542,0.234314575 L6.08568537,4.95431452 C6.36339154,5.23202069 6.39424778,5.66309973 6.1782541,5.97488875 L6.08568537,6.08568537 L1.36568542,10.8056853 C1.05326599,11.1181048 0.546734008,11.1181048 0.234314575,10.8056853 C-0.043391588,10.5279792 -0.0742478283,10.0969001 0.141745854,9.78511109 L0.234314575,9.67431447 L4.38862146,5.52 L0.234314575,1.36568542 C-0.043391588,1.08797926 -0.0742478283,0.65690022 0.141745854,0.345111195 L0.234314575,0.234314575 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+    mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(7.9467,8.4074) scale(1,-1) translate(-7.9467,-8.4074) translate(2.4267,5.2474)'%3E%3Cg transform='translate(5.52,3.16) scale(1,-1) rotate(-270) translate(-5.52,-3.16) translate(2.36,-2.36)'%3E%3Cpath d='M0.234314575,0.234314575 C0.512020738,-0.043391588 0.94309978,-0.0742478283 1.2548888,0.141745854 L1.36568542,0.234314575 L6.08568537,4.95431452 C6.36339154,5.23202069 6.39424778,5.66309973 6.1782541,5.97488875 L6.08568537,6.08568537 L1.36568542,10.8056853 C1.05326599,11.1181048 0.546734008,11.1181048 0.234314575,10.8056853 C-0.043391588,10.5279792 -0.0742478283,10.0969001 0.141745854,9.78511109 L0.234314575,9.67431447 L4.38862146,5.52 L0.234314575,1.36568542 C-0.043391588,1.08797926 -0.0742478283,0.65690022 0.141745854,0.345111195 L0.234314575,0.234314575 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+}
+
+.translateHeader.unfold .foldBtn {
+    -webkit-mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(2.4267,4.4326)'%3E%3Cg transform='translate(5.52,3.16) scale(1,-1) rotate(-270) translate(-5.52,-3.16) translate(2.36,-2.36)'%3E%3Cpath d='M0.234314575,0.234314575 C0.512020738,-0.043391588 0.94309978,-0.0742478283 1.2548888,0.141745854 L1.36568542,0.234314575 L6.08568537,4.95431452 C6.36339154,5.23202069 6.39424778,5.66309973 6.1782541,5.97488875 L6.08568537,6.08568537 L1.36568542,10.8056853 C1.05326599,11.1181048 0.546734008,11.1181048 0.234314575,10.8056853 C-0.043391588,10.5279792 -0.0742478283,10.0969001 0.141745854,9.78511109 L0.234314575,9.67431447 L4.38862146,5.52 L0.234314575,1.36568542 C-0.043391588,1.08797926 -0.0742478283,0.65690022 0.141745854,0.345111195 L0.234314575,0.234314575 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+    mask: url("data:image/svg+xml,%3Csvg width='16px' height='16px' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform='translate(2.4267,4.4326)'%3E%3Cg transform='translate(5.52,3.16) scale(1,-1) rotate(-270) translate(-5.52,-3.16) translate(2.36,-2.36)'%3E%3Cpath d='M0.234314575,0.234314575 C0.512020738,-0.043391588 0.94309978,-0.0742478283 1.2548888,0.141745854 L1.36568542,0.234314575 L6.08568537,4.95431452 C6.36339154,5.23202069 6.39424778,5.66309973 6.1782541,5.97488875 L6.08568537,6.08568537 L1.36568542,10.8056853 C1.05326599,11.1181048 0.546734008,11.1181048 0.234314575,10.8056853 C-0.043391588,10.5279792 -0.0742478283,10.0969001 0.141745854,9.78511109 L0.234314575,9.67431447 L4.38862146,5.52 L0.234314575,1.36568542 C-0.043391588,1.08797926 -0.0742478283,0.65690022 0.141745854,0.345111195 L0.234314575,0.234314575 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat center/cover;
+}
+
+.voiceInfoBox .translateText {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-user-modify: read-only;
+    outline: none;
+}
+
+.voiceInfoBox .translateText::selection {
+    background: var(--dvn-text-selection-bg, var(--highlightColor, #0081ff)) !important;
+    color: var(--dvn-selection-fg, #ffffff);
+}
